@@ -9,12 +9,14 @@
 	<!-- Bootstrap -->
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/bootstrap-theme.min.css" rel="stylesheet">
-	<link href="css/styles.css" rel="stylesheet">
+	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://code.jquery.com/jquery.js"></script>
 	<!-- Include all compiled plugins (blelow), or include individual files as needed -->
 	<script src="js/bootstrap.min.js"></script>
 	<link href='https://fonts.googleapis.com/css?family=Anton' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+	
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -27,7 +29,22 @@
 
 <body>
 	<div id="log" class="container-fluid">
-		<h1 id="title">Mission Log</h1>
+		<span id="title" class="text-center">Mission Log</span>
+		<div class="pull-right" id="stats">[Stats Go Here]</div>
+		<br/>
+		<div id="current_missions">
+			<nav>
+				<a class="btn btn-default">Mission Log</a>
+				<a class="btn btn-default">Supplies</a>
+				<a class="btn btn-default">Help</a>
+				<input type="radio" id="show_recurring" name="show_options"/><label for="show_recurring">Show Recurring Tasks</label>
+				<input type="radio" id="show_timed" name="show_options"/><label for="show_timed">Show Timed Tasks</label>
+				<a class="btn pull-right" id="new_mission_button">+ New Mission</a>
+			</nav>
+			<ul id="missions">
+			</ul>
+		</div>
+
 	</div>
 </body>
 </html>
