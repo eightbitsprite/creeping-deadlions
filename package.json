@@ -1,25 +1,21 @@
 {
-  "name": "IntroHCI",
-  "version": "0.0.1",
-  "author": "Intro HCI Staff",
+	"name": "c120creepingdeadlions",
+	"description": "the purrfect productivity app",
+	"version": "0.0.1",
+	"author": "Team Dragon",
 
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/IntroHCI/lab4"
-  },
-  "license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://k_bright@bitbucket.org/cogs120teamdragon/main.git"
+	},
+	"license": "UCSD",
 
-  "private": true,
-  "scripts": {
-    "start": "node app.js"
-  },
-  "dependencies": {
-    "express": "3.x",
-    "express3-handlebars": "*",
-    "mongodb": "*",
-    "mongoose": "*"
-  },
-  "engines": {
-    "node": "0.10.x"
-  }  
+	"main": "server.js",
+	"dependencies": {
+		"express": "3.x"
+	},
+	"engines": {
+		"node": "0.10.x"
+	}
+
 }
