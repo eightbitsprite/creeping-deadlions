@@ -1,0 +1,9 @@
+<form>
+	<label for="new_task"></label><input type="text" placeholder="Enter Mission Name (e.g. Finish project)"/>
+	<ul class="list-unstyled">
+	{{#each subtasks}}
+		<li><input type="checkbox" id="check_{{name}}"/><label for="check_{{name}}">{{name}}</label></li>
+	{{/each}}
+	</ul>
+	<label for="subtask"></label><input type="text"/><a>+</a>
+</form>

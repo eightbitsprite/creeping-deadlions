@@ -1,0 +1,72 @@
+body{
+	padding:30px;
+	
+	background-color: #A0410D;
+}
+#log{
+	background-color: #FFFFC2;
+	width:100%;
+	height:90vh;
+}
+#title{
+	font-family: 'Anton', sans-serif;
+	font-size: 35pt;
+	margin-left:30px;
+}
+#stats{
+	display:inline-block;
+}
+#current_missions{
+	overflow-y:auto;
+	height:70%;
+	width:90%;
+	background-color:white;
+	margin:30px;
+}
+
+#new_mission_button{
+	background-color:#598527;
+	color:white;
+}
+#new_mission{
+	display:none;
+}
+#missions{
+	padding:30px;
+}
+.mission_box{
+	border:1px solid gray;
+	height: auto;
+	background-color: lightgray;
+}
+
+#new_subtasks{
+	overflow-y:auto;
+	margin-left:30px;
+}
+#new_subtask_label{
+	margin-left:30px;
+}
+
+#new_mission_name_textbox, #new_subtask_textbox{
+	width: 50%;
+	height:30px;
+	font-size:20px;
+}
+#add_task_button{
+	font-size:25px;
+	cursor:pointer;
+}
+.subtask{
+	font-size:18px;
+}
+.new_input{
+	display:none;
+}
+.help{
+	font-style:italic;
+	display:none;
+}
+.freq_option{
+	display:none;
+}
