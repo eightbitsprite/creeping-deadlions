@@ -1,4 +1,5 @@
-lab4
-====
+CREEPING DEADLIONS
 
-Lab 4: Programming with Javascript
+=========
+
+An application for managing distractions
