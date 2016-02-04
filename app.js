@@ -12,7 +12,7 @@ var Handlebars = require('handlebars');
 
 var index = require('./routes/index');
 var new_mission = require('./routes/new_mission');
-
+var village = require('./routes/village');
 // Example route
 // var user = require('./routes/user');
 
@@ -42,6 +42,7 @@ if ('development' == app.get('env')) {
 // Add routes here
 app.get('/', index.view);
 app.get('/new_mission', new_mission.view);
+app.get('/village', village.view);
 //app.get('/project/:name', project.viewProject);
 
 // Example route

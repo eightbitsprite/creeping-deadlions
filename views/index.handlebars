@@ -31,7 +31,7 @@
 <body>
 	<div id="log" class="container-fluid">
 		<span id="title" class="text-center">Mission Log</span>
-		<div class="pull-right" id="stats">[Stats Go Here]</div>
+		<div class="pull-right"><a href="village" class="btn btn-success">Visit Village</a></div>
 		<br/>
 		<div id="current_missions">
 			<nav class="navbar navbar-default" id="main-nav">
@@ -50,8 +50,8 @@
 	            <!-- Collect the nav links, forms, and other content for toggling -->
 	            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	              <ul class="nav navbar-nav">
-	                <li><a href="#">Missions</a></li>
-	                <li><a href="#">Supplies</a></li>
+	                <li><a href="#">Current Missions</a></li>
+	                <li><a href="#">Achievements</a></li>
 	                <li><a href="#">Stats</a></li>
 	                <li><a href="#">Help</a></li>
 	              </ul>
@@ -76,29 +76,29 @@
 
 	        <div id="missions" class="row">
 	        	<div id="new_mission" class="col-md-12 mission_box">
-					<form>
+					<form id="searchForm" role="form" method="get" action="/new_mission">
 						<label for="new_mission_name_textbox">Enter Mission Name:</label>
-						<input id="new_mission_name_textbox" type="text" placeholder="Mission Name (e.g. Finish project)"/>
+						<input id="new_mission_name_textbox" class="form-control" type="text" placeholder="Mission Name (e.g. Finish project)" name="mission_name" required/>
 						<h5 id="help1" class="help">Enter mission name before proceeding.</h5>
 						
 						<div class="new_input" id="new_frequency_input">
 							<label for="new_mission_name_textbox">Enter Mission Frequency:</label>
-							<input type="radio" name="new_task_freq" id="new_freq_recurring"/>
+							<input type="radio" name="new_task_freq" id="new_freq_recurring" name="recurring"/>
 							<label for="new_freq_recurring">Recurring (regular activity)</label>
-							<input type="radio" name="new_task_freq" id="new_freq_timed"/>
+							<input type="radio" name="new_task_freq" id="new_freq_timed" name="timed"/>
 							<label for="new_freq_recurring">Timed (acitivty with deadline)</label>
 
 							<div id="new_freq_recurring_area" class="freq_option">
 								<h4>Recurring:</h4>
 								<label for="new_task_until_date">Until:</label>
-								<input type="date" id="new_task_until_date"/>
+								<input type="date" id="new_task_until_date" name="untildate"/>
 							</div>
 							<div id="new_freq_timed_area"class="freq_option">
 								<h4>Timed:</h4>
 								<label for="new_task_due_date">Due Date:</label>
-								<input type="date" id="new_task_due_date"/>
+								<input type="date" id="new_task_due_date" name="duedate"/>
 								<label for="new_task_due_time">Time:</label>
-								<input type="time" id="new_task_due_time"/>
+								<input type="time" id="new_task_due_time" name="duetime"/>
 							</div>
 
 							<h5 id="help2" class="help">Enter frequency before proceeding.</h5>
@@ -113,10 +113,10 @@
 						</div>
 						<div class="new_input" id="new_select_runner">
 							<div>
-								&lt;<img alt="Select Runner Screen"/>&gt;
+								&lt;<img alt="Select Runner Screen" class="gif" src="/images/run-test.gif"/>&gt;
 							</div>
 							<label for="new_runner_textbox">Runner Name:</label>
-							<input type="text" id="new_runner_textbox"/>
+							<input type="text" id="new_runner_textbox" class="form_control" name="runner"/>
 							<a class="btn btn-default" id="new_runner_randomize">Randomize</a>
 							<h5 id="help4" class="help">Select a runner.</h5>
 						</div>
@@ -126,10 +126,35 @@
 						</div>
 					</form>
 	        	</div>
-	        	{{#each tasks}}
-	        		<div class="col-md-4 mission_box container">Mission {{name}}</div>
-	        	{{else}}<h3><em>No missions to display.</em></h3>
-	        	{{/each}}
+	        	<div id="missions-list-wrapper">
+		        	<ul id="missions-list" class="list-unstyled">
+		        		{{#each missions}}
+			        		<li class="mission_box container">
+			        			<div class="runner-progress">
+			        				<img src="/images/lion-run-test.gif" class="gif"/>
+			        				<span class="distance">{{#each subtasks}}&nbsp;&nbsp;&nbsp;&nbsp;{{/each}}</span>
+			        				<img src="/images/run-test.gif" class="gif"/>
+			        			</div>
+			        			<h4 class="pull-right">
+			        				{{#if duedate}}
+			        					Due on: {{duedate}}
+			        				{{else}}
+			        					Repeat until: {{untildate}}
+			        				{{/if}}
+			        			</h4>
+			        			<h3>Mission: {{name}}</h3>
+			        			<ul class="list-unstyled subtasks-list">
+			        				{{#each subtasks}}
+			        					<h4><input id="{{this}}" type="checkbox"/><label for="{{this}}">{{this}}</label></h4>
+			        				{{/each}}
+			        			</ul>
+			        			<a class="btn btn-default pull-right">Complete!</a>
+			        		</li>
+			        	{{else}}<h3><em>No missions to display.</em></h3>
+			        	{{/each}}
+		        	</ul>
+		        	
+				</div>
 			</div>
 		</div>
 	</div>

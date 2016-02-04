@@ -1,0 +1,36 @@
+{
+	"missions": [
+		{
+			"name": "Write History Paper",
+			"subtasks": ["Create outline", "Write introduction", "Do research", "Draft body paragraphs", "Edit"],
+			"duedate" : "2016-02-06", 
+			"days" : [],
+			"runner" : "Cubby",
+			"untildate" : ""
+		},
+		{
+			"name": "Workout",
+			"subtasks": ["Cardio", "Pushups", "Situps", "Lift Weights"],
+			"duedate" : "", 
+			"days" : [],
+			"runner" : "Mau",
+			"untildate" : "2016-03-20"
+		},
+		{
+			"name": "Get Ingredients",
+			"subtasks": ["Lettuce", "Onions", "Chicken"],
+			"duedate" : "2016-02-08", 
+			"days" : [],
+			"runner" : "Savannah",
+			"untildate" : ""
+		},
+		{
+			"name": "Study for Math Midterm",
+			"subtasks": ["Read chapter", "Review", "Practice problems"],
+			"duedate" : "", 
+			"days" : [],
+			"runner" : "Roarie",
+			"untildate" : "2016-02-14"
+		}
+	]
+}

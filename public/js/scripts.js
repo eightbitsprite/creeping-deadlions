@@ -29,13 +29,19 @@ var runners = ["Granny PawPaw",
 				"Burmilla"];
 
 $(document).ready(function() {
+	/*New Mission Animations*/
+	
+
 	initializePage();
 })
 
 function initializePage() {
 	$("#new_mission_button").click(newMission);
 	$("#add_task_button").click(addSubtask);
-	$("#new_cancel_button").click(cancelMission);
+	$("#new_cancel_button").click(function(event){
+		event.preventDefault();
+		cancelMission();
+	});
 	$("#new_mission_name_textbox").keydown(openTaskFrequency);
 	$("#new_freq_timed").change(toggleTimed);
 	$("#new_freq_recurring").change(toggleRecurring);
@@ -43,6 +49,8 @@ function initializePage() {
 	$("#new_task_due_date").click(openSubtasks);
 	$("#new_runner_randomize").click(generateRunner);
 	$("#new_runner_textbox").keydown(selectRunner);
+
+	
 } 
 
 function newMission(){
@@ -96,5 +104,24 @@ function cancelMission(){
 function generateRunner(){
 	selectRunner();
 	$("#new_runner_textbox").val(runners[(Math.floor(Math.random() * (runners.length-1)) + 1)]);
+}
+
+function setAnimation(){
+	$("#deadlion_animate").css({
+		"margin-left": - $("#animation_screen").offset().left - $("#deadlion_animate").width()
+	});
+	$("#runner_start").css("margin-left", - $("#animation_screen").offset().left - $("#runner_start").width());
+	$("#deadlion_animate").hide();
+	$("#runner_start").animate({
+		"margin-left" : $("#animation_screen").width()
+	}, 6000, function(){
+		$("#deadlion_animate").css("top", 0);
+		$("#deadlion_animate").show();
+
+		$("#deadlion_animate").animate({
+			"margin-left" : $("#animation_screen").offset().left + $("#animation_screen").width()
+		}, 3000);
+	});
+	
 }
 

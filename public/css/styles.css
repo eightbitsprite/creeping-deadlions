@@ -16,12 +16,14 @@ body{
 #stats{
 	display:inline-block;
 }
+
 #current_missions{
 	overflow-y:auto;
 	height:70%;
 	width:90%;
 	background-color:white;
 	margin:30px;
+	margin-top:0;
 }
 
 #new_mission_button{
@@ -69,4 +71,32 @@ body{
 }
 .freq_option{
 	display:none;
+}
+#village{
+	height:80vh;
+	width:90vw;
+}
+
+.gif{
+	width:50px;
+	height:50px;
+}
+
+.distance{
+	min-width: 100px;
+}
+.runner-progress{
+	background-color:white;
+	width:100%;
+}
+
+#animation_screen{
+	background-color:white;
+	overflow:hidden;
+	position:absolute;
+	width:95vw;
+}
+#deadlion_animate{
+	position:absolute;
+	z-index:1;
 }
