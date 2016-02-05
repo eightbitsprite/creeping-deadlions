@@ -35,6 +35,7 @@ body{
 }
 #missions{
 	padding:30px;
+	overflow-x:hidden;
 }
 .mission_box{
 	border:1px solid gray;
@@ -99,4 +100,19 @@ body{
 #deadlion_animate{
 	position:absolute;
 	z-index:1;
+}
+::-webkit-scrollbar {
+	width: 12px;
+	margin-left:-100px;
+	position: absolute;
+}
+ 
+::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+	border-radius: 10px;
+}
+ 
+::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
 }
