@@ -27,9 +27,13 @@ var runners = ["Granny PawPaw",
 				"Korat", 
 				"Muffin",
 				"Burmilla"];
+var subtaskString = "";
 
 $(document).ready(function() {
 	initializePage();
+	$.getJSON("data.json", function(json) {
+    console.log(json); // this will show the info it in firebug console
+});
 })
 
 function initializePage() {
@@ -46,13 +50,16 @@ function initializePage() {
 	$("#new_task_due_date").click(openSubtasks);
 	$("#new_runner_randomize").click(generateRunner);
 	$("#new_runner_textbox").keydown(selectRunner);
-
+	$(".cancel_mission").click(function(event){
+		console.log($("#" + event.target.id).attr("data"));
+	});
 	
 } 
 
 function newMission(){
 	$("#new_mission").css("display","block");
 	$("#help1").css("display", "block");
+	subtaskString = "";
 }
 
 function openTaskFrequency(){
@@ -80,6 +87,8 @@ function openSubtasks(){
 function addSubtask(){
 	var subtask = $("#new_subtask_textbox").val();
 	$("#new_subtasks").append("<li><input type='checkbox' id='check_" + subtask + "'/><label class='subtask' for='check_" + subtask + "'>"+ subtask + "</label></li>");
+	subtaskString += subtask + "|/0|";
+	$("#hiddensubtasks").val(subtaskString);
 	$("#new_subtask_textbox").val("");
 	$("#help3").css("display", "none");
 	$("#help4").css("display", "block");

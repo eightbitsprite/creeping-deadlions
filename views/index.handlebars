@@ -104,6 +104,7 @@
 							<h5 id="help2" class="help">Enter frequency before proceeding.</h5>
 						</div>
 						<div class="new_input" id="new_subtask_input">
+							<input type="hidden" name="subtasklist" id="hiddensubtasks"/>
 							<label for="new_subtasks">Subtasks:</label>
 							<ul id="new_subtasks" class="list-unstyled"></ul>
 							<label id="new_subtask_label" for="subtask"></label>
@@ -121,6 +122,7 @@
 							<h5 id="help4" class="help">Select a runner.</h5>
 						</div>
 						<div class="new_input" id="new_input_submit">
+
 							<button type="submit" class="btn btn-success" id="new_run_button">RUN!</button>
 							<button type="submit" class="btn btn-danger" id="new_cancel_button">Cancel</button>
 						</div>
@@ -129,7 +131,7 @@
 	        	<div id="missions-list-wrapper">
 		        	<ul id="missions-list" class="list-unstyled">
 		        		{{#each missions}}
-			        		<li class="mission_box container">
+			        		<li class="mission_box container" data="{{this}}">
 			        			<div class="runner-progress">
 			        				<img src="/images/lion-run-test.gif" class="gif"/>
 			        				<span class="distance">{{#each subtasks}}&nbsp;&nbsp;&nbsp;&nbsp;{{/each}}</span>
@@ -148,7 +150,8 @@
 			        					<h4><input id="{{this}}" type="checkbox"/><label for="{{this}}">{{this}}</label></h4>
 			        				{{/each}}
 			        			</ul>
-			        			<a class="btn btn-default pull-right">Complete!</a>
+			        			<a class="btn btn-default pull-right cancel_mission">Cancel</a>
+			        			<a class="btn btn-primary pull-right">Complete!</a>
 			        		</li>
 			        	{{else}}<h3><em>No missions to display.</em></h3>
 			        	{{/each}}
