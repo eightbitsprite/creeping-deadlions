@@ -34,6 +34,14 @@ $(document).ready(function() {
 })
 
 function initializePage() {
+	//Menu listeners
+	$("#menu_log").click(showLog);
+	$("#menu_history").click(showHistory);
+	$("#menu_help").click(showHelp);
+	$("#menu_village").click(showVillage);
+	$("#menu_population").click(showPopulation);
+
+	//Original listeners
 	$("#new_mission_button").click(newMission);
 	$("#add_task_button").click(addSubtask);
 	$("#new_cancel_button").click(function(event){
@@ -107,4 +115,40 @@ function cancelMission(){
 function generateRunner(){
 	selectRunner();
 	$("#new_runner_textbox").val(runners[(Math.floor(Math.random() * (runners.length-1)) + 1)]);
+}
+
+/* Menu functions: showLog, showHistory, showHelp */
+function showLog() {
+	$("#missions").css("display","block");
+	$("#history").css("display","none")
+	$("#help").css("display","none")
+}
+function showHistory() {
+	$("#missions").css("display","none")
+	$("#history").css("display","block")
+	$("#help").css("display","none")
+}
+function showHelp() {
+	var missions, history, population, village;
+	missions = $("#missions");
+	history = $("#history");
+	population = $("#population");
+	village = $("#village");
+
+	if(missions) {missions.css("display","none");}
+	if(history) {history.css("display","none");}
+	if(population) {population.css("display","none");}
+	if(village) {village.css("display","none");}
+
+	$("#help").css("display","block")
+}
+function showVillage() {
+	$("#village").css("display","block")
+	$("#population").css("display","none")
+	$("#help").css("display","none")
+}
+function showPopulation() {
+	$("#village").css("display","none")
+	$("#population").css("display","block")
+	$("#help").css("display","none")
 }
