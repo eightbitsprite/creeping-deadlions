@@ -39,7 +39,7 @@
 			],
 			"deadline" : "2016-03-06", 
 			"dates_recurring" : [],
-			"time_due": " "
+			"time_due": null
 		},
 		{
 			"id" : 1,
@@ -49,7 +49,7 @@
 			"title" : "Work Out",
 			"subtasks": [],
 			"deadline" : "2016-04-06", 
-			"time_due": " ",
+			"time_due": null,
 			"dates_recurring" : [
 				{
 					"day" : "Monday", 

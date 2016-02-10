@@ -8,3 +8,10 @@ function filter(model_list, field, query) {
 	});
 	return list;
 } 
+
+function data_contains(model_list, field, query){
+	model_list.forEach(function(entry){
+		if(entry[field] == query)
+			return true;
+	});
+}

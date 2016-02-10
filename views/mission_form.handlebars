@@ -30,6 +30,7 @@
 </head>
 
 <body>
+	<h1>Create a Mission</h1>
     <div id="missions" class="row">
     	<div id="new_mission" class="col-md-12 mission_box">
 			<form id="newMissionForm" role="form" method="get" action="/new_mission">
@@ -39,10 +40,12 @@
 				
 				<div class="new_input" id="new_frequency_input">
 					<label for="new_mission_name_textbox">Enter Mission Frequency:</label>
+					<br/>
 					<input type="radio" id="new_freq_recurring" name="recurring"/>
 					<label for="new_freq_recurring">Recurring (regular activity)</label>
+					<br/>
 					<input type="radio" id="new_freq_timed" name="timed"/>
-					<label for="new_freq_recurring">Timed (acitivty with deadline)</label>
+					<label for="new_freq_recurring">Timed (activty with deadline)</label>
 
 					<div id="new_freq_recurring_area" class="freq_option">
 						<h4>Recurring:</h4>

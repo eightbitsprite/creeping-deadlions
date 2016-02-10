@@ -6,7 +6,7 @@ $(document).ready(function() {
 
 function initializePage() {
 	$("#sign_up_button").click(function(event){
-		if($("#new_password").val() != $("#new_password_verify")){
+		if($("#new_password").val() != $("#new_password_verify").val()){
 			event.preventDefault();
 			event.stopPropagation();
 			$("#password_error").css("display", "block");

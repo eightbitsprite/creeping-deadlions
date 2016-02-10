@@ -6,24 +6,12 @@ $(document).ready(function() {
 
 function initializePage() {
 	//Menu listeners
-	$("#menu_log").click(showLog);
-	$("#menu_history").click(showHistory);
 	$("#menu_help").click(showHelp);
 	$("#menu_village").click(showVillage);
 	$("#menu_population").click(showPopulation);
 } 
 
 /* Menu functions: showLog, showHistory, showHelp */
-function showLog() {
-	$("#missions").css("display","block");
-	$("#history").css("display","none")
-	$("#help").css("display","none")
-}
-function showHistory() {
-	$("#missions").css("display","none")
-	$("#history").css("display","block")
-	$("#help").css("display","none")
-}
 function showHelp() {
 	var missions, history, population, village;
 	missions = $("#missions");

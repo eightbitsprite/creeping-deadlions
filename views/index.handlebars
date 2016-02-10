@@ -31,11 +31,12 @@
 </head> 
 
 <body>
+<input type="hidden" value ="{{current_user}}" name="current_user" id="current_user_data"/>
 <div id="main" class="container-fluid">
 	<!-- Maybe add 'navbar-fixed-top' to have constant navbar presence in app? -->
 	<nav class="navbar navbar-fixed-top navbar-default" id="main-nav">
 		<div class="container-fluid">
-			<!- - Brand & toggle grouped for better mobile display - ->
+			<!-- Brand & toggle grouped for better mobile display -->
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse" aria-expanded="false">
 					<span class="sr-only">Toggle Navigation</span>
@@ -51,13 +52,13 @@
 			<div class="collapse navbar-collapse" id="navbarCollapse">
 			<ul class="nav navbar-nav">
 				<li>
-					<a href="#" id="menu_log">Log</a></li>
+					<a href="#" id="menu_log">Mission Log</a></li>
 				<li>
 					<a href="#" id="menu_history">History</a></li>
 				<!-- CONFIRM: separate help section for the log screen; village screen will have its own 'help' section? -->
 				<li>
 					<a href="#" id="menu_help">Help</a></li>
-				<li><a href="/login#sign-in">Login</a></li>
+				<li><a href="/login#sign-in">Log Out</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a id="transition_btn" href="village"><span class="glyphicon glyphicon-home"></span>  Village</a></li>
@@ -70,7 +71,7 @@
 	<div id="missions" class="row">
 		<div id="missions-list-wrapper">
 			<ul id="missions-list" class="list-unstyled">
-				{{#each missions}}
+				{{#each data.task}}
 	        		<li class="mission_box container">
 	        			<form role="form" method="post" action="/mission_complete">
 	        				<input type="hidden" value="{{this}}" name="mission_data"/>
@@ -80,16 +81,17 @@
 		        				<img src="/images/run-test.gif" class="gif"/>
 		        			</div>
 		        			<h4 class="pull-right">
-		        				{{#if duedate}}
-		        					Due on: {{duedate}}
+		        				{{#if deadline}}
+		        					Due on: {{deadline}}
+		        					{{#if time_due}}at: {{time_due}}{{/if}}
 		        				{{else}}
-		        					Repeat until: {{untildate}}
+		        					Repeat until: {{deadline}}
 		        				{{/if}}
 		        			</h4>
-		        			<h3>Mission: {{name}}</h3>
+		        			<h3>Mission: {{title}}</h3>
 		        			<ul class="list-unstyled subtasks-list">
 		        				{{#each subtasks}}
-		        					<h4><input id="{{this}}" type="checkbox"/><label for="{{this}}">{{this}}</label></h4>
+		        					<h4><input id="{{title}}" type="checkbox"/><label for="{{title}}">{{title}}</label></h4>
 		        				{{/each}}
 		        			</ul>
 		        			<a class="btn btn-default pull-right cancel_mission">Cancel</a>
@@ -101,8 +103,8 @@
 			</ul>
 
 			<!-- Columns adjust based on size -->
-			<div class="col-xs-1 visible-xs-block text-center new_msn_btn"><a href="new_mission">+</a></div>
-			<div class="col-md-1 hidden-xs hidden-sm text-center new_msn_btn"><a href="new_mission">+  New Mission<a></div>
+			<div class="col-xs-1 visible-xs-block text-center new_msn_btn"><a href="create_mission">+</a></div>
+			<div class="col-md-1 hidden-xs hidden-sm text-center new_msn_btn"><a href="create_mission">+  New Mission<a></div>
 		</div>
 	</div>
 
