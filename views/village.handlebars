@@ -29,12 +29,49 @@
 </head>
 
 <body>
-<a href="/" class="pull-right btn btn-primary">Return to Mission Log</a>
-<h1>My Village</h1>
-<p>People you have saved will appear here</p>
-	<div class="container-fluid">
-	  <img id="village" src="/images/eduworld_map.jpg"/>
+<div id="main" class="container-fluid">
+	<!-- Maybe add 'navbar-fixed-top' to have constant navbar presence in app? -->
+	<nav class="navbar navbar-fixed-top navbar-default" id="main-nav">
+		<div class="container-fluid">
+			<!- - Brand & toggle grouped for better mobile display - ->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse" aria-expanded="false">
+					<span class="sr-only">Toggle Navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<!-- Maybe replace text brand with an undead lion icon in the future -->
+				<a class="navbar-brand" href="#"><span id="title">C.D.</span></a>
+			</div>
+
+			<!-- Nav links & buttons for toggling -->
+			<div class="collapse navbar-collapse" id="navbarCollapse">
+			<ul class="nav navbar-nav">
+				<li>
+					<a href="#" id="menu_village">Village</a></li>
+				<li>
+					<a href="#" id="menu_population">Population</a></li>
+				<!-- CONFIRM: separate help section for the log screen; village screen will have its own 'help' section? -->
+				<li>
+					<a href="#" id="menu_help">Help</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a id="transition_btn" href="/"><span class="glyphicon glyphicon-pencil"></span>  Missions</a></li>
+			</ul>
+			</div>
+		</div>
+	</nav>	
+
+	<div>
+		<h1>My Village</h1>
+		<p>People you have saved will appear here</p>
+		<div class="container-fluid">
+			<img id="village" src="/images/eduworld_map.jpg"/>
+		</div>
 	</div>
-	
+</div>
+
+
 </body>
 </html>
