@@ -43,17 +43,18 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
+				<!-- Maybe replace text brand with an undead lion icon in the future -->
 				<a class="navbar-brand" href="#"><span id="title">C.D.</span></a>
 			</div>
 
-			<!-- The nav links & buttons for toggling -->
+			<!-- Nav links & buttons for toggling -->
 			<div class="collapse navbar-collapse" id="navbarCollapse">
 			<ul class="nav navbar-nav">
 				<li role="presentation" class="active">
 					<a href="#missionLog" aria-controls="missionLog">Log</a></li>
 				<li role="presentation">
 					<a href="#missionHistory" aria-controls="missionHistory" role="tab" data-toggle="tab">History</a></li>
-				<!-- CONFIRM w/ OTHERS: separate help section for the log screen - village screen will have its own 'help' section -->
+				<!-- CONFIRM: separate help section for the log screen; village screen will have its own 'help' section? -->
 				<li role="presentation">
 					<a href="#logHelp" aria-controls="logHelp" role="tab" data-toggle="tab">Help</a></li>
 			</ul>
@@ -63,6 +64,40 @@
 			</div>
 		</div>
 	</nav>	
+
+	<div id="missions" class="row">
+		<div id="missions-list-wrapper">
+			<ul id="missions-list" class="list-unstyled">
+				{{#each missions}}
+				<li class="mission_box container" data="{{this}}">
+					<div class="runner-progress">
+						<img src="/images/lion-run-test.gif" class="gif" />
+						<span class="distance">{{#each subtasks}}&nbsp;&nbsp;{{/each}}</span>
+						<img src="/images/run-test.gif" class="gif" />
+					</div>
+					<h4 class="pull-right">
+						{{#if duedate}}
+							Due on: {{duedate}}
+						{{else}}
+							Repeat until: {{untildate}}
+						{{/if}}
+					</h4>
+					<h3>Mission: {{name}}</h3>
+					<ul class="list-unstyled subtasks-list">
+						{{#each subtasks}}
+							<h4><input id="{{this}}" type="checkbox" /><label for="{{this}}">{{this}}></label></h4>
+						{{/each}}
+					</ul>
+					<a class="btn btn-default pull-right cancel_mission">Cancel</a>
+					<a class="btn btn-primary pull-right">Complete!</a>
+				</li>
+				{{else}}
+					<h3><em>No current missions!</em></h3>
+				{{/each}}
+			</ul>
+		</div>
+	</div>
+
 	</div>
 </body>
 </html>
