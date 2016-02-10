@@ -131,6 +131,9 @@ body{
 #help {
 	display: none;
 }
+#population {
+	display: none;
+}
 
 ::-webkit-scrollbar {
 	width: 12px;
