@@ -34,6 +34,12 @@ $(document).ready(function() {
 })
 
 function initializePage() {
+	//Menu listeners
+	$("#menu_log").click(showLog);
+	$("#menu_history").click(showHistory);
+	$("#menu_help").click(showHelp);
+
+	//Original listeners
 	$("#new_mission_button").click(newMission);
 	$("#add_task_button").click(addSubtask);
 	$("#new_cancel_button").click(function(event){
@@ -107,4 +113,21 @@ function cancelMission(){
 function generateRunner(){
 	selectRunner();
 	$("#new_runner_textbox").val(runners[(Math.floor(Math.random() * (runners.length-1)) + 1)]);
+}
+
+/* Menu functions: showLog, showHistory, showHelp */
+function showLog() {
+	$("#missions").css("display","block");
+	$("#history").css("display","none")
+	$("#help").css("display","none")
+}
+function showHistory() {
+	$("#missions").css("display","none")
+	$("#history").css("display","block")
+	$("#help").css("display","none")
+}
+function showHelp() {
+	$("#missions").css("display","none")
+	$("#history").css("display","none")
+	$("#help").css("display","block")
 }

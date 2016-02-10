@@ -31,9 +31,9 @@
 </head> 
 
 <body>
-	<div id="log" class="container-fluid">
+<div id="main" class="container-fluid">
 	<!-- Maybe add 'navbar-fixed-top' to have constant navbar presence in app? -->
-	<nav class="navbar navbar-default navbar-fixed-top" id="main-nav">
+	<nav class="navbar navbar-fixed-top navbar-default" id="main-nav">
 		<div class="container-fluid">
 			<!- - Brand & toggle grouped for better mobile display - ->
 			<div class="navbar-header">
@@ -50,13 +50,13 @@
 			<!-- Nav links & buttons for toggling -->
 			<div class="collapse navbar-collapse" id="navbarCollapse">
 			<ul class="nav navbar-nav">
-				<li role="presentation" class="active">
-					<a href="#missionLog" aria-controls="missionLog">Log</a></li>
-				<li role="presentation">
-					<a href="#missionHistory" aria-controls="missionHistory" role="tab" data-toggle="tab">History</a></li>
+				<li>
+					<a href="#" id="menu_log">Log</a></li>
+				<li>
+					<a href="#" id="menu_history">History</a></li>
 				<!-- CONFIRM: separate help section for the log screen; village screen will have its own 'help' section? -->
-				<li role="presentation">
-					<a href="#logHelp" aria-controls="logHelp" role="tab" data-toggle="tab">Help</a></li>
+				<li>
+					<a href="#" id="menu_help">Help</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a id="village_btn" href="village"><span class="glyphicon glyphicon-home"></span>  Village</a></li>
@@ -65,6 +65,7 @@
 		</div>
 	</nav>	
 
+<!-- The mission log portion of the app -->
 	<div id="missions" class="row">
 		<div id="missions-list-wrapper">
 			<ul id="missions-list" class="list-unstyled">
@@ -85,7 +86,7 @@
 					<h3>Mission: {{name}}</h3>
 					<ul class="list-unstyled subtasks-list">
 						{{#each subtasks}}
-							<h4><input id="{{this}}" type="checkbox" /><label for="{{this}}">{{this}}></label></h4>
+							<h4><input id="{{this}}" type="checkbox" /> <label for="{{this}}">{{this}}</label></h4>
 						{{/each}}
 					</ul>
 					<a class="btn btn-default pull-right cancel_mission">Cancel</a>
@@ -95,9 +96,22 @@
 					<h3><em>No current missions!</em></h3>
 				{{/each}}
 			</ul>
+
+			<!-- Columns adjust based on size -->
+			<div class="col-xs-1 visible-xs-block text-center new_msn_btn"><a href="new_mission">+</a></div>
+			<div class="col-md-1 hidden-xs hidden-sm text-center new_msn_btn"><a href="new_mission">+  New Mission<a></div>
 		</div>
 	</div>
 
+	<!-- The history portion of the app -->
+	<div id="history" class="row">
+		PAST MISSIONS GO HERE
 	</div>
+
+	<!-- The help portion of the app -->
+	<div id="help">
+		HELP INFORMATION GOES HERE
+	</div>
+</div>
 </body>
 </html>

@@ -30,13 +30,59 @@
 </head>
 
 <body>
-	<div class="alert alert-warning">
-	  <strong>Success!</strong> Mission was added
-	</div>
-	<a href="/" class="btn btn-primary">Return to Mission Log</a>
-	<div id="animation_screen" class="container-fluid">
-		<img src="/images/run-test.gif" id="runner_start"/>
-		<img src="/images/lion-run-test.gif" id="deadlion_animate"/>
-	</div>
+  	<div id="new_mission" class="col-md-12 mission_box">
+		<form id="searchForm" role="form" method="get" action="/new_mission">
+			<label for="new_mission_name_textbox">Enter Mission Name:</label>
+			<input id="new_mission_name_textbox" class="form-control" type="text" placeholder="Mission Name (e.g. Finish project)" name="mission_name" required/>
+			<h5 id="help1" class="help">Enter mission name before proceeding.</h5>
+						
+			<div class="new_input" id="new_frequency_input">
+				<label for="new_mission_name_textbox">Enter Mission Frequency:</label>
+				<input type="radio" name="new_task_freq" id="new_freq_recurring" name="recurring"/>
+				<label for="new_freq_recurring">Recurring (regular activity)</label>
+				<input type="radio" name="new_task_freq" id="new_freq_timed" name="timed"/>
+				<label for="new_freq_recurring">Timed (activty with deadline)</label>
+
+				<div id="new_freq_recurring_area" class="freq_option">
+					<h4>Recurring:</h4>
+					<label for="new_task_until_date">Until:</label>
+					<input type="date" id="new_task_until_date" name="untildate"/>
+				</div>
+				<div id="new_freq_timed_area"class="freq_option">
+					<h4>Timed:</h4>
+					<label for="new_task_due_date">Due Date:</label>
+					<input type="date" id="new_task_due_date" name="duedate"/>
+					<label for="new_task_due_time">Time:</label>
+					<input type="time" id="new_task_due_time" name="duetime"/>
+				</div>
+
+				<h5 id="help2" class="help">Enter frequency before proceeding.</h5>
+			</div>
+
+			<div class="new_input" id="new_subtask_input">
+				<input type="hidden" name="subtasklist" id="hiddensubtasks"/>
+				<label for="new_subtasks">Subtasks:</label>
+				<ul id="new_subtasks" class="list-unstyled"></ul>
+				<label id="new_subtask_label" for="subtask"></label>
+				<input id="new_subtask_textbox" type="text" placeholder="Enter subtask"/>
+				<a id="add_task_button">+</a>
+				<h5 id="help3" class="help">Enter subtasks to submit.</h5>
+			</div>
+			<div class="new_input" id="new_select_runner">
+				<div>
+					&lt;<img alt="Select Runner Screen" class="gif" src="/images/run-test.gif"/>&gt;
+				</div>
+				<label for="new_runner_textbox">Runner Name:</label>
+				<input type="text" id="new_runner_textbox" class="form_control" name="runner"/>
+				<a class="btn btn-default" id="new_runner_randomize">Randomize</a>
+				<h5 id="help4" class="help">Select a runner.</h5>
+			</div>
+			<div class="new_input" id="new_input_submit">
+
+				<button type="submit" class="btn btn-success" id="new_run_button">RUN!</button>
+				<button type="submit" class="btn btn-danger" id="new_cancel_button">Cancel</button>
+			</div>
+		</form>
+   	</div>
 </body>
 </html>
