@@ -1,72 +1,50 @@
 'use strict';
 
-var runners = ["Granny PawPaw", 
-				"Jawnny", 
-				"Purrrla", 
-				"Roarie", 
-				"Jessimba", 
-				"Clawdia", 
-				"Cat-alina",
-				"Pawlette", 
-				"Kingsley", 
-				"Maully", 
-				"Char-mane", 
-				"Cubby",
-				"Scarface", 
-				"Denzel",
-				"Fury", 
-				"Abyss", 
-				"Ragdoll", 
-				"Zaimese", 
-				"Fold", 
-				"Manx", 
-				"Savannah", 
-				"Bobby", 
-				"Mau", 
-				"Bombei", 
-				"Korat", 
-				"Muffin",
-				"Burmilla"];
-var subtaskString = "";
-
 $(document).ready(function() {
 	initializePage();
 })
 
 function initializePage() {
-	$("#add_task_button").click(addSubtask);
-	$("#new_mission_name_textbox").keydown(openTaskFrequency);
-	$("#new_freq_timed").change(toggleTimed);
-	$("#new_freq_recurring").change(toggleRecurring);
-	$("#new_runner_randomize").click(generateRunner);
+	//Menu listeners
+	$("#menu_log").click(showLog);
+	$("#menu_history").click(showHistory);
+	$("#menu_help").click(showHelp);
+	$("#menu_village").click(showVillage);
+	$("#menu_population").click(showPopulation);
 } 
 
-function openTaskFrequency(){
-	$("#new_frequency_input").css("display","block");
+/* Menu functions: showLog, showHistory, showHelp */
+function showLog() {
+	$("#missions").css("display","block");
+	$("#history").css("display","none")
+	$("#help").css("display","none")
 }
-
-function toggleTimed(){
-	$("#new_freq_recurring_area").css("display","none");
-	$("#new_freq_timed_area").css("display","block");
+function showHistory() {
+	$("#missions").css("display","none")
+	$("#history").css("display","block")
+	$("#help").css("display","none")
 }
+function showHelp() {
+	var missions, history, population, village;
+	missions = $("#missions");
+	history = $("#history");
+	population = $("#population");
+	village = $("#village");
 
-function toggleRecurring(){
-	$("#new_freq_recurring_area").css("display","block");
-	$("#new_freq_timed_area").css("display","none");
+	if(missions) {missions.css("display","none");}
+	if(history) {history.css("display","none");}
+	if(population) {population.css("display","none");}
+	if(village) {village.css("display","none");}
+
+	$("#help").css("display","block")
 }
-
-function addSubtask(){
-	var subtask = $("#new_subtask_textbox").val();
-	$("#new_subtasks").append("<li><input type='checkbox' id='check_" + subtask + "'/><label class='subtask' for='check_" + subtask + "'>"+ subtask + "</label></li>");
-	subtaskString += subtask + "|/0|";
-	$("#hiddensubtasks").val(subtaskString);
-	$("#new_subtask_textbox").val("");
-	$("#help3").css("display", "none");
-	$("#help4").css("display", "block");
-	$("#new_select_runner").css("display", "block");
+function showVillage() {
+	$("#village").css("display","block")
+	$("#population").css("display","none")
+	$("#help").css("display","none")
 }
-
-function generateRunner(){
-	selectRunner();
-	$("#new_runner_textbox").val(runners[(Math.floor(Math.random() * (runners.length-1)) + 1)]);
+function showPopulation() {
+	$("#village").css("display","none")
+	$("#population").css("display","block")
+	$("#help").css("display","none")
 }
