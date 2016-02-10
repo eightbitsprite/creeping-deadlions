@@ -1,6 +1,8 @@
 body{
-	padding:30px;
-	
+	padding: 60px 20px 20px 20px;
+	background-color: #A0410D;
+}
+#main{
 	background-color: #A0410D;
 }
 #log{
@@ -10,11 +12,16 @@ body{
 }
 #title{
 	font-family: 'Anton', sans-serif;
-	font-size: 35pt;
-	margin-left:30px;
+	font-size: 18pt;
 }
 #stats{
 	display:inline-block;
+}
+#village_btn{
+	background-color: #00270D;
+	color: white; 
+	margin-top: 2px;
+	margin-right: 20px;
 }
 
 #current_missions{

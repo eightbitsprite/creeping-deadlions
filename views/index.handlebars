@@ -2,23 +2,24 @@
 
 <html>
 <head>
-	<title>Creeping DeadLions</title>	 
+	<title>Creeping Deadlions</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
+
 	<!-- Bootstrap -->
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/bootstrap-theme.min.css" rel="stylesheet">
-	
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+
+	<!-- jQuery (necessary for Bootstrap's Javascript plugins) -->
 	<script src="https://code.jquery.com/jquery.js"></script>
-	<!-- Include all compiled plugins (blelow), or include individual files as needed -->
+	<!-- More Javascript plugins (Bootstrap and personal scripts) -->
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/scripts.js"></script>
-	<link href='https://fonts.googleapis.com/css?family=Anton' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" type="text/css" href="css/styles.css">
-	
 
+	<!-- Imported Google Fonts -->
+	<link href='https://fonts.googleapis.com/css?family=Anton' rel='stylesheet' type='text/css'>
+	<!-- Personal stylesheet -->
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -26,140 +27,42 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->        
-</head>
+
+</head> 
 
 <body>
 	<div id="log" class="container-fluid">
-		<span id="title" class="text-center">Mission Log</span>
-		<div class="pull-right"><a href="village" class="btn btn-success">Visit Village</a></div>
-		<br/>
-		<div id="current_missions">
-			<nav class="navbar navbar-default" id="main-nav">
-	          <div class="container-fluid">
-	            <!-- Brand and toggle get grouped for better mobile display -->
-	            <div class="navbar-header">
-	              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-	                <span class="sr-only">Toggle navigation</span>
-	                <span class="icon-bar"></span>
-	                <span class="icon-bar"></span>
-	                <span class="icon-bar"></span>
-	              </button>
-	              <a class="navbar-brand" href="#">Mission Log</a>
-	            </div>
+	<!-- Maybe add 'navbar-fixed-top' to have constant navbar presence in app? -->
+	<nav class="navbar navbar-default navbar-fixed-top" id="main-nav">
+		<div class="container-fluid">
+			<!- - Brand & toggle grouped for better mobile display - ->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse" aria-expanded="false">
+					<span class="sr-only">Toggle Navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#"><span id="title">C.D.</span></a>
+			</div>
 
-	            <!-- Collect the nav links, forms, and other content for toggling -->
-	            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-	              <ul class="nav navbar-nav">
-	                <li><a href="#">Current Missions</a></li>
-	                <li><a href="#">Achievements</a></li>
-	                <li><a href="#">Stats</a></li>
-	                <li><a href="#">Help</a></li>
-	              </ul>
-	                
-	                
-	              <ul class="nav navbar-nav navbar-right">
-	              	<li><label for="display_select">Select list:</label></li>
-		         	<li>
-			         	 <select id="display_select" class="form-control">
-				            <option><a href="#">All Tasks</a></option>
-				            <option><a href="#">Recurring Tasks</a></option>
-				            <option><a href="#">Timed Tasks</a></option>
-				            <option><a href="#">Completed Tasks</a></option>
-				            <option><a href="#">Priority Tasks</a></option>
-				         </select>
-				     </li>
-	              	<li><a href="#new_mission" id="new_mission_button">+ New Mission</a></li>
-	              </ul>
-	            </div>
-	          </div>
-	        </nav>
-
-	        <div id="missions" class="row">
-	        	<div id="new_mission" class="col-md-12 mission_box">
-					<form id="searchForm" role="form" method="get" action="/new_mission">
-						<label for="new_mission_name_textbox">Enter Mission Name:</label>
-						<input id="new_mission_name_textbox" class="form-control" type="text" placeholder="Mission Name (e.g. Finish project)" name="mission_name" required/>
-						<h5 id="help1" class="help">Enter mission name before proceeding.</h5>
-						
-						<div class="new_input" id="new_frequency_input">
-							<label for="new_mission_name_textbox">Enter Mission Frequency:</label>
-							<input type="radio" name="new_task_freq" id="new_freq_recurring" name="recurring"/>
-							<label for="new_freq_recurring">Recurring (regular activity)</label>
-							<input type="radio" name="new_task_freq" id="new_freq_timed" name="timed"/>
-							<label for="new_freq_recurring">Timed (acitivty with deadline)</label>
-
-							<div id="new_freq_recurring_area" class="freq_option">
-								<h4>Recurring:</h4>
-								<label for="new_task_until_date">Until:</label>
-								<input type="date" id="new_task_until_date" name="untildate"/>
-							</div>
-							<div id="new_freq_timed_area"class="freq_option">
-								<h4>Timed:</h4>
-								<label for="new_task_due_date">Due Date:</label>
-								<input type="date" id="new_task_due_date" name="duedate"/>
-								<label for="new_task_due_time">Time:</label>
-								<input type="time" id="new_task_due_time" name="duetime"/>
-							</div>
-
-							<h5 id="help2" class="help">Enter frequency before proceeding.</h5>
-						</div>
-						<div class="new_input" id="new_subtask_input">
-							<input type="hidden" name="subtasklist" id="hiddensubtasks"/>
-							<label for="new_subtasks">Subtasks:</label>
-							<ul id="new_subtasks" class="list-unstyled"></ul>
-							<label id="new_subtask_label" for="subtask"></label>
-							<input id="new_subtask_textbox" type="text" placeholder="Enter subtask"/>
-							<a id="add_task_button">+</a>
-							<h5 id="help3" class="help">Enter subtasks to submit.</h5>
-						</div>
-						<div class="new_input" id="new_select_runner">
-							<div>
-								&lt;<img alt="Select Runner Screen" class="gif" src="/images/run-test.gif"/>&gt;
-							</div>
-							<label for="new_runner_textbox">Runner Name:</label>
-							<input type="text" id="new_runner_textbox" class="form_control" name="runner"/>
-							<a class="btn btn-default" id="new_runner_randomize">Randomize</a>
-							<h5 id="help4" class="help">Select a runner.</h5>
-						</div>
-						<div class="new_input" id="new_input_submit">
-
-							<button type="submit" class="btn btn-success" id="new_run_button">RUN!</button>
-							<button type="submit" class="btn btn-danger" id="new_cancel_button">Cancel</button>
-						</div>
-					</form>
-	        	</div>
-	        	<div id="missions-list-wrapper">
-		        	<ul id="missions-list" class="list-unstyled">
-		        		{{#each missions}}
-			        		<li class="mission_box container" data="{{this}}">
-			        			<div class="runner-progress">
-			        				<img src="/images/lion-run-test.gif" class="gif"/>
-			        				<span class="distance">{{#each subtasks}}&nbsp;&nbsp;{{/each}}</span>
-			        				<img src="/images/run-test.gif" class="gif"/>
-			        			</div>
-			        			<h4 class="pull-right">
-			        				{{#if duedate}}
-			        					Due on: {{duedate}}
-			        				{{else}}
-			        					Repeat until: {{untildate}}
-			        				{{/if}}
-			        			</h4>
-			        			<h3>Mission: {{name}}</h3>
-			        			<ul class="list-unstyled subtasks-list">
-			        				{{#each subtasks}}
-			        					<h4><input id="{{this}}" type="checkbox"/><label for="{{this}}">{{this}}</label></h4>
-			        				{{/each}}
-			        			</ul>
-			        			<a class="btn btn-default pull-right cancel_mission">Cancel</a>
-			        			<a class="btn btn-primary pull-right">Complete!</a>
-			        		</li>
-			        	{{else}}<h3><em>No missions to display.</em></h3>
-			        	{{/each}}
-		        	</ul>
-		        	
-				</div>
+			<!-- The nav links & buttons for toggling -->
+			<div class="collapse navbar-collapse" id="navbarCollapse">
+			<ul class="nav navbar-nav">
+				<li role="presentation" class="active">
+					<a href="#missionLog" aria-controls="missionLog">Log</a></li>
+				<li role="presentation">
+					<a href="#missionHistory" aria-controls="missionHistory" role="tab" data-toggle="tab">History</a></li>
+				<!-- CONFIRM w/ OTHERS: separate help section for the log screen - village screen will have its own 'help' section -->
+				<li role="presentation">
+					<a href="#logHelp" aria-controls="logHelp" role="tab" data-toggle="tab">Help</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a id="village_btn" href="village"><span class="glyphicon glyphicon-home"></span>  Village</a></li>
+			</ul>
 			</div>
 		</div>
+	</nav>	
 	</div>
 </body>
 </html>
