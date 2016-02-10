@@ -1,36 +1,345 @@
 {
-	"missions": [
+	"user":[
 		{
-			"name": "Write History Paper",
-			"subtasks": ["Create outline", "Write introduction", "Do research", "Draft body paragraphs", "Edit"],
-			"duedate" : "2016-02-06", 
-			"days" : [],
-			"runner" : "Cubby",
-			"untildate" : ""
+			"id" : 0,
+			"name" : "user",
+			"password" : "user",
+			"village_level" : 1
+		}
+	],
+
+	"task": [
+		{
+			"id" : 0,
+			"resource_id": 0,
+			"user_id" : 0,
+			"runner_id" : 0,
+			"title" : "Write History Paper",
+			"subtasks": [
+				{
+					"title" : "Create outline",
+					"completed" : false
+				},
+				{
+					"title" : "Write introduction",
+					"completed" : false
+				},
+				{
+					"title" : "Do research",
+					"completed" : false
+				},
+				{
+					"title" : "Draft body paragraphs",
+					"completed" : false
+				},
+				{
+					"title" : "Edit",
+					"completed" : false
+				}
+			],
+			"deadline" : "2016-03-06", 
+			"dates_recurring" : [],
+			"time_due": " "
 		},
 		{
-			"name": "Workout",
-			"subtasks": ["Cardio", "Pushups", "Situps", "Lift Weights"],
-			"duedate" : "", 
-			"days" : [],
-			"runner" : "Mau",
-			"untildate" : "2016-03-20"
+			"id" : 1,
+			"resource_id": 1,
+			"user_id" : 0,
+			"runner_id" : 2,
+			"title" : "Work Out",
+			"subtasks": [],
+			"deadline" : "2016-04-06", 
+			"time_due": " ",
+			"dates_recurring" : [
+				{
+					"day" : "Monday", 
+					"completed" : false
+				},
+				{
+					"day" : "Wednesday",
+					"completed" :false
+				},
+				{
+					"day" : "Friday",
+					"completed" :false
+				}
+			]
+		}
+	],
+
+	"runner":[
+		{
+			"id":0,
+			"name" : "Granny PawPaw",
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food"]
 		},
 		{
-			"name": "Get Ingredients",
-			"subtasks": ["Lettuce", "Onions", "Chicken"],
-			"duedate" : "2016-02-08", 
-			"days" : [],
-			"runner" : "Savannah",
-			"untildate" : ""
+			"id":1,
+			"name" : "Jawnny",
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["wood"]
 		},
 		{
-			"name": "Study for Math Midterm",
-			"subtasks": ["Read chapter", "Review", "Practice problems"],
-			"duedate" : "", 
-			"days" : [],
-			"runner" : "Roarie",
-			"untildate" : "2016-02-14"
+			"id":2,
+			"name" : "Purrrla",
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood"]
+		},
+		{
+			"id":3,
+			"name" : "Roarie",
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":4,
+			"name" : "Jessimba", 
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":5,
+			"name" : "Clawdia", 
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":6,
+			"name" : "Cat-alina",
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":7,
+			"name" : "Pawlette", 
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":8,
+			"name" : "Kingsley", 
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":9,
+			"name" : "Maully", 
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":10,
+			"name" : "Char-mane", 
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":11,
+			"name" : "Cubby", 
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":12,
+			"name" : "Scarface", 
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":13,
+			"name" : "Denzel", 
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":14,
+			"name" : "Fury",  
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":15,
+			"name" : "Abyss",  
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":16,
+			"name" : "Ragdoll",   
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":17,
+			"name" : "Zaimese",  
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":18,
+			"name" : "Burmilla",  
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":19,
+			"name" : "Manx",  
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":20,
+			"name" : "Savannah", 
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":21,
+			"name" : "Bobby",   
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":22,
+			"name" : "Mau",   
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":23,
+			"name" : "Bombei",    
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":24,
+			"name" : "Korat",    
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		},
+		{
+			"id":25,
+			"name" : "Muffin",  
+			"image" : "/images/run-test.gif",
+			"description" : " ",
+			"resource_type" : ["food", "wood", "stone"]
+		}
+	],
+
+	"resource":[
+		{
+			"id": 0,
+			"type" : "wood",
+			"level_required":1,
+			"image":null,
+			"description":" ",
+			"bundle_size" : 1
+		},
+		{
+			"id": 1,
+			"type" : "wood",
+			"level_required":4,
+			"image":null,
+			"description":" ",
+			"bundle_size" : 3
+		},
+		{
+			"id": 2,
+			"type" : "wood",
+			"level_required":7,
+			"image":null,
+			"description":" ",
+			"bundle_size" : 5
+		},
+		{
+			"id": 3,
+			"type" : "stone",
+			"level_required":2,
+			"image":null,
+			"description":" ",
+			"bundle_size" : 1
+		},
+		{
+			"id": 4,
+			"type" : "stone",
+			"level_required":5,
+			"image":null,
+			"description":" ",
+			"bundle_size" : 3
+		},
+		{
+			"id": 5,
+			"type" : "stone",
+			"level_required":8,
+			"image":null,
+			"description":" ",
+			"bundle_size" : 5
+		},
+		{
+			"id": 6,
+			"type" : "food",
+			"level_required":0,
+			"image":null,
+			"description":" ",
+			"bundle_size" : 1
+		},
+		{
+			"id": 7,
+			"type" : "food",
+			"level_required":3,
+			"image":null,
+			"description":" ",
+			"bundle_size" : 1
+		},
+		{
+			"id": 8,
+			"type" : "food",
+			"level_required":6,
+			"image":null,
+			"description":" ",
+			"bundle_size" : 5
+		}
+	],
+
+	"obtained":[
+		{
+			"user_id" : 0,
+			"type" : "food",
+			"quantity" : 2
+		}
+	],
+	"hasUsed":[
+		{
+			"user_id" : 0,
+			"runner_id" : 2,
+			"times_used" : 2,
+			"is_dead" : false
 		}
 	]
 }

@@ -14,7 +14,6 @@
 	<script src="https://code.jquery.com/jquery.js"></script>
 	<!-- Include all compiled plugins (blelow), or include individual files as needed -->
 	<script src="js/bootstrap.min.js"></script>
-	<script src="js/helpers.js"></script>
 	<link href='https://fonts.googleapis.com/css?family=Anton' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="css/styles.css">
 	
@@ -29,20 +28,12 @@
 </head>
 
 <body>
-<nav>
-	<a class="btn btn-default">Village</a>
-	<a class="btn btn-default">Population</a>
-	<a class="btn btn-default">Help</a>
-<a href="/" class="pull-right btn btn-primary">Return to Mission Log</a>
-</nav>
-
-<div><img src="{{image_link}}"></div>
-
-<div><label>Wood: {{wood_count}}/{{wood_total}}</label>
-	<label>Stone: {{stone_count}}/{{stone_total}}</label>
-	<label>Food: {{food_count}}/{{food_total}}</label></div>
-	
+	<div class="alert alert-warning">
+	  <strong>Feline Fine!</strong>
+	</div>
+	<a href="/" class="btn btn-primary">Skip Animation</a>
+	<div id="animation_screen" class="container-fluid">
+		<img src="/images/run-test.gif" id="runner_start"/>
+	</div>
 </body>
 </html>
-
-

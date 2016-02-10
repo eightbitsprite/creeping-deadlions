@@ -11,8 +11,10 @@ var Handlebars = require('handlebars');
 
 
 var index = require('./routes/index');
-var new_mission = require('./routes/new_mission');
+var login = require('./routes/login');
+var cutscene = require('./routes/cutscene');
 var village = require('./routes/village');
+var mission_form = require('./routes/mission_form');
 // Example route
 // var user = require('./routes/user');
 
@@ -41,8 +43,11 @@ if ('development' == app.get('env')) {
 
 // Add routes here
 app.get('/', index.view);
-app.get('/new_mission', new_mission.view);
+app.get('/login', login.view);
+app.get('/create_mission', mission_form.view);
+app.get('/new_mission', cutscene.new);
 app.get('/village', village.view);
+app.get('/mission_complete', cutscene.complete);
 //app.get('/project/:name', project.viewProject);
 
 // Example route
