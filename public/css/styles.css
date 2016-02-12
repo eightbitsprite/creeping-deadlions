@@ -71,8 +71,30 @@ body{
 	display:none;
 }
 #village{
-	height:80vh;
+	height:60vh;
 	width:90vw;
+}
+
+.highlight-text{
+	font-weight: 400;
+	color: red;
+}
+#gradient0{
+	padding: 6vh 0px;
+	background-color: #000000;
+}
+#gradient1{
+	padding: 4vh 0px;
+	background-color: #050301;
+}
+#gradient2{
+	padding: 3vh 0px;
+	background-color: #1a1005;
+}
+#campfire{
+	padding: 5vh 0px;
+	text-align: center;
+	background-color: #301d0a;
 }
 
 .gif{
