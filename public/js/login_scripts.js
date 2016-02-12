@@ -20,4 +20,9 @@ function initializePage() {
 		$("#new_password_verify").val("");
 		$("#password_error").css("display", "none");
 	});
+
+	$.get('/login_data', printData);
 } 
+function printData(result){
+	console.log(result);
+}

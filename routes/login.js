@@ -9,7 +9,11 @@ exports.view = function(req, res){
 			"village_level" : 1
 		};
 		data["user"].push(new_user);	
+		console.log("new user is", new_user);
 	}
 	
 	res.render('login', {"id":data["user"].length});
 };
+exports.data = function(req, res) { 
+  	res.json(data['user']);
+}

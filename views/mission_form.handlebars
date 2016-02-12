@@ -37,7 +37,14 @@
 				<input type="hidden" value={{id}} name="new_id"/>
 				<label for="new_mission_name_textbox">Enter Mission Name:</label>
 				<input id="new_mission_name_textbox" class="form-control" type="text" placeholder="Mission Name (e.g. Finish project)" name="mission_name" required/>
-				
+				<div class="new_input" id="new_select_runner">
+					<div>
+						&lt;<img alt="Select Runner Screen" class="gif" src="/images/run-test.gif"/>&gt;
+					</div>
+					<label for="new_runner_textbox">Runner Name:</label>
+					<input type="text" id="new_runner_textbox" class="form_control" name="runner"/>
+					<a class="btn btn-default" id="new_runner_randomize">Randomize</a>
+				</div>
 				<div class="new_input" id="new_frequency_input">
 					<label for="new_mission_name_textbox">Enter Mission Frequency:</label>
 					<br/>
@@ -68,24 +75,18 @@
 						<input type="date" id="new_task_due_date" name="duedate"/>
 						<label for="new_task_due_time">Time:</label>
 						<input type="time" id="new_task_due_time" name="duetime"/>
+						<div class="new_input" id="new_subtask_input">
+							<input type="hidden" name="subtasklist" id="hiddensubtasks"/>
+							<label for="new_subtasks">Subtasks:</label>
+							<ul id="new_subtasks" class="list-unstyled"></ul>
+							<label id="new_subtask_label" for="subtask"></label>
+							<input id="new_subtask_textbox" type="text" placeholder="Enter subtask"/>
+							<a id="add_task_button">+</a>
+						</div>
 					</div>
 				</div>
-				<div class="new_input" id="new_subtask_input">
-					<input type="hidden" name="subtasklist" id="hiddensubtasks"/>
-					<label for="new_subtasks">Subtasks:</label>
-					<ul id="new_subtasks" class="list-unstyled"></ul>
-					<label id="new_subtask_label" for="subtask"></label>
-					<input id="new_subtask_textbox" type="text" placeholder="Enter subtask"/>
-					<a id="add_task_button">+</a>
-				</div>
-				<div class="new_input" id="new_select_runner">
-					<div>
-						&lt;<img alt="Select Runner Screen" class="gif" src="/images/run-test.gif"/>&gt;
-					</div>
-					<label for="new_runner_textbox">Runner Name:</label>
-					<input type="text" id="new_runner_textbox" class="form_control" name="runner"/>
-					<a class="btn btn-default" id="new_runner_randomize">Randomize</a>
-				</div>
+				
+				
 				<div class="new_input" id="new_input_submit">
 
 					<button type="submit" class="btn btn-success" id="new_run_button">RUN!</button>

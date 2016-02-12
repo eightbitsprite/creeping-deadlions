@@ -1,36 +1,50 @@
 var data = require('../data.json');
 
 exports.new = function(req, res){
-	var days = [];
 
+	var datalist = [];
 	if(req.query.recurring){
 		if(req.query.sunday)
-			days.push("Sunday");
+			datalist.push({"title" :"Sunday", "completed" : false});
 		if(req.query.monday)
-			days.push("Monday");
+			datalist.push({"title" :"Monday", "completed" : false});
 		if(req.query.tuesday)
-			days.push("Tuesday");
+			datalist.push({"title" :"Tuesday", "completed" : false});
 		if(req.query.wednesday)
-			days.push("Wednesday");
+			datalist.push({"title" :"Wednesday", "completed" : false});
 		if(req.query.thursday)
-			days.push("Thursday");
+			datalist.push({"title" :"Thursday", "completed" : false});
 		if(req.query.friday)
-			days.push("Friday");
+			datalist.push({"title" :"Friday", "completed" : false});
 		if(req.query.saturday)
-			days.push("Saturday");	
+			datalist.push({"title" :"Saturday", "completed" : false});	
+	}else{
+		var list = req.query.subtasklist.split("|/0|");
+		for(var i = 0;i < list.length; i++){
+			var newtask = {
+				"title":list[i], 
+				"completed":false
+			};
+			list.push(newtask);
+		}
 	}
+	
 
 	var new_mission = {
 		"id" : req.query.new_id,
 		"user_id" : req.query.user_id,
-		"name": req.query.mission_name,
-		"subtasks": req.query.subtasklist.split("|/0|"),
-		"duedate" : req.query.duedate,
-		"days" : days,
+		"resource_id" : 0,
+		"runner_id" : 1,
+		"title": req.query.mission_name,
+		"subtasks": datalist, 
+		"deadline" : req.query.duedate,
 		"runner" : req.query.runner,
-		"untildate" : req.query.untildate
+		"untildate" : req.query.untildate,
+		"time_due" : req.query.duetime
 	}
+	//console.log(new_mission);
 	data["task"].push(new_mission);
+	
   	res.render('new_mission');
 };
 
