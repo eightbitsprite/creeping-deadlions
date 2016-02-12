@@ -80,21 +80,21 @@ body{
 	color: red;
 }
 #gradient0{
-	padding: 6vh 0px;
-	background-color: #000000;
+	padding: 5vh 0px;
+	background-color: #070504;
 }
 #gradient1{
-	padding: 4vh 0px;
-	background-color: #050301;
+	padding: 5vh 0px;
+	background-color: #181008;
 }
 #gradient2{
-	padding: 3vh 0px;
-	background-color: #1a1005;
+	padding: 5vh 0px;
+	background-color: #2c1d0e;
 }
 #campfire{
-	padding: 5vh 0px;
+	padding: 4vh 0px;
 	text-align: center;
-	background-color: #301d0a;
+	background-color: #3f2a14;
 }
 
 .gif{

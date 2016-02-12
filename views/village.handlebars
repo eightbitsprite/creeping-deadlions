@@ -73,7 +73,7 @@
 			<div id="gradient0">&nbsp;</div>
 			<div id="gradient1">&nbsp;</div>
 			<div id="gradient2">&nbsp;</div>
-			<div id="campfire"><img src="/images/village_stage01.gif"/></div>
+			<div id="campfire"><img src="{{image_link}}"/></div>
 			<!--
 			<div><img src="{{image_link}}"></div>
 
@@ -90,13 +90,13 @@
 		<h1 class="text-center">Village Statistics</h1>
 		<h4>Current Population: 3</h4>
 
-		<div class="pull-right">
+		<div class="col-md-2 col-xs-4 pull-right">
 			<h4>Resources:&nbsp;</h4>
-				<label>Wood: 5/25</label><br>
-				<label>Stone: 7/25</label><br>
-				<label>Food: 4/25</label><br>
+				<label>Wood: {{wood_count}}/{{wood_total}}</label><br>
+				<label>Stone: {{stone_count}}/{{stone_total}}</label><br>
+				<label>Food: {{food_count}}/{{food_total}}</label><br>
 				<span>You do not have the necessary resources to 
-					advance your village from a <span class="highlight-text">Tent City</span> to a <span class="highlight-text">Small Hamlet</span>.
+					advance your village from a <span class="highlight-text">{{village_stage}}</span> to a <span class="highlight-text">{{village_nextstage}}</span>.
 				</span>
 		</div>
 
