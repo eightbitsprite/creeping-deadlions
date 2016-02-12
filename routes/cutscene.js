@@ -25,7 +25,7 @@ exports.new = function(req, res){
 				"title":list[i], 
 				"completed":false
 			};
-			list.push(newtask);
+			datalist.push(newtask);
 		}
 	}
 	
