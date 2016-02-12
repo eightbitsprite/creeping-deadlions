@@ -73,7 +73,7 @@
 			<ul id="missions-list" class="list-unstyled">
 				{{#each data.task}}
 	        		<li class="mission_box container">
-	        			<form role="form" method="post" action="/mission_complete">
+	        			<form role="form" method="post" action="mission_complete">
 	        				<input type="hidden" value="{{this}}" name="mission_data"/>
 		        			<div class="runner-progress">
 		        				<img src="/images/lion-run-test.gif" class="gif"/>
