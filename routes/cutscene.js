@@ -20,7 +20,7 @@ exports.new = function(req, res){
 			datalist.push({"title" :"Saturday", "completed" : false});	
 	}else{
 		var list = req.query.subtasklist.split("|/0|");
-		for(var i = 0;i < list.length; i++){
+		for(var i = 0;i < list.length-1; i++){
 			var newtask = {
 				"title":list[i], 
 				"completed":false
