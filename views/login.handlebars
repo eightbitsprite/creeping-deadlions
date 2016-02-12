@@ -30,31 +30,41 @@
 </head>
 
 <body>
-	<h1>Creeping Deadlions</h1>
-	<h4>Note: databases are not implemented yet- Username: user | Password: user</h4>
-	<div id="sign-in" class="container-fluid">
-		<form role="form" method="get" action="/">
-			<label for="username">Username:</label>
-			<input type="text" name="login_username" id="username" required/>
-			<label for="password">Password:</label>
-			<input type="password" name="login_password" id="password" required/>
-			<input type="submit" value="Login"/>
-		</form>
-		<a href="#sign-up" class="btn btn-default">Create Account</a>
-	</div>
-	<div id="sign-up" class="container-fluid">
-		<form role="form" method="get" action="/login#sign-in">
-			<input type="hidden" name="form_id" value={{id}}/>
-			<label for="new_username">Username:</label>
-			<input type="text" name="form_user" id="new_username" required/>
-			<h5 id="password_error"><em>Passwords do not match</em></h5>
-			<label for="new_password">Password:</label>
-			<input type="password" name="form_password" id="new_password" required/>
-			<label for="new_password_verify">Verify Password:</label>
-			<input type="password" name="form_password_verify" id="new_password_verify" required/>
-			<input type="submit"  id="sign_up_button" value="Sign Up"/>
-		</form>	
-		<a href="#sign-in" id="cancel_sign_up_button" class="btn btn-default">Cancel</a>
+	<div id="main" class="text-center">
+		<h1 style="color:#598527;"><b>Creeping Deadlions</b></h1>
+		</br>
+		<h4>Note: databases are not implemented yet</h4>
+		<h4>Username: user | Password: user</h4>
+		</br>
+		<div id="sign-in" class="container-fluid">
+			<form role="form" method="get" action="/">
+				<div class = "row">
+					<div class="col-sm-12 text-center">
+						<label for="username">Username:</label>
+						<input type="text" name="login_username" id="username" required/>
+						<label for="password">Password:</label>
+						<input type="password" name="login_password" id="password" required/>
+						</br>
+						<input type="submit" class="btn btn-info" value="Login"/>
+					</div> 
+				</div>
+			</form>
+			<a href="#sign-up" class="btn btn-default" >Create Account</a>
+		</div>
+		<div id="sign-up" class="container-fluid">
+			<form role="form" method="get" action="/login#sign-in">
+				<input type="hidden" name="form_id" value={{id}}/>
+				<label for="new_username">Username:</label>
+				<input type="text" name="form_user" id="new_username" required/>
+				<h5 id="password_error"><em>Passwords do not match</em></h5>
+				<label for="new_password">Password:</label>
+				<input type="password" name="form_password" id="new_password" required/>
+				<label for="new_password_verify">Verify Password:</label>
+				<input type="password" name="form_password_verify" id="new_password_verify" required/>
+				<input type="submit"  id="sign_up_button" value="Sign Up"/>
+			</form>	
+			<a href="#sign-in" id="cancel_sign_up_button" class="btn btn-default">Cancel</a>
+		</div>
 	</div>
 </body>
 </html>
