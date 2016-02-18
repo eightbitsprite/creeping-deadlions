@@ -19,11 +19,6 @@ exports.new = function(req, res){
 		if(req.query.saturday)
 			datalist.push({"title" :"Saturday", "completed" : false});	
 	}else{
-		var list = req.query.subtasklist.split("|");
-		//console.log(list);
-		console.log(req.query.subtasklist);
-		for(var i = 0;i < list.length; i++){
-			console.log("got this");
 			var newtask = {
 				"title":list[i], 
 				"completed":false

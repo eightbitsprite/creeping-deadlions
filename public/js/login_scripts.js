@@ -7,7 +7,6 @@ $(document).ready(function() {
 
 function initializePage() {
 	$("#sign_up_button").click(function(event){
-		console.log("calle dthis");
 		var password = $("#new_password").val().trim();
 		var username = $("#new_username").val().trim();
 		if(password == "" || username == ""){
@@ -30,7 +29,8 @@ function initializePage() {
 					user.save({
 						username: username,
 						password: password,
-						villageLevel:1
+						villageLevel:1,
+						finishedTutorial:false
 					});
 					window.localStorage.setItem("current_user", user);
 					window.location = "/";
