@@ -33,11 +33,34 @@
 
 <body>
 <input type="hidden" value ="{{current_user}}" name="current_user" id="current_user_data"/>
-<div id="main" class="container-fluid">
-	<!-- Maybe add 'navbar-fixed-top' to have constant navbar presence in app? -->
+<div id="main" class="fluid-container">
+	<nav class="navbar navbar-fixed-top navbar-default">
+		<div class="container-fluid">
+			<ul class="nav navbar-nav navbar-left">
+				<li>
+					<p class="navbar-btn">
+					<a href="create_mission" class="btn btn-default new_msn_btn">+  New Mission<a></p></li>
+			</ul>
+			<div class="nav navbar-nav navbar-right btn-group">
+					<a href="#" class="navbar-btn btn btn-default dropdown-toggle" id="menu_stats" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span class="glyphicon glyphicon-user"></span>
+						<span class="caret"></span>
+					</a>
+				<ul class="dropdown-menu">
+					<li>[[Food Count Here]]</li>
+    				<li>[[Wood Count Here]]</li>
+    				<li>[[Stone Count Here]]</li>
+    				<li role="separator" class="divider"></li>
+    				<li><a href="/login#sign-in">Log Out</a></li>
+  				</ul>	
+			</div>
+		</div>
+	</nav>
+	<!-- main navigation bar fixed @ bottom -->
 	<nav class="navbar navbar-fixed-bottom navbar-default" id="main-nav">
 		<div class="container-fluid">
-			<!-- Brand & toggle grouped for better mobile display -->
+			<!-- Brand & toggle grouped for better mobile display 
+				//toggle removed - the icons provided shouldn't overflow mobile display
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse" aria-expanded="false">
 					<span class="sr-only">Toggle Navigation</span>
@@ -45,13 +68,13 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<!-- Maybe replace text brand with an undead lion icon in the future 
+				// Maybe replace text brand with an undead lion icon in the future 
 				<a class="navbar-brand" href="#"><span id="title">C.D.</span></a>
-				-->
 			</div>
+			-->
 
 			<!-- Nav links & buttons for toggling -->
-			<div class="collapse navbar-collapse" id="navbarCollapse">
+			<!-- <div class="collapse navbar-collapse" id="navbarCollapse"> -->
 			<ul class="nav navbar-nav">
 				<li>
 					<a href="#" id="menu_log">Log</a></li>
@@ -62,15 +85,13 @@
 					<a href="#" id="menu_help">???</a></li>
 				<li>
 					<a href="#" id="menu_village">Villa</a></li>
-				<li>
-					<a href="/login#sign-in">Log Out</a></li>
 			</ul>
 		<!-- Commented out, because village functionality is now on same page
 			<ul class="nav navbar-nav navbar-right">
 				<li><a id="transition_btn" href="village"><span class="glyphicon glyphicon-home"></span>  Village</a></li>
 			</ul>
 		-->
-			</div>
+			<!-- </div> -->
 		</div>
 	</nav>	
 
@@ -109,9 +130,11 @@
 	        	{{/each}}
 			</ul>
 
-			<!-- Columns adjust based on size -->
+			<!-- Columns adjust based on size 
+				//This is defunct, mission button will be moved to upper-left of navbar
 			<div class="col-xs-1 visible-xs-block text-center new_msn_btn"><a href="create_mission">+</a></div>
 			<div class="col-md-1 hidden-xs hidden-sm text-center new_msn_btn"><a href="create_mission">+  New Mission<a></div>
+			-->
 		</div>
 	</div>
 

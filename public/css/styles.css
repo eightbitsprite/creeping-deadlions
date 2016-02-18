@@ -70,15 +70,15 @@ body{
 .freq_option{
 	display:none;
 }
+.highlight-text{
+	font-weight: 400;
+	color: red;
+}
+
 #village{
 	height:60vh;
 	width:90vw;
 	display: none;
-}
-
-.highlight-text{
-	font-weight: 400;
-	color: red;
 }
 #gradient0{
 	padding: 5vh 0px;
@@ -124,18 +124,8 @@ body{
 
 .new_msn_btn{
 	background-color: green;
-	position: fixed;
-	bottom: 20px;
-	right: 20px;
-	z-index: 5;
 }
 
-.new_msn_btn a {
-	color: white;
-	font-family: 'Anton', sans-serif;
-	font-weight: 200;
-	font-size: 12pt;
-}
 .visible-xs-block a {
 	font-size: 30pt;
 }
@@ -148,6 +138,9 @@ body{
 }
 #population {
 	display: none;
+}
+#menu_stats {
+	margin: 2px 20px 0px 20px;
 }
 
 ::-webkit-scrollbar {
