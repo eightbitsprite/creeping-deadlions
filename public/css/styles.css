@@ -1,5 +1,5 @@
 body{
-	padding: 20px 20px 60px 20px;
+	padding: 40px 20px 40px 20px;
 	background-color: #A0410D;
 }
 #main{
@@ -32,10 +32,6 @@ body{
 	margin-top:0;
 }
 
-#new_mission_button{
-	background-color:#598527;
-	color:white;
-}
 #missions{
 	padding:30px;
 	overflow-x:hidden;
@@ -122,14 +118,6 @@ body{
 	z-index:1;
 }
 
-.new_msn_btn{
-	background-color: green;
-}
-
-.visible-xs-block a {
-	font-size: 30pt;
-}
-
 #history {
 	display: none;
 }
@@ -139,8 +127,48 @@ body{
 #population {
 	display: none;
 }
+
+/*Navbar styling info*/
+.navbar_cust {
+  position: fixed;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+
+  padding: 0.5vh 1vw 0.5vh 2vw;
+
+}
+/*Top menu bar information*/
+#navbar_top {
+	top: 0;
+	background-color: #BEB096;
+  	border: 1px solid #361700;
+}
+#new_mission_button{
+	background-color:#990000;
+	color:white;
+	margin: 0px 10px 0px 10px
+}
+#new_mission_button:hover{
+	background-color:#993333;
+}
 #menu_stats {
 	margin: 2px 20px 0px 20px;
+}
+/*Bottom menu bar information*/
+#navbar_bottom {
+	bottom:0;
+}
+#main-nav > li {
+	width: 23.5vw;
+}
+#main-nav > li > a {
+	color: #361700;
+	font-family: 'Anton', sans-serif;
+
+	background-color: #BEB096;
+  	border: 5px solid #361700;
+  	padding: 15px 20px 5px 20px;
 }
 
 ::-webkit-scrollbar {

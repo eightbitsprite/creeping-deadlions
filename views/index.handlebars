@@ -34,30 +34,28 @@
 <body>
 <input type="hidden" value ="{{current_user}}" name="current_user" id="current_user_data"/>
 <div id="main" class="fluid-container">
-	<nav class="navbar navbar-fixed-top navbar-default">
-		<div class="container-fluid">
-			<ul class="nav navbar-nav navbar-left">
-				<li>
-					<p class="navbar-btn">
-					<a href="create_mission" class="btn btn-default new_msn_btn">+  New Mission<a></p></li>
-			</ul>
-			<div class="nav navbar-nav navbar-right btn-group">
-					<a href="#" class="navbar-btn btn btn-default dropdown-toggle" id="menu_stats" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<span class="glyphicon glyphicon-user"></span>
-						<span class="caret"></span>
-					</a>
-				<ul class="dropdown-menu">
-					<li>[[Food Count Here]]</li>
-    				<li>[[Wood Count Here]]</li>
-    				<li>[[Stone Count Here]]</li>
-    				<li role="separator" class="divider"></li>
-    				<li><a href="/login#sign-in">Log Out</a></li>
-  				</ul>	
-			</div>
+	<div class="container-fluid navbar_cust" id="navbar_top"> <div class="row">
+		<div class="pull-left">
+			<a href="create_mission" class="btn" id="new_mission_button">+  New Mission<a>
 		</div>
-	</nav>
+		<div class="pull-right btn-group">
+				<a href="#" class="btn btn-default dropdown-toggle" id="menu_stats" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<span class="glyphicon glyphicon-user"></span>
+					<span class="caret"></span>
+				</a>
+			<ul class="dropdown-menu">
+				<li>[[Food Count Here]]</li>
+   				<li>[[Wood Count Here]]</li>
+   				<li>[[Stone Count Here]]</li>
+   				<li>[[Village Level Here]]</li>
+   				<li role="separator" class="divider"></li>
+   				<li><a href="/login#sign-in">Log Out</a></li>
+			</ul>	
+		</div>
+		</div>
+	</div>
 	<!-- main navigation bar fixed @ bottom -->
-	<nav class="navbar navbar-fixed-bottom navbar-default" id="main-nav">
+	<div class="navbar_cust" id="navbar_bottom">
 		<div class="container-fluid">
 			<!-- Brand & toggle grouped for better mobile display 
 				//toggle removed - the icons provided shouldn't overflow mobile display
@@ -75,7 +73,7 @@
 
 			<!-- Nav links & buttons for toggling -->
 			<!-- <div class="collapse navbar-collapse" id="navbarCollapse"> -->
-			<ul class="nav navbar-nav">
+			<ul class="list-inline text-center" id="main-nav">
 				<li>
 					<a href="#" id="menu_log">Log</a></li>
 				<li>
@@ -93,7 +91,7 @@
 		-->
 			<!-- </div> -->
 		</div>
-	</nav>	
+	</div>	
 
 <!-- The mission log portion of the app -->
 	<div id="missions" class="row">
