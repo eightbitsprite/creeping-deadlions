@@ -35,7 +35,7 @@
 <input type="hidden" value ="{{current_user}}" name="current_user" id="current_user_data"/>
 <div id="main" class="container-fluid">
 	<!-- Maybe add 'navbar-fixed-top' to have constant navbar presence in app? -->
-	<nav class="navbar navbar-fixed-top navbar-default" id="main-nav">
+	<nav class="navbar navbar-fixed-bottom navbar-default" id="main-nav">
 		<div class="container-fluid">
 			<!-- Brand & toggle grouped for better mobile display -->
 			<div class="navbar-header">
@@ -45,25 +45,31 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<!-- Maybe replace text brand with an undead lion icon in the future -->
+				<!-- Maybe replace text brand with an undead lion icon in the future 
 				<a class="navbar-brand" href="#"><span id="title">C.D.</span></a>
+				-->
 			</div>
 
 			<!-- Nav links & buttons for toggling -->
 			<div class="collapse navbar-collapse" id="navbarCollapse">
 			<ul class="nav navbar-nav">
 				<li>
-					<a href="#" id="menu_log">Mission Log</a></li>
+					<a href="#" id="menu_log">Log</a></li>
 				<li>
-					<a href="#" id="menu_history">History</a></li>
+					<a href="#" id="menu_history">Hist</a></li>
 				<!-- CONFIRM: separate help section for the log screen; village screen will have its own 'help' section? -->
 				<li>
-					<a href="#" id="menu_help">Help</a></li>
-				<li><a href="/login#sign-in">Log Out</a></li>
+					<a href="#" id="menu_help">???</a></li>
+				<li>
+					<a href="#" id="menu_village">Villa</a></li>
+				<li>
+					<a href="/login#sign-in">Log Out</a></li>
 			</ul>
+		<!-- Commented out, because village functionality is now on same page
 			<ul class="nav navbar-nav navbar-right">
 				<li><a id="transition_btn" href="village"><span class="glyphicon glyphicon-home"></span>  Village</a></li>
 			</ul>
+		-->
 			</div>
 		</div>
 	</nav>	
@@ -130,6 +136,29 @@
 			Here is all your previous missions - whether they ended with the happy return of a runner into the camp, or the horrified last gasps of a living, sentient person being torn apart by the jaws of an undead feline.
 		</p>
 	</div>
+
+	<!-- The village section of the app -->
+	<div id="village">
+		<h1>My Village</h1>
+		<p>People you have saved will appear here</p>
+		<div id="village_display" class="container-fluid">
+			<!--<img id="village" src="/images/basic_overworld.png"/>-->
+			<div id="gradient0">&nbsp;</div>
+			<div id="gradient1">&nbsp;</div>
+			<div id="gradient2">&nbsp;</div>
+			<div id="campfire"><img src="/images/village_stage01.gif"/></div>
+			<!--
+			<div><img src="{{image_link}}"></div>
+
+			<div>
+				<label>Wood: {{wood_count}}/{{wood_total}}</label>
+				<label>Stone: {{stone_count}}/{{stone_total}}</label>
+				<label>Food: {{food_count}}/{{food_total}}</label>
+			</div>
+-->
+		</div>
+	</div>
+
 </div>
 <script type="text/javascript">
     Parse.initialize("YXlPjDOZPGg2dnC4z2XBGHk5xg8jirJVclFEMTmo", "IWqi5XWUalPKb9uXMX8WCkFNaEuyrIxTzOeH9tPH");

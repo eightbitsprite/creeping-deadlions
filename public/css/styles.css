@@ -1,5 +1,5 @@
 body{
-	padding: 60px 20px 20px 20px;
+	padding: 20px 20px 60px 20px;
 	background-color: #A0410D;
 }
 #main{
@@ -73,6 +73,7 @@ body{
 #village{
 	height:60vh;
 	width:90vw;
+	display: none;
 }
 
 .highlight-text{
