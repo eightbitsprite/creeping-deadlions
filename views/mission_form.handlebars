@@ -54,29 +54,30 @@
 					<label for="new_freq_recurring">Recurring (regular activity)</label>
 					<br/>
 					<input type="radio" id="new_freq_timed" name="frequency"/>
-					<label for="new_freq_recurring">Timed (activty with deadline)</label>
+					<label for="new_freq_timed">Timed (activty with deadline)</label>
 
 					<div id="new_freq_recurring_area" class="freq_option">
 						<h4>Recurring:</h4>
 						<label for="new_task_recurring_dates">Days:</label>
+						<input type="checkbox" id="select_all"/><label for="select_all">Select All</label>
 						<ul id="new_task_recurring_dates">
-							<li><input type="checkbox" name="sunday" id="sunday_box"/><label for="sunday_box">Sunday</label></li>
-							<li><input type="checkbox" name="monday" id="monday_box"/><label for="monday_box">Monday</label></li>
-							<li><input type="checkbox" name="tuesday" id="tuesday_box"/><label for="tuesday_box">Tuesday</label></li>
-							<li><input type="checkbox" name="wednesday" id="wednesday_box"/><label for="wednesday_box">Wednesday</label></li>
-							<li><input type="checkbox" name="thursday" id="thursday_box"/><label for="thursday_box">Thursday</label></li>
-							<li><input type="checkbox" name="friday" id="friday_box"/><label for="friday_box">Friday</label></li>
-							<li><input type="checkbox" name="saturday" id="saturday_box"/><label for="saturday_box">Saturday</label></li>
+							<li><input type="checkbox" name="sunday" id="sunday_box" class="day_box"/><label for="sunday_box">Sunday</label></li>
+							<li><input type="checkbox" name="monday" id="monday_box" class="day_box"/><label for="monday_box">Monday</label></li>
+							<li><input type="checkbox" name="tuesday" id="tuesday_box" class="day_box"/><label for="tuesday_box">Tuesday</label></li>
+							<li><input type="checkbox" name="wednesday" id="wednesday_box" class="day_box"/><label for="wednesday_box">Wednesday</label></li>
+							<li><input type="checkbox" name="thursday" id="thursday_box" class="day_box"/><label for="thursday_box">Thursday</label></li>
+							<li><input type="checkbox" name="friday" id="friday_box" class="day_box"/><label for="friday_box">Friday</label></li>
+							<li><input type="checkbox" name="saturday" id="saturday_box" class="day_box"/><label for="saturday_box">Saturday</label></li>
 						</ul>
 						<label for="new_task_until_date">Until:</label>
-						<input type="date" id="new_task_until_date" name="duedate"/>
+						<input type="date" id="new_task_until_date" name="duedate" class="date-select"/>
 					</div>
 					<div id="new_freq_timed_area"class="freq_option">
 						<h4>Timed:</h4>
 						<label for="new_task_due_date">Due Date:</label>
-						<input type="date" id="new_task_due_date" name="duedate"/>
+						<input type="date" id="new_task_due_date" name="duedate" class="date-select"/>
 						<label for="new_task_due_time">Time:</label>
-						<input type="time" id="new_task_due_time" name="duetime"/>
+						<input type="time" id="new_task_due_time" name="duetime" value="00:00"/>
 						<div class="new_input" id="new_subtask_input">
 							<input type="hidden" name="subtasklist" id="hiddensubtasks"/>
 							<label for="new_subtasks">Subtasks:</label>
