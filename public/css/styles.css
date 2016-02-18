@@ -1,5 +1,5 @@
 body{
-	padding: 40px 20px 40px 20px;
+	padding: 40px 10px;
 	background-color: #A0410D;
 }
 #main{
@@ -124,9 +124,6 @@ body{
 #help {
 	display: none;
 }
-#population {
-	display: none;
-}
 
 /*Navbar styling info*/
 .navbar_cust {
@@ -160,15 +157,15 @@ body{
 	bottom:0;
 }
 #main-nav > li {
-	width: 23.5vw;
+	max-width: 23vw;
 }
 #main-nav > li > a {
 	color: #361700;
 	font-family: 'Anton', sans-serif;
 
 	background-color: #BEB096;
-  	border: 5px solid #361700;
-  	padding: 15px 20px 5px 20px;
+  	border: 4px solid #361700;
+  	padding: 2vh 2vw 1vh 2vw;
 }
 
 ::-webkit-scrollbar {
