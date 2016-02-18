@@ -1,7 +1,7 @@
 var data = require('../data.json');
 
 exports.new = function(req, res){
-
+/*
 	var datalist = [];
 	if(req.query.recurring){
 		if(req.query.sunday)
@@ -19,13 +19,16 @@ exports.new = function(req, res){
 		if(req.query.saturday)
 			datalist.push({"title" :"Saturday", "completed" : false});	
 	}else{
-		var list = req.query.subtasklist.split("|/0|");
+		var list = req.query.subtasklist.split("|");
+		//console.log(list);
+		console.log(req.query.subtasklist);
 		for(var i = 0;i < list.length; i++){
+			console.log("got this");
 			var newtask = {
 				"title":list[i], 
 				"completed":false
 			};
-			list.push(newtask);
+			datalist.push(newtask);
 		}
 	}
 	
@@ -44,7 +47,7 @@ exports.new = function(req, res){
 	}
 	//console.log(new_mission);
 	data["task"].push(new_mission);
-	
+	*/
   	res.render('new_mission');
 };
 

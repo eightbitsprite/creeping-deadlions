@@ -18,7 +18,7 @@
 	<script src="js/mission_scripts.js"></script>
 	<link href='https://fonts.googleapis.com/css?family=Anton' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="css/styles.css">
-	
+	 <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -31,10 +31,12 @@
 
 <body>
 	<h1>Create a Mission</h1>
+
     <div id="missions" class="row">
+
     	<div id="new_mission" class="col-md-12 mission_box">
-			<form id="newMissionForm" role="form" method="get" action="/new_mission">
-				<input type="hidden" value={{id}} name="new_id"/>
+    		<em><h5 id="error_msg"></h5></em>
+			<!--<form id="newMissionForm" role="form" method="get" action="/new_mission">-->
 				<label for="new_mission_name_textbox">Enter Mission Name:</label>
 				<input id="new_mission_name_textbox" class="form-control" type="text" placeholder="Mission Name (e.g. Finish project)" name="mission_name" required/>
 				<div class="new_input" id="new_select_runner">
@@ -48,10 +50,10 @@
 				<div class="new_input" id="new_frequency_input">
 					<label for="new_mission_name_textbox">Enter Mission Frequency:</label>
 					<br/>
-					<input type="radio" id="new_freq_recurring" name="recurring"/>
+					<input type="radio" id="new_freq_recurring" name="frequency"/>
 					<label for="new_freq_recurring">Recurring (regular activity)</label>
 					<br/>
-					<input type="radio" id="new_freq_timed" name="timed"/>
+					<input type="radio" id="new_freq_timed" name="frequency"/>
 					<label for="new_freq_recurring">Timed (activty with deadline)</label>
 
 					<div id="new_freq_recurring_area" class="freq_option">
@@ -67,7 +69,7 @@
 							<li><input type="checkbox" name="saturday" id="saturday_box"/><label for="saturday_box">Saturday</label></li>
 						</ul>
 						<label for="new_task_until_date">Until:</label>
-						<input type="date" id="new_task_until_date" name="untildate"/>
+						<input type="date" id="new_task_until_date" name="duedate"/>
 					</div>
 					<div id="new_freq_timed_area"class="freq_option">
 						<h4>Timed:</h4>
@@ -92,7 +94,7 @@
 					<button type="submit" class="btn btn-success" id="new_run_button">RUN!</button>
 					<a class="btn btn-danger" href="/" id="new_cancel_button">Cancel</a>
 				</div>
-			</form>
+			<!--</form>-->
     	</div>
     </div>
 </body>

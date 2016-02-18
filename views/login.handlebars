@@ -17,6 +17,7 @@
 	<script src="js/helpers.js"></script>
 	<script src="js/login_scripts.js"></script>
 	<link href='https://fonts.googleapis.com/css?family=Anton' rel='stylesheet' type='text/css'>
+	 <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/styles.css">
 	
 
@@ -32,31 +33,31 @@
 <body>
 <div id="login" class="container-fluid text-center">
 	<h1>Creeping Deadlions</h1>
-	<h4>(databases are not implemented yet; Username: user | Password: user)</h4>
 	<div id="sign-in" class="container-fluid">
-		<form role="form" method="get" action="/">
-			<label for="username">Username:</label>
-			<input type="text" name="login_username" id="username" required/> <br></br>
-			<label for="password">Password:</label>
-			<input type="password" name="login_password" id="password" required/> <br></br>
-			<input type="submit" value="Login"/>
-		</form> <br></br>
+		<em><h5 id="error_msg"></h5></em>
+		<label for="username">Username:</label>
+		<input type="text" name="login_username" id="username" required/> <br></br>
+		<label for="password">Password:</label>
+		<input type="password" name="login_password" id="password" required/> <br></br>
+		<input type="submit" value="Login" id="sign-in-button"/>
+		</br>
 		<a href="#sign-up" class="btn btn-default">Create Account</a>
 	</div>
 	<div id="sign-up" class="container-fluid">
-		<form role="form" method="get" action="/login#sign-in">
+		<!--<form role="form" method="get" action="/login#sign-up">-->
+			<em><h5 id="error_msg"></h5></em>
 			<input type="hidden" name="form_id" value={{id}}/>
 			<label for="new_username">Username:</label>
 			<input type="text" name="form_user" id="new_username" required/>
-			<h5 id="password_error"><em>Passwords do not match</em></h5>
 			<label for="new_password">Password:</label>
 			<input type="password" name="form_password" id="new_password" required/>
 			<label for="new_password_verify">Verify Password:</label>
 			<input type="password" name="form_password_verify" id="new_password_verify" required/>
 			<input type="submit"  id="sign_up_button" value="Sign Up"/>
-		</form>	
+		<!--</form>	-->
 		<a href="#sign-in" id="cancel_sign_up_button" class="btn btn-default">Cancel</a>
 	</div>
 </div>
+
 </body>
 </html>
