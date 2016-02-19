@@ -33,15 +33,14 @@
 
 <body>
 <input type="hidden" value ="{{current_user}}" name="current_user" id="current_user_data"/>
-<div id="main" class="fluid-container">
+
 	<div class="container-fluid navbar_cust" id="navbar_top"> <div class="row">
 		<div class="pull-left">
-			<a href="create_mission" class="btn" id="new_mission_button">+  New Mission<a>
+			<a href="create_mission"><img src="../images/nav_newmission.png" class="nav_img"><a>
 		</div>
 		<div class="pull-right btn-group">
-				<a href="#" class="btn btn-default dropdown-toggle" id="menu_stats" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<span class="glyphicon glyphicon-user"></span>
-					<span class="caret"></span>
+				<a href="#" id="menu_stats" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<img src="../images/nav_profile.png" class="nav_img">
 				</a>
 			<ul class="dropdown-menu">
 				<li>[[Food Count Here]]</li>
@@ -75,14 +74,14 @@
 			<!-- <div class="collapse navbar-collapse" id="navbarCollapse"> -->
 			<ul class="list-inline text-center" id="main-nav">
 				<li>
-					<a href="#" id="menu_log">Log</a></li>
+					<a href="#" id="menu_log"><img src="../images/nav_log.png" class="nav_img"></a></li>
 				<li>
-					<a href="#" id="menu_history">Hist</a></li>
+					<a href="#" id="menu_history"><img src="../images/nav_history.png" class="nav_img"></a></li>
 				<!-- CONFIRM: separate help section for the log screen; village screen will have its own 'help' section? -->
 				<li>
-					<a href="#" id="menu_help">???</a></li>
+					<a href="#" id="menu_help"><img src="../images/nav_help.png" class="nav_img"></a></li>
 				<li>
-					<a href="#" id="menu_village">Villa</a></li>
+					<a href="#" id="menu_village"><img src="../images/nav_village.png" class="nav_img"></a></li>
 			</ul>
 		<!-- Commented out, because village functionality is now on same page
 			<ul class="nav navbar-nav navbar-right">
@@ -92,7 +91,7 @@
 			<!-- </div> -->
 		</div>
 	</div>	
-
+<div id="main" class="fluid-container text-center">
 <!-- The mission log portion of the app -->
 	<div id="missions" class="row">
 		<div id="missions-list-wrapper">
@@ -102,7 +101,7 @@
 	        			<form role="form" method="post" action="mission_complete">
 	        				<input type="hidden" value="{{this}}" name="mission_data"/>
 		        			<div class="runner-progress">
-		        				<img src="/images/lion-run-test.gif" class="gif"/>
+		        				<img src="/images/lion-run.gif" class="gif"/>
 		        				<span class="distance">{{#each subtasks}}&nbsp;&nbsp;{{/each}}</span>
 		        				<img src="/images/run-test.gif" class="gif"/>
 		        			</div>
