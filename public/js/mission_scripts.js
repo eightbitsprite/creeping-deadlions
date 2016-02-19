@@ -1,5 +1,4 @@
 'use strict';
-
 var runners = ["Granny PawPaw", 
 				"Jawnny", 
 				"Purrrla", 
@@ -30,8 +29,9 @@ var runners = ["Granny PawPaw",
 var subtaskString = "";
 
 $(document).ready(function() {
-	initializePage();
 	Parse.initialize("YXlPjDOZPGg2dnC4z2XBGHk5xg8jirJVclFEMTmo", "IWqi5XWUalPKb9uXMX8WCkFNaEuyrIxTzOeH9tPH");
+	initializePage();
+	
 })
 
 function initializePage() {
@@ -40,7 +40,12 @@ function initializePage() {
 	$("#new_freq_timed").change(toggleTimed);
 	$("#new_freq_recurring").change(toggleRecurring);
 	$("#new_runner_randomize").click(generateRunner);
-	$("#new_run_button").click(saveTask)
+	$("#new_run_button").click(saveTask);
+	$("#select_all").click(checkAll)
+	var current = new Date();
+	console.log("current", current.getDate()+1);
+
+	$(".date-select").val(new Date());
 } 
 
 function openTaskFrequency(){
@@ -77,10 +82,10 @@ function saveTask(){
 	var title = $("#new_mission_name_textbox").val();
 	var runner = null;
 	var resource = null;
-	var user = window.localStorage.getItem("current_user");
+	var user = JSON.parse(window.localStorage.getItem("current_user"));
 	var deadline;
 	var subtasks = [];
-
+	var isRecurring = $("#new_freq_recurring").is(":checked");
 	var isValid = true;
 	$("#error_msg").html("");
 	if(title.trim() == ""){
@@ -92,23 +97,76 @@ function saveTask(){
 		isValid = false;
 	}
 	if($("#new_freq_recurring").is(":checked") && $("#new_task_recurring_dates").find(":checked").length == 0){
-		$("#error_msg").append("<p>You must select at least one day for recurring task.</p>");
+		$("#error_msg").append("<p>Please select at least one day for recurring task.</p>");
 		isValid = false;
 	}
 	if($("#new_freq_timed").is(":checked") && subtaskString == ""){
-		$("#error_msg").append("<p>You must add at least one subtask.</p>");
+		$("#error_msg").append("<p>Please add at least one subtask.</p>");
 		isValid = false;
 	}
+
+	if($("#new_freq_recurring").is(":checked")){
+      	deadline= new Date($("#new_task_until_date").val());
+      	deadline.setHours(23);
+      	deadline.setMinutes(59);
+      	deadline.setSeconds(59);
+	}else if($("#new_freq_timed").is(":checked")){
+      	deadline= new Date($("#new_task_due_date").val());
+      	var dueTime = $("#new_task_due_time").val();
+      	if(!(/^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(dueTime.toString()))){
+      		$("#error_msg").append("<p>Please select a valid time.</p>");
+         	isValid = false;
+      	}else{
+	      	deadline.setHours(Number(dueTime.split(":")[0]));
+	      	deadline.setMinutes(Number(dueTime.split(":")[1]));
+	      	deadline.setSeconds(0);
+      	}
+	}
+	var today =new Date();
+	if (deadline.value == " "){
+		$("#error_msg").append("<p>Please select a valid date.</p>");
+     	isValid = false;
+  	}else if(deadline < today){
+  		$("#error_msg").append("<p>Please select a future date.</p>");
+     	isValid = false;
+  	}
+
 	/*Check time validity*/
 
-	if(!isValid){
-		if($("#new_freq_recurring").attr("checked")){
-			deadline = $("#new_task_until_date").val();
+	if(isValid){
+		if($("#new_freq_recurring").is(":checked")){
+			var date= new Date();
 			var days = [];
-			//if($("#sunday_box").is(":checked"))
-			//	days.push()
+
+			if($("#sunday_box").is(":checked"))
+				days.push(0);
+			if($("#monday_box").is(":checked"))
+				days.push(1);
+			if($("#tuesday_box").is(":checked"))
+				days.push(2);
+			if($("#wednesday_box").is(":checked"))
+				days.push(3);
+			if($("#thursday_box").is(":checked"))
+				days.push(4);
+			if($("#friday_box").is(":checked"))
+				days.push(5);
+			if($("#saturday_box").is(":checked"))
+				days.push(6);
+			var index = 0;
+			while(date <= deadline){
+				if(days.indexOf(date.getDay()) >= 0){
+					console.log("adding date", date);
+					subtasks.push({
+						"id": index,
+						"title" : dateString(date, false),
+						"date" : date.toString(),
+						"completed":false
+					});
+					index ++;
+				}
+				date.setDate(date.getDate() + 1);
+			}
 		}else{
-			deadline = $("#new_task_due_date").val();
 			var list = subtaskString.split("|/0|");
 			for(var i = 0;i < list.length - 1; i++){
 				var newtask = {
@@ -120,17 +178,26 @@ function saveTask(){
 			}
 		}
 		console.log("subtasks", subtasks);
-		/*
+		
 		var TaskObject = Parse.Object.extend("Task");
 		var task = new TaskObject();
 		task.save({
 			title: title,
 			runner : runner,
 			resouce : resource,
-			user : user,
+			user : user.username,
 			completed : false,
 			deadline : deadline,
-			subtasks : subtasks
-		});*/
+			subtasks : subtasks,
+			isRecurring: $("#new_freq_recurring").is(":checked"),
+			failed:false
+		}, {
+			success:function(){
+				window.location = "/new_mission";
+			}
+		});
 	}
+}
+function checkAll(){
+	$(".day_box").prop("checked", $("#select_all").is(":checked"));
 }

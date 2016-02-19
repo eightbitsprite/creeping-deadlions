@@ -2,33 +2,9 @@
 
 <html>
 <head>
-	<title>Creeping DeadLions</title>	 
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
-	<!-- Bootstrap -->
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/bootstrap-theme.min.css" rel="stylesheet">
-	
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="https://code.jquery.com/jquery.js"></script>
-	<!-- Include all compiled plugins (blelow), or include individual files as needed -->
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/helpers.js"></script>
+	{{> head}}
 	<script src="js/mission_scripts.js"></script>
-	<link href='https://fonts.googleapis.com/css?family=Anton' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" type="text/css" href="css/styles.css">
-	 <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
-
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->        
 </head>
-
 <body>
 	<h1>Create a Mission</h1>
 
@@ -54,29 +30,30 @@
 					<label for="new_freq_recurring">Recurring (regular activity)</label>
 					<br/>
 					<input type="radio" id="new_freq_timed" name="frequency"/>
-					<label for="new_freq_recurring">Timed (activty with deadline)</label>
+					<label for="new_freq_timed">Timed (activty with deadline)</label>
 
 					<div id="new_freq_recurring_area" class="freq_option">
 						<h4>Recurring:</h4>
 						<label for="new_task_recurring_dates">Days:</label>
+						<input type="checkbox" id="select_all"/><label for="select_all">Select All</label>
 						<ul id="new_task_recurring_dates">
-							<li><input type="checkbox" name="sunday" id="sunday_box"/><label for="sunday_box">Sunday</label></li>
-							<li><input type="checkbox" name="monday" id="monday_box"/><label for="monday_box">Monday</label></li>
-							<li><input type="checkbox" name="tuesday" id="tuesday_box"/><label for="tuesday_box">Tuesday</label></li>
-							<li><input type="checkbox" name="wednesday" id="wednesday_box"/><label for="wednesday_box">Wednesday</label></li>
-							<li><input type="checkbox" name="thursday" id="thursday_box"/><label for="thursday_box">Thursday</label></li>
-							<li><input type="checkbox" name="friday" id="friday_box"/><label for="friday_box">Friday</label></li>
-							<li><input type="checkbox" name="saturday" id="saturday_box"/><label for="saturday_box">Saturday</label></li>
+							<li><input type="checkbox" name="sunday" id="sunday_box" class="day_box"/><label for="sunday_box">Sunday</label></li>
+							<li><input type="checkbox" name="monday" id="monday_box" class="day_box"/><label for="monday_box">Monday</label></li>
+							<li><input type="checkbox" name="tuesday" id="tuesday_box" class="day_box"/><label for="tuesday_box">Tuesday</label></li>
+							<li><input type="checkbox" name="wednesday" id="wednesday_box" class="day_box"/><label for="wednesday_box">Wednesday</label></li>
+							<li><input type="checkbox" name="thursday" id="thursday_box" class="day_box"/><label for="thursday_box">Thursday</label></li>
+							<li><input type="checkbox" name="friday" id="friday_box" class="day_box"/><label for="friday_box">Friday</label></li>
+							<li><input type="checkbox" name="saturday" id="saturday_box" class="day_box"/><label for="saturday_box">Saturday</label></li>
 						</ul>
 						<label for="new_task_until_date">Until:</label>
-						<input type="date" id="new_task_until_date" name="duedate"/>
+						<input type="date" id="new_task_until_date" name="duedate" class="date-select"/>
 					</div>
 					<div id="new_freq_timed_area"class="freq_option">
 						<h4>Timed:</h4>
 						<label for="new_task_due_date">Due Date:</label>
-						<input type="date" id="new_task_due_date" name="duedate"/>
+						<input type="date" id="new_task_due_date" name="duedate" class="date-select"/>
 						<label for="new_task_due_time">Time:</label>
-						<input type="time" id="new_task_due_time" name="duetime"/>
+						<input type="time" id="new_task_due_time" name="duetime" value="00:00"/>
 						<div class="new_input" id="new_subtask_input">
 							<input type="hidden" name="subtasklist" id="hiddensubtasks"/>
 							<label for="new_subtasks">Subtasks:</label>
