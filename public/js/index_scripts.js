@@ -3,9 +3,9 @@
 $(document).ready(function() {
 	Parse.initialize("YXlPjDOZPGg2dnC4z2XBGHk5xg8jirJVclFEMTmo", "IWqi5XWUalPKb9uXMX8WCkFNaEuyrIxTzOeH9tPH");
 	console.log("user",JSON.parse(window.localStorage.getItem("current_user")));
-	if(!window.localStorage.getItem("current_user")){
+	if(JSON.parse(window.localStorage.getItem("current_user")) == null){
 		console.log("not logged in");
-		location.replace("/login#sign-in");
+		window.location = "/login#sign-in";
 	}else{
 		
 		$("#menu_log").click(showLog);
@@ -15,12 +15,16 @@ $(document).ready(function() {
 		$("#history-completed-button").click(showCompleted);
 		$("#history-failed-button").click(showFailed);
 		$("#failed-missions-list").css("display", "none");
+		$("#logoutbutton").click(logOut);
 		renderMissions();
 		renderCompleted();
 		renderFailed();
 	}
 })
-
+function logOut(){
+	window.localStorage.setItem("current_user", null);
+	window.location = "/login#sign-in";
+}
 function showCompleted(){
 	$("#completed-missions-list").css("display", "block");
 	$("#failed-missions-list").css("display", "none");

@@ -9,7 +9,7 @@ var path = require('path');
 var handlebars = require('express3-handlebars');
 var Handlebars = require('handlebars');
 var bodyParser = require('body-parser');
-
+var Parse = require('parse').Parse;
 var index = require('./routes/index');
 var login = require('./routes/login');
 var cutscene = require('./routes/cutscene');
