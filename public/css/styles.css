@@ -2,12 +2,6 @@ body{
 	padding: 10px 10px;
 	background-image: url("../images/background.png");
 }
-p{
-	color: #FFFFFF;
-}
-h3,h4{
-	color: #FFFFFF;
-}
 .main{
 	/*background-color: #000000;
 	opacity: 0.6;
@@ -54,14 +48,14 @@ h3,h4{
 }
 
 #missions{
-	padding:30px;
+	padding:5px;
 	overflow-x:hidden;
 }
 .mission_box{
 	border:1px solid gray;
 	height: auto;
-	background-color: lightgray;
-	padding: 1vh 1vw;
+	background-color: #FFF9D9;
+	padding: 10px;
 }
 
 #new_subtasks{
@@ -72,11 +66,6 @@ h3,h4{
 	margin-left:30px;
 }
 
-#new_mission_name_textbox, #new_subtask_textbox{
-	width: 50%;
-	height:30px;
-	font-size:20px;
-}
 #new_select_runner {
 	margin: 1vh 0vw;
 }
@@ -147,9 +136,14 @@ h3,h4{
 
 #history {
 	display: none;
+	height:70vh;
+	overflow:auto;
 }
 #help {
 	display: none;
+	height:70vh;
+	overflow:auto;
+	color:white;
 }
 
 /*Navbar styling info*/
@@ -168,6 +162,7 @@ h3,h4{
 	background-color: #BEB096;
   	border: 1px solid #361700;
   	padding:0px 10px;
+  	padding-left:20px;
 }
 
 .nav_img {
@@ -203,6 +198,7 @@ h3,h4{
 #main h1{
 	font-family: 'Anton', sans-serif;
 	font-size: 20pt;
+	color:white;
 }
 
 ::-webkit-scrollbar {
@@ -248,4 +244,139 @@ h3,h4{
 #password_error{
 	display:none;
 	color:red;
+}
+
+#error_msg, #recur_error_msg, #timed_error_msg{
+	color:red;
+	text-align: center;
+}
+.default-list{
+	color:white;
+	font-size: 12pt;
+}
+
+.btn-custom{
+	border:2px solid #361700;
+	background-color: #BEB096;
+	color:black;
+	font-family: 'Anton', sans-serif;
+}
+
+#new_mission{
+	min-height:70vh;
+	padding:10px;
+}
+#new_mission_name_textbox{
+	width:100%;
+	font-size:15px;
+	height:30px;
+	margin-bottom:15px;
+}
+
+.freq_select{
+	font-weight: normal;
+}
+#new_runner_textbox{
+	width:40vw;
+}
+#new_run_button{
+	margin-top:20px;
+	font-size:20pt;
+	width:80%;
+	margin-bottom:10px;
+}
+#new_cancel_button{
+	width:60%;
+	height:30px;
+}
+
+.stat-dropdown{
+	border:2px solid #361700;
+	background-color: #BEB096;
+	color:black;
+	font-family: 'Anton', sans-serif;
+	padding:10px;
+}
+.current_mission{
+	min-width:80vw;
+	margin-bottom: 15px;
+}
+
+#missions-list-wrapper{
+	height:70vh;
+	overflow:auto;
+	width:100%;
+}
+.complete_mission{
+	margin-right:15px;
+}
+
+.btn-selected{
+	background-color: #467E79;
+}
+
+.current_mission h3{
+	font-size: 15pt;
+	font-weight: bold;
+}
+.current_mission h4{
+	font-size: 10pt;
+	font-style:italic;
+}
+
+.subtasks-list label{
+	font-weight:normal;
+	margin-left:5px;
+}
+.btn-login{
+	width:70vw;
+}
+
+#village_description{
+	color:white;
+}
+
+#village_display{
+	width:85vw;
+}
+
+.modal-dialog{
+	border:2px solid #361700;
+	background-color: #BEB096;
+}
+.modal-content{
+	background-color: #FFF9D9;
+}
+.day_box + label{
+	font-weight:normal;
+	margin-left:5px;
+}
+
+.history_mission{
+	margin-bottom: 15px;
+}
+.history_mission h3{
+	font-size: 15pt;
+	font-weight:bold;
+}
+
+.history_mission h5{
+	font-size: 10pt;
+}
+.history_mission p{
+	font-size: 10pt;
+	font-weight:bold;
+	font-style:italic;
+}
+
+.subtask_check + label{
+	font-weight:normal;
+
+}
+#new_mission{
+	margin:20px;
+}
+
+#new_mission h1{
+	color:black;
 }
