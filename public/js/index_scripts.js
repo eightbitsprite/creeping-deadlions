@@ -193,6 +193,7 @@ function initializePage() {
 	$(".complete_mission").click(completeMission);
 } 
 
+
 function cancelMission(event){
 	var to_delete = $("#" + event.target.id.split("_")[1]).data("parseObject");
 	if(confirm("Are you sure you want to cancel Mission: " + to_delete.get("title") + "?")){
