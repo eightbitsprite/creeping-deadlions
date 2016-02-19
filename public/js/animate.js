@@ -1,11 +1,9 @@
 'use strict';
 
 $(document).ready(function() {
-	/*New Mission Animations*/
-	setAnimation();
 })
 
-function setAnimation(){
+function newMission(){
 	$("#deadlion_animate").css({
 		"margin-left": - $("#animation_screen").offset().left - $("#deadlion_animate").width()
 	});
@@ -13,14 +11,28 @@ function setAnimation(){
 	$("#deadlion_animate").hide();
 	$("#runner_start").animate({
 		"margin-left" : $("#animation_screen").width()
-	}, 6000, function(){
+	}, 4000, function(){
 		$("#deadlion_animate").css("top", 0);
 		$("#deadlion_animate").show();
 
 		$("#deadlion_animate").animate({
 			"margin-left" : $("#animation_screen").offset().left + $("#animation_screen").width()
-		}, 3000);
+		}, 3000, function(){
+			window.location = "/";
+		});
 	});
 	
 }
 
+function completeMission(){
+	$("#runner_start").css("margin-left", - $("#animation_screen").offset().left - $("#runner_start").width());
+	$("#runner_start").animate({
+		"margin-left" : $("#animation_screen").width()
+	}, 4000, function(){
+		window.location = "/";
+	});
+}
+
+function failedMission(){
+
+}

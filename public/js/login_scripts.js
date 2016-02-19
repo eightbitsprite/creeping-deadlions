@@ -32,7 +32,7 @@ function initializePage() {
 						villageLevel:1,
 						finishedTutorial:false
 					});
-					window.localStorage.setItem("current_user", user);
+					window.localStorage.setItem("current_user", JSON.stringify(user));
 					window.location = "/";
 			  	}else{
 			  		$("#error_msg").html("Username already taken.");
@@ -60,7 +60,7 @@ function initializePage() {
 	        // If the username and password matches
 	        success: function(user) {
 	            $("#error_msg").html("");
-				window.localStorage.setItem("current_user", user);
+				window.localStorage.setItem("current_user", JSON.stringify(user));
 				window.location = "/";
 	        },
 	        // If there is an error

@@ -29,8 +29,9 @@ var runners = ["Granny PawPaw",
 var subtaskString = "";
 
 $(document).ready(function() {
-	initializePage();
 	Parse.initialize("YXlPjDOZPGg2dnC4z2XBGHk5xg8jirJVclFEMTmo", "IWqi5XWUalPKb9uXMX8WCkFNaEuyrIxTzOeH9tPH");
+	initializePage();
+	
 })
 
 function initializePage() {
@@ -81,11 +82,10 @@ function saveTask(){
 	var title = $("#new_mission_name_textbox").val();
 	var runner = null;
 	var resource = null;
-	var user = window.localStorage.getItem("current_user");
+	var user = JSON.parse(window.localStorage.getItem("current_user"));
 	var deadline;
 	var subtasks = [];
 	var isRecurring = $("#new_freq_recurring").is(":checked");
-
 	var isValid = true;
 	$("#error_msg").html("");
 	if(title.trim() == ""){
@@ -158,7 +158,7 @@ function saveTask(){
 					console.log("adding date", date);
 					subtasks.push({
 						"id": index,
-						"title" : dateString(date),
+						"title" : dateString(date, false),
 						"date" : date.toString(),
 						"completed":false
 					});
@@ -185,96 +185,19 @@ function saveTask(){
 			title: title,
 			runner : runner,
 			resouce : resource,
-			user : user.id,
+			user : user.username,
 			completed : false,
 			deadline : deadline,
 			subtasks : subtasks,
-			isRecurring: $("#new_freq_recurring").is(":checked")
+			isRecurring: $("#new_freq_recurring").is(":checked"),
+			failed:false
+		}, {
+			success:function(){
+				window.location = "/new_mission";
+			}
 		});
-		window.location = "/new_mission";
 	}
 }
 function checkAll(){
 	$(".day_box").prop("checked", $("#select_all").is(":checked"));
-}
-function dateString(date){
-	var stringBuilder = "";
-	switch(date.getDay()){
-		case 0:
-			stringBuilder += "Sunday, ";
-			break;
-		case 1:
-			stringBuilder += "Monday, ";
-			break;
-		case 2:
-			stringBuilder += "Tuesday, ";
-			break;
-		case 3:
-			stringBuilder += "Wednesday, ";
-			break;
-		case 4:
-			stringBuilder += "Thursday, ";
-			break;
-		case 5:
-			stringBuilder += "Friday, ";
-			break;
-		case 6:
-			stringBuilder += "Saturday, ";
-			break;
-	}
-
-	switch(date.getMonth()){
-		case 0:
-			stringBuilder += "January ";
-			break;
-		case 1:
-			stringBuilder += "February ";
-			break;
-		case 2:
-			stringBuilder += "March ";
-			break;
-		case 3:
-			stringBuilder += "April ";
-			break;
-		case 4:
-			stringBuilder += "May ";
-			break;
-		case 5:
-			stringBuilder += "June ";
-			break;
-		case 6:
-			stringBuilder += "July ";
-			break;
-		case 7:
-			stringBuilder += "August ";
-			break;
-		case 8:
-			stringBuilder += "September ";
-			break;
-		case 9:
-			stringBuilder += "October ";
-			break;
-		case 10:
-			stringBuilder += "November ";
-			break;
-		case 11:
-			stringBuilder += "December ";
-			break;
-	}
-
-	stringBuilder += date.getDate();
-	switch(date.getDate()){
-		case 1:
-			stringBuilder += "st";
-			break;
-		case 1:
-			stringBuilder += "nd";
-			break;
-		case 1:
-			stringBuilder += "rd";
-			break;
-		default:
-			stringBuilder += "th";
-	}
-	return stringBuilder;
 }
