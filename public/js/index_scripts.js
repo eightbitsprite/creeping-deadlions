@@ -15,12 +15,16 @@ $(document).ready(function() {
 		$("#history-completed-button").click(showCompleted);
 		$("#history-failed-button").click(showFailed);
 		$("#failed-missions-list").css("display", "none");
+		$("#logoutbutton").click(logOut);
 		renderMissions();
 		renderCompleted();
 		renderFailed();
 	}
 })
-
+function logOut(){
+	window.localStorage.setItem("current_user", null);
+	window.location = "/login#sign-in";
+}
 function showCompleted(){
 	$("#completed-missions-list").css("display", "block");
 	$("#failed-missions-list").css("display", "none");
