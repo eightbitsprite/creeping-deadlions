@@ -26,6 +26,7 @@ function initializePage() {
 			  	if(results.length == 0){
 			  		$("#error_msg").html("");
 					var user = new UserObject();
+					console.log("REACHED");
 					user.save({
 						username: username,
 						password: password,
