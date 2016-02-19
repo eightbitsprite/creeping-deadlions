@@ -6,29 +6,30 @@
 	<script src="js/login_scripts.js"></script>
 </head>
 <body>
-<div id="login" class="container-fluid text-center">
+
+<div id="login" class="main container-fluid text-center">
 	<h1>Creeping Deadlions</h1>
 	<div id="sign-in" class="container-fluid">
 		<em><h5 id="error_msg"></h5></em>
 		<label for="username">Username:</label>
-		<input type="text" name="login_username" id="username" required/> <br></br>
+			<input type="text" name="login_username" id="username" required/> <br>
 		<label for="password">Password:</label>
-		<input type="password" name="login_password" id="password" required/> <br></br>
-		<input type="submit" value="Login" id="sign-in-button"/>
-		</br>
+			<input type="password" name="login_password" id="password" required/> <br>
+			<input type="submit" value="Login" id="sign-in-button"/> <br><br>
 		<a href="#sign-up" class="btn btn-default">Create Account</a>
 	</div>
 	<div id="sign-up" class="container-fluid">
 		<!--<form role="form" method="get" action="/login#sign-up">-->
 			<em><h5 id="error_msg"></h5></em>
-			<input type="hidden" name="form_id" value={{id}}/>
+				<input type="hidden" name="form_id" value={{id}}/>
 			<label for="new_username">Username:</label>
-			<input type="text" name="form_user" id="new_username" required/>
+				<input type="text" name="form_user" id="new_username" required/> <br>
 			<label for="new_password">Password:</label>
-			<input type="password" name="form_password" id="new_password" required/>
+				<input type="password" name="form_password" id="new_password" required/> <br>
 			<label for="new_password_verify">Verify Password:</label>
-			<input type="password" name="form_password_verify" id="new_password_verify" required/>
-			<input type="submit"  id="sign_up_button" value="Sign Up"/>
+				<input type="password" name="form_password_verify" id="new_password_verify" required/>
+				<br>
+				<input type="submit"  id="sign_up_button" value="Sign Up"/> <br><br>
 		<!--</form>	-->
 		<a href="#sign-in" id="cancel_sign_up_button" class="btn btn-default">Cancel</a>
 	</div>
