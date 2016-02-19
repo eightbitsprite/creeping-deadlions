@@ -30,36 +30,37 @@
 </head>
 
 <body>
-	<h1>Create a Mission</h1>
+<div id="main" class="main">
+	<h1 class="text-center">Create a Mission</h1>
 
     <div id="missions" class="row">
 
     	<div id="new_mission" class="col-md-12 mission_box">
     		<em><h5 id="error_msg"></h5></em>
 			<!--<form id="newMissionForm" role="form" method="get" action="/new_mission">-->
-				<label for="new_mission_name_textbox">Enter Mission Name:</label>
+			<label for="new_mission_name_textbox">Enter Mission Name:</label>
 				<input id="new_mission_name_textbox" class="form-control" type="text" placeholder="Mission Name (e.g. Finish project)" name="mission_name" required/>
-				<div class="new_input" id="new_select_runner">
-					<div>
-						&lt;<img alt="Select Runner Screen" class="gif" src="/images/run-test.gif"/>&gt;
-					</div>
-					<label for="new_runner_textbox">Runner Name:</label>
-					<input type="text" id="new_runner_textbox" class="form_control" name="runner"/>
-					<a class="btn btn-default" id="new_runner_randomize">Randomize</a>
-				</div>
-				<div class="new_input" id="new_frequency_input">
-					<label for="new_mission_name_textbox">Enter Mission Frequency:</label>
-					<br/>
-					<input type="radio" id="new_freq_recurring" name="frequency"/>
-					<label for="new_freq_recurring">Recurring (regular activity)</label>
-					<br/>
-					<input type="radio" id="new_freq_timed" name="frequency"/>
-					<label for="new_freq_recurring">Timed (activty with deadline)</label>
 
-					<div id="new_freq_recurring_area" class="freq_option">
-						<h4>Recurring:</h4>
-						<label for="new_task_recurring_dates">Days:</label>
-						<ul id="new_task_recurring_dates">
+			<div class="new_input" id="new_frequency_input">
+			<label for="new_mission_name_textbox">Enter Mission Frequency:</label><br/>
+				<ul class="list-unstyled">
+				<li>
+					<!-- click calls toggleTimed-->
+					<input type="radio" id="new_freq_recurring" name="frequency"/>
+					<label for="new_freq_recurring">Recurring (regular activity)</label></li>
+				<li>
+					<!-- click calls toggleRecurring-->
+					<input type="radio" id="new_freq_timed" name="frequency"/>
+					<label for="new_freq_recurring">Timed (activity with deadline)</label></li>
+				<li>
+					<!-- button to bring up popup modal -->
+					<a href="#" id="freqDetailsBtn" class="btn btn-default">Details</a></li>
+				</ul>
+<!--
+				<div id="new_freq_recurring_area" class="freq_option">
+					<h4>Recurring:</h4>
+				<label for="new_task_recurring_dates">Days:</label>
+					<ul id="new_task_recurring_dates">
 							<li><input type="checkbox" name="sunday" id="sunday_box"/><label for="sunday_box">Sunday</label></li>
 							<li><input type="checkbox" name="monday" id="monday_box"/><label for="monday_box">Monday</label></li>
 							<li><input type="checkbox" name="tuesday" id="tuesday_box"/><label for="tuesday_box">Tuesday</label></li>
@@ -71,31 +72,108 @@
 						<label for="new_task_until_date">Until:</label>
 						<input type="date" id="new_task_until_date" name="duedate"/>
 					</div>
+				-->
+
+<!--
 					<div id="new_freq_timed_area"class="freq_option">
 						<h4>Timed:</h4>
 						<label for="new_task_due_date">Due Date:</label>
 						<input type="date" id="new_task_due_date" name="duedate"/>
 						<label for="new_task_due_time">Time:</label>
 						<input type="time" id="new_task_due_time" name="duetime"/>
-						<div class="new_input" id="new_subtask_input">
-							<input type="hidden" name="subtasklist" id="hiddensubtasks"/>
-							<label for="new_subtasks">Subtasks:</label>
+
+					</div>
+				-->
+			</div>
+				<div class="new_input" id="new_subtask_input">
+					<input type="hidden" name="subtasklist" id="hiddensubtasks"/>
+						<label for="new_subtasks">Subtasks:</label>
 							<ul id="new_subtasks" class="list-unstyled"></ul>
 							<label id="new_subtask_label" for="subtask"></label>
 							<input id="new_subtask_textbox" type="text" placeholder="Enter subtask"/>
-							<a id="add_task_button">+</a>
-						</div>
-					</div>
+					<a id="add_task_button">+</a>
 				</div>
+		
+			<div class="new_input" id="new_select_runner">
+			<ul class="list-inline">
+				<li>
+					&lt;<img alt="Select Runner Screen" class="gif" src="/images/run-test.gif"/>&gt;</li>
+				<li>
+					<label for="new_runner_textbox">NAME:</label>
+					<input type="text" id="new_runner_textbox" class="form_control" name="runner"/></li>
+				</li>
+				<li>
+					<a class="btn btn-default pull-right" id="new_runner_randomize">?!<a></li>
+			</ul>
+			</div>			
 				
-				
-				<div class="new_input" id="new_input_submit">
-
+			<div class="new_input" id="new_input_submit">
 					<button type="submit" class="btn btn-success" id="new_run_button">RUN!</button>
 					<a class="btn btn-danger" href="/" id="new_cancel_button">Cancel</a>
-				</div>
+			</div>
 			<!--</form>-->
     	</div>
     </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="recurFreq" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+				<div id="new_freq_recurring_area" class="freq_option">
+					<h4>Recurring:</h4>
+				<label for="new_task_recurring_dates">Days:</label>
+					<ul id="new_task_recurring_dates">
+							<li><input type="checkbox" name="sunday" id="sunday_box"/><label for="sunday_box">Sunday</label></li>
+							<li><input type="checkbox" name="monday" id="monday_box"/><label for="monday_box">Monday</label></li>
+							<li><input type="checkbox" name="tuesday" id="tuesday_box"/><label for="tuesday_box">Tuesday</label></li>
+							<li><input type="checkbox" name="wednesday" id="wednesday_box"/><label for="wednesday_box">Wednesday</label></li>
+							<li><input type="checkbox" name="thursday" id="thursday_box"/><label for="thursday_box">Thursday</label></li>
+							<li><input type="checkbox" name="friday" id="friday_box"/><label for="friday_box">Friday</label></li>
+							<li><input type="checkbox" name="saturday" id="saturday_box"/><label for="saturday_box">Saturday</label></li>
+						</ul>
+						<label for="new_task_until_date">Until:</label>
+					<input type="date" id="new_task_until_date" name="duedate"/>
+				</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary modalSaveBtn">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="timedFreq" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+      				<div id="new_freq_timed_area"class="freq_option">
+						<h4>Timed:</h4>
+						<label for="new_task_due_date">Due Date:</label>
+						<input type="date" id="new_task_due_date" name="duedate"/>
+						<label for="new_task_due_time">Time:</label>
+						<input type="time" id="new_task_due_time" name="duetime"/>
+
+					</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary modalSaveBtn">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
