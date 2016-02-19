@@ -5,8 +5,9 @@
 	<script src="js/index_scripts.js"></script>
 </head>
 <body>
-<div id="main" class="main fluid-container">
-	<div class="container-fluid navbar_cust" id="navbar_top"> <div class="row">
+	<div class="background"></div>
+<div id="main" class="main">
+	<div class="navbar_cust" id="navbar_top"> <div class="row">
 		<div class="pull-left">
 			<a href="create_mission"><img src="../images/nav_newmission.png" class="nav_img"><a>
 		</div>
@@ -28,23 +29,6 @@
 	<!-- main navigation bar fixed @ bottom -->
 	<div class="navbar_cust" id="navbar_bottom">
 		<div class="container-fluid">
-
-			<!-- Brand & toggle grouped for better mobile display 
-				//toggle removed - the icons provided shouldn't overflow mobile display
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse" aria-expanded="false">
-					<span class="sr-only">Toggle Navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				// Maybe replace text brand with an undead lion icon in the future 
-				<a class="navbar-brand" href="#"><span id="title">C.D.</span></a>
-			</div>
-			-->
-
-			<!-- Nav links & buttons for toggling -->
-			<!-- <div class="collapse navbar-collapse" id="navbarCollapse"> -->
 			<ul class="list-inline text-center" id="main-nav">
 				<li>
 					<a href="#" id="menu_log"><img src="../images/nav_log.png" class="nav_img"></a></li>
@@ -56,77 +40,69 @@
 				<li>
 					<a href="#" id="menu_village"><img src="../images/nav_village.png" class="nav_img"></a></li>
 			</ul>
-		<!-- Commented out, because village functionality is now on same page
-			<ul class="nav navbar-nav navbar-right">
-				<li><a id="transition_btn" href="village"><span class="glyphicon glyphicon-home"></span>  Village</a></li>
-			</ul>
-		-->
-			<!-- </div> -->
 		</div>
 	</div>	
-<div id="main" class="fluid-container text-center">
-<!-- The mission log portion of the app -->
-	<div id="missions" class="row">
-		<div id="missions-list-wrapper">
-			<ul id="missions-list" class="list-unstyled">
-			</ul>
 
-			<!-- Columns adjust based on size 
-				//This is defunct, mission button will be moved to upper-left of navbar
-			<div class="col-xs-1 visible-xs-block text-center new_msn_btn"><a href="create_mission">+</a></div>
-			<div class="col-md-1 hidden-xs hidden-sm text-center new_msn_btn"><a href="create_mission">+  New Mission<a></div>
-			-->
+<div id="main" class="container text-center">
+	
+	<div class="main-content">
+		<!-- The mission log portion of the app -->
+		<div id="missions" class="row ">
+			<div id="missions-list-wrapper">
+				<ul id="missions-list" class="list-unstyled">
+				</ul>
+			</div>
 		</div>
-	</div>
 
-	<!-- The history portion of the app -->
-	<div id="history">
-		<div id="completed">
+		<!-- The history portion of the app -->
+		<div id="history">
+			<nav>
+				<a class="btn" id="history-completed-button">Completed</a>
+				<a class="btn" id="history-failed-button">Failed</a>
+			</nav>
 			<ul id="completed-missions-list" class="list-unstyled">
 			</ul>
-		</div>
-		<div id="failed">
 			<ul id="failed-missions-list" class="list-unstyled">
 			</ul>
 		</div>
-	</div>
 
-	<!-- The help portion of the app -->
-	<div id="help">
-		<h3> General Mechanics </h4>
-		<p>In order to improve the village the runners live in, you must send out runners to retrieve necessary resources for village upgrades. Unfortunately, each time they leave the warm glow of the campfire, they risk discovery (and digestion) by the deadlions. Whether they live or not is up to whether or not <em>you</em> finish the task corresponding to them.
-		</p>
-		<h4>'Mission' Screen</h4>
-		<p>
-			This is a current list of all runners out in the field, and the task you must complete in order for them to escape the deadlion and bring back valuable resources to their village.
+		<!-- The help portion of the app -->
+		<div id="help">
+			<h3> General Mechanics </h4>
+			<p>In order to improve the village the runners live in, you must send out runners to retrieve necessary resources for village upgrades. Unfortunately, each time they leave the warm glow of the campfire, they risk discovery (and digestion) by the deadlions. Whether they live or not is up to whether or not <em>you</em> finish the task corresponding to them.
+			</p>
+			<h4>'Mission' Screen</h4>
+			<p>
+				This is a current list of all runners out in the field, and the task you must complete in order for them to escape the deadlion and bring back valuable resources to their village.
 
-			A deadlined mission is marked complete when you hit the 'Complete' button after finishing all the subtasks to particular to that specific mission, while a recurring mission can only be marked complete at the end of the current month.
-		</p>
-		<h4> 'History' Screen </h4>
-		<p>
-			Here is all your previous missions - whether they ended with the happy return of a runner into the camp, or the horrified last gasps of a living, sentient person being torn apart by the jaws of an undead feline.
-		</p>
-	</div>
+				A deadlined mission is marked complete when you hit the 'Complete' button after finishing all the subtasks to particular to that specific mission, while a recurring mission can only be marked complete at the end of the current month.
+			</p>
+			<h4> 'History' Screen </h4>
+			<p>
+				Here is all your previous missions - whether they ended with the happy return of a runner into the camp, or the horrified last gasps of a living, sentient person being torn apart by the jaws of an undead feline.
+			</p>
+		</div>
 
-	<!-- The village section of the app -->
-	<div id="village">
-		<h1>My Village</h1>
-		<p>People you have saved will appear here</p>
-		<div id="village_display" class="container-fluid">
-			<!--<img id="village" src="/images/basic_overworld.png"/>-->
-			<div id="gradient0">&nbsp;</div>
-			<div id="gradient1">&nbsp;</div>
-			<div id="gradient2">&nbsp;</div>
-			<div id="campfire"><img src="/images/village_stage01.gif"/></div>
-			<!--
-			<div><img src="{{image_link}}"></div>
+		<!-- The village section of the app -->
+		<div id="village">
+			<h1>My Village</h1>
+			<p>People you have saved will appear here</p>
+			<div id="village_display" class="container-fluid">
+				<!--<img id="village" src="/images/basic_overworld.png"/>-->
+				<div id="gradient0">&nbsp;</div>
+				<div id="gradient1">&nbsp;</div>
+				<div id="gradient2">&nbsp;</div>
+				<div id="campfire"><img src="/images/village_stage01.gif"/></div>
+				<!--
+				<div><img src="{{image_link}}"></div>
 
-			<div>
-				<label>Wood: {{wood_count}}/{{wood_total}}</label>
-				<label>Stone: {{stone_count}}/{{stone_total}}</label>
-				<label>Food: {{food_count}}/{{food_total}}</label>
+				<div>
+					<label>Wood: {{wood_count}}/{{wood_total}}</label>
+					<label>Stone: {{stone_count}}/{{stone_total}}</label>
+					<label>Food: {{food_count}}/{{food_total}}</label>
+				</div>
+	-->
 			</div>
--->
 		</div>
 	</div>
 

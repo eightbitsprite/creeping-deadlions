@@ -1,17 +1,60 @@
 'use strict';
 
 $(document).ready(function() {
+	Parse.initialize("YXlPjDOZPGg2dnC4z2XBGHk5xg8jirJVclFEMTmo", "IWqi5XWUalPKb9uXMX8WCkFNaEuyrIxTzOeH9tPH");
+	console.log("user",JSON.parse(window.localStorage.getItem("current_user")));
 	if(!window.localStorage.getItem("current_user")){
 		console.log("not logged in");
 		location.replace("/login#sign-in");
 	}else{
-		Parse.initialize("YXlPjDOZPGg2dnC4z2XBGHk5xg8jirJVclFEMTmo", "IWqi5XWUalPKb9uXMX8WCkFNaEuyrIxTzOeH9tPH");
-
+		
+		$("#menu_log").click(showLog);
+		$("#menu_history").click(showHistory);
+		$("#menu_help").click(showHelp);
+		$("#menu_village").click(showVillage);
+		$("#history-completed-button").click(showCompleted);
+		$("#history-failed-button").click(showFailed);
+		$("#failed-missions-list").css("display", "none");
 		renderMissions();
 		renderCompleted();
 		renderFailed();
 	}
 })
+
+function showCompleted(){
+	$("#completed-missions-list").css("display", "block");
+	$("#failed-missions-list").css("display", "none");
+}
+function showFailed(){
+	$("#completed-missions-list").css("display", "none");
+	$("#failed-missions-list").css("display", "block");
+}
+
+function showLog() {
+	$("#missions").css("display","block");
+	$("#history").css("display","none");
+	$("#village").css("display","none");
+	$("#help").css("display","none");
+}
+function showHistory() {
+	$("#missions").css("display","none");
+	$("#history").css("display","block");
+	$("#village").css("display","none");
+	$("#help").css("display","none");
+}
+function showVillage() {
+	$("#missions").css("display","none");
+	$("#history").css("display","none");
+	$("#village").css("display","block");
+	$("#help").css("display","none");
+}
+function showHelp() {
+	$("#missions").css("display","none");
+	$("#history").css("display","none");
+	$("#village").css("display","none");
+	$("#help").css("display","block");
+}
+
 
 function renderMissions(){
 	var username = JSON.parse(window.localStorage.getItem("current_user")).username;
@@ -90,14 +133,12 @@ function renderCompleted(){
 	    		var htmlBuilder = "";
 		        for (var i = 0; i < results.length; i++) {
 		            var data = results[i].toJSON();
-		           	var date = dateString(new Date(data.finishedAt.iso), true);
-		           	console.log("date is", date);
-		          	//Math.abs(date2.getTime() - date1.getTime());
-					//var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-		           	console.log("finished in ", getTimeDifference(new Date(data.finishedAt.iso), new Date(data.createdAt.iso)));
+		           	var date = dateString(new Date(data.updatedAt), true);
 		            htmlBuilder += "<li class='mission_box container' id='" + data.objectId+"''>"
 		            				+	"<h3>Mission: " + data.title + "</h3>"
-		            				+	"<h5>Completed at: " + date
+		            				+	"<h5>Completed at: " + dateString(new Date(data.updatedAt), true) + "</h5>"
+		            				+	"<h5><em>Started at: " + dateString(new Date(data.createdAt), true) + "</em></h5>"
+		            				+ 	"<p>Time Elapsed: " + getTimeDifference(new Date(data.createdAt), new Date(data.updatedAt)) + "</p>"
 		            				+ "</li>"
 		        }
 		        $("#completed-missions-list").html(htmlBuilder);
@@ -146,41 +187,12 @@ function renderFailed(){
 
 
 function initializePage() {
-	console.log("user", window.localStorage.getItem("current_user"));
-	$("#menu_log").click(showLog);
-	$("#menu_history").click(showHistory);
-	$("#menu_help").click(showHelp);
-	$("#menu_village").click(showVillage);
+	
 	$(".cancel_mission").click(cancelMission);
 	$(".subtask_check").change(checkSubtask);
 	$(".complete_mission").click(completeMission);
 } 
 
-function showLog() {
-	$("#missions").css("display","block");
-	$("#history").css("display","none")
-	$("#village").css("display","none")
-	$("#help").css("display","none")
-}
-function showHistory() {
-	$("#missions").css("display","none")
-	$("#history").css("display","block")
-	$("#village").css("display","none")
-	$("#help").css("display","none")
-}
-function showVillage() {
-	$("#missions").css("display","none")
-	$("#history").css("display","none")
-	$("#village").css("display","block")
-	$("#help").css("display","none")
-}
-function showHelp() {
-	console.log("debugging main div");
-	$("#missions").css("display","none")
-	$("#history").css("display","none")
-	$("#village").css("display","none")
-	$("#help").css("display","block")
-}
 
 function cancelMission(event){
 	var to_delete = $("#" + event.target.id.split("_")[1]).data("parseObject");
@@ -211,8 +223,8 @@ function checkSubtask(event){
 function completeMission(event){
 	var to_complete = $("#" + event.target.id.split("_")[1]).data("parseObject");
 	console.log("task", to_complete);
+	var now = new Date();
 	to_complete.set("completed", true);
-	to_complete.set("finishedAt", new Date());
 	to_complete.save({
 		success:function(){
 			window.location = "/mission_complete";

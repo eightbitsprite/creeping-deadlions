@@ -155,15 +155,12 @@ function dateString(date, includeTime){
 }
 
 function getTimeDifference(start, end){
-	var time1 = Number(start.getTime());
-	var time2 = Number(end.getTime());
 	var difference = end - start;
-	console.log(difference);
 	var dayDiff = Math.floor(difference / (1000 * 3600 * 24)); 
 	difference = difference - (dayDiff * 1000 * 3600 * 24);
 	var hourDiff = Math.floor((difference) / (1000 * 3600)); 
 	difference = difference - (hourDiff * 1000 * 3600);
-	var minDiff = Math.floor(difference / (1000)); 
+	var minDiff = Math.floor(difference / (1000 * 60)); 
 
-	return dayDiff + " days, " + hourDiff + " hours, and " + minDiff + "minutes";
+	return dayDiff + " days, " + hourDiff + " hours, and " + minDiff + " minutes";
 }
