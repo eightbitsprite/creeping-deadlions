@@ -15,11 +15,12 @@
 				<a href="#" id="menu_stats" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<img src="../images/nav_profile.png" class="nav_img">
 				</a>
-			<ul class="dropdown-menu">
-				<li>[[Food Count Here]]</li>
-   				<li>[[Wood Count Here]]</li>
-   				<li>[[Stone Count Here]]</li>
-   				<li>[[Village Level Here]]</li>
+			<ul class="dropdown-menu stat-dropdown">
+				<li>Village Level: 1</li>
+				<li>Food: 0</li>
+   				<li>Wood: 0</li>
+   				<li>Stone 0</li>
+   				
    				<li role="separator" class="divider"></li>
    				<li><a id="logoutbutton">Log Out</a></li>
 			</ul>	
@@ -43,7 +44,7 @@
 		</div>
 	</div>	
 
-<div id="main" class="container text-center">
+<div id="main" class="container">
 	
 	<div class="main-content">
 		<!-- The mission log portion of the app -->
@@ -56,10 +57,12 @@
 
 		<!-- The history portion of the app -->
 		<div id="history">
+			<h1>Mission History</h1>
 			<nav>
-				<a class="btn" id="history-completed-button">Completed</a>
-				<a class="btn" id="history-failed-button">Failed</a>
+				<a class="btn btn-custom btn-selected history-button" id="history-completed-button">Completed Missions</a>
+				<a class="btn btn-custom history-button" id="history-failed-button">Failed Missions</a>
 			</nav>
+			<br/>
 			<ul id="completed-missions-list" class="list-unstyled">
 			</ul>
 			<ul id="failed-missions-list" class="list-unstyled">
@@ -69,24 +72,34 @@
 		<!-- The help portion of the app -->
 		<div id="help">
 			<h3> General Mechanics </h4>
-			<p>In order to improve the village the runners live in, you must send out runners to retrieve necessary resources for village upgrades. Unfortunately, each time they leave the warm glow of the campfire, they risk discovery (and digestion) by the deadlions. Whether they live or not is up to whether or not <em>you</em> finish the task corresponding to them.
+			<p>In order to improve the village the runners live in, you must send out runners to retrieve necessary resources for village upgrades. Unfortunately, each time they leave the warm glow of the campfire, they risk discovery (and digestion) by the deadlions. Whether they live or not is up to whether or not <em>you</em> finish the mission assigned to them.
 			</p>
+			<br/>
+			<hr/>
 			<h4>'Mission' Screen</h4>
 			<p>
-				This is a current list of all runners out in the field, and the task you must complete in order for them to escape the deadlion and bring back valuable resources to their village.
+				This is a current list of all runners out in the field and the mission you must complete in order for them to escape the deadlion and bring back valuable resources to their village.
 
 				A deadlined mission is marked complete when you hit the 'Complete' button after finishing all the subtasks to particular to that specific mission, while a recurring mission can only be marked complete at the end of the current month.
 			</p>
+			<br/>
+			<hr/>
 			<h4> 'History' Screen </h4>
 			<p>
-				Here is all your previous missions - whether they ended with the happy return of a runner into the camp, or the horrified last gasps of a living, sentient person being torn apart by the jaws of an undead feline.
+				Here are all of your previous missions - whether they ended with the happy return of a runner into the camp, or the horrified last gasps of a living, sentient person being torn apart by the jaws of an undead feline.
+			</p>
+			<br/>
+			<hr/>
+			<h4> 'Village' Screen </h4>
+			<p>
+				Here, you can check in on your villagers and see how they are doing. Keep completing missions to earn upgrades for your village!
 			</p>
 		</div>
 
 		<!-- The village section of the app -->
 		<div id="village">
 			<h1>My Village</h1>
-			<p>People you have saved will appear here</p>
+			<p id="village_description">People you have saved will appear here</p>
 			<div id="village_display" class="container-fluid">
 				<!--<img id="village" src="/images/basic_overworld.png"/>-->
 				<div id="gradient0">&nbsp;</div>

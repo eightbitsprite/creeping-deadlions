@@ -7,57 +7,50 @@
 </head>
 <body>
 <div id="main" class="main">
-	<h1 class="text-center">Create a Mission</h1>
-
     <div id="missions" class="row">
-
     	<div id="new_mission" class="col-md-12 mission_box">
+    		<h1 class="text-center">Create a Mission</h1>
     		<em><h5 id="error_msg"></h5></em>
 			<!--<form id="newMissionForm" role="form" method="get" action="/new_mission">-->
 			<label for="new_mission_name_textbox">Enter Mission Name:</label>
-				<input id="new_mission_name_textbox" class="form-control" type="text" placeholder="Mission Name (e.g. Finish project)" name="mission_name" required/>
+				<input id="new_mission_name_textbox" class="form-control" type="text" placeholder="Mission Name" name="mission_name" required/>
 
 			<div class="new_input" id="new_frequency_input">
-			<label for="new_mission_name_textbox">Enter Mission Frequency:</label><br/>
-				<ul class="list-unstyled">
+			<label for="new_mission_name_textbox">Select Mission Frequency:</label><br/>
+				<ul class="list-unstyled text-center">
 				<li>
 					<!-- click calls toggleTimed-->
 					<input type="radio" id="new_freq_recurring" name="frequency"/>
-					<label for="new_freq_recurring">Recurring (regular activity)</label></li>
+					<label class = "freq_select" for="new_freq_recurring">Recurring (regular activity)</label>
+				</li>
 				<li>
 					<!-- click calls toggleRecurring-->
 					<input type="radio" id="new_freq_timed" name="frequency"/>
-					<label for="new_freq_recurring">Timed (activity with deadline)</label></li>
-				<li>
-					<!-- button to bring up popup modal -->
-					<a href="#" id="freqDetailsBtn" class="btn btn-default">Details</a></li>
+					<label class = "freq_select" for="new_freq_timed">Timed (activity with deadline)</label>
+				</li>
+				<li><a id="freqDetailsBtn" class="btn">No Time Selected</a></li>
 				</ul>
-				<input type="time" id="new_task_due_time" name="duetime" value="00:00"/>
-				<div class="new_input" id="new_subtask_input">
-					<input type="hidden" name="subtasklist" id="hiddensubtasks"/>
-					<label for="new_subtasks">Subtasks:</label>
-					<ul id="new_subtasks" class="list-unstyled"></ul>
-					<label id="new_subtask_label" for="subtask"></label>
-					<input id="new_subtask_textbox" type="text" placeholder="Enter subtask"/>
-				<a id="add_task_button">+</a>
-				</div>
+			</div>
 		
-			<div class="new_input" id="new_select_runner">
+			<div class="new_input text-center" id="new_select_runner">
 			<ul class="list-inline">
 				<li>
-					&lt;<img alt="Select Runner Screen" class="gif" src="/images/run-test.gif"/>&gt;</li>
+					&lt;<img alt="Select Runner Screen" class="gif" src="/images/run-test.gif"/>&gt;
+				</li>
+				<br/>
 				<li>
-					<label for="new_runner_textbox">NAME:</label>
-					<input type="text" id="new_runner_textbox" class="form_control" name="runner"/></li>
+					<label for="new_runner_textbox">Runner:</label>
+					<input type="text" id="new_runner_textbox" class="form_control" name="runner"/>
 				</li>
 				<li>
-					<a class="btn btn-default pull-right" id="new_runner_randomize">?!<a></li>
+					<a class="btn btn-custom" id="new_runner_randomize">?!<a>
+				</li>
 			</ul>
 			</div>			
 				
-			<div class="new_input" id="new_input_submit">
-					<button type="submit" class="btn btn-success" id="new_run_button">RUN!</button>
-					<a class="btn btn-danger" href="/" id="new_cancel_button">Cancel</a>
+			<div class="new_input text-center" id="new_input_submit">
+					<button type="submit" class="btn btn-custom" id="new_run_button">RUN!</button>
+					<a class="btn btn-custom" href="/" id="new_cancel_button">Cancel</a>
 			</div>
 			<!--</form>-->
     	</div>
@@ -74,10 +67,12 @@
       </div>
       <div class="modal-body">
 					<div id="new_freq_recurring_area" class="freq_option">
+						<em><h5 id="recur_error_msg"></h5></em>
 						<h4>Recurring:</h4>
 						<label for="new_task_recurring_dates">Days:</label>
-						<input type="checkbox" id="select_all"/><label for="select_all">Select All</label>
-						<ul id="new_task_recurring_dates">
+						
+						<ul id="new_task_recurring_dates" class="list-unstyled">
+							<input type="checkbox" id="select_all"/><label for="select_all">Select All</label>
 							<li><input type="checkbox" name="sunday" id="sunday_box" class="day_box"/><label for="sunday_box">Sunday</label></li>
 							<li><input type="checkbox" name="monday" id="monday_box" class="day_box"/><label for="monday_box">Monday</label></li>
 							<li><input type="checkbox" name="tuesday" id="tuesday_box" class="day_box"/><label for="tuesday_box">Tuesday</label></li>
@@ -91,8 +86,8 @@
 					</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary modalSaveBtn">Save changes</button>
+        <button type="button" class="btn btn-custom" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-custom modalSaveBtn">Save Changes</button>
       </div>
     </div>
   </div>
@@ -108,17 +103,26 @@
       </div>
       <div class="modal-body">
       				<div id="new_freq_timed_area"class="freq_option">
+      					<em><h5 id="timed_error_msg"></h5></em>
 						<h4>Timed:</h4>
 						<label for="new_task_due_date">Due Date:</label>
 						<input type="date" id="new_task_due_date" name="duedate"/>
 						<label for="new_task_due_time">Time:</label>
-						<input type="time" id="new_task_due_time" name="duetime"/>
+						<input type="time" id="new_task_due_time" name="duetime" value="00:00"/>
+						<div class="new_input" id="new_subtask_input">
+							<input type="hidden" name="subtasklist" id="hiddensubtasks"/>
+							<label for="new_subtasks">Subtasks:</label>
+							<ul id="new_subtasks" class="list-unstyled"></ul>
+							<label id="new_subtask_label" for="subtask"></label>
+							<input id="new_subtask_textbox" type="text" placeholder="Enter subtask"/>
+						<a id="add_task_button">+</a>
+						</div>
 
 					</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary modalSaveBtn">Save changes</button>
+        <button type="button" class="btn btn-custom" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-custom modalSaveBtn">Save Changes</button>
       </div>
     </div>
   </div>
