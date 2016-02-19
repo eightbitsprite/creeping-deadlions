@@ -1,0 +1,28 @@
+<div id="missionPartial">
+<li class="mission_box container" id="mission_{{this.objectId}}">
+{{this.title}}
+{{this}}
+{{title}}
+{{this.attributes}}
+	<div class="runner-progress">
+		<img src="/images/lion-run-test.gif" class="gif"/>
+		<span class="distance">{{#each this.subtasks}}&nbsp;&nbsp;{{/each}}</span>
+		<img src="/images/run-test.gif" class="gif"/>
+	</div>
+	<h4 class="pull-right">
+		{{#if this.isRecurring}}
+			Due: {{this.deadline}}
+		{{else}}
+			Repeat until: {{this.deadline}}
+		{{/if}}
+	</h4>
+	<h3>Mission: {{title}}</h3>
+	<ul class="list-unstyled subtasks-list">
+		{{#each subtasks}}
+			<h4><input id="{{this.title}}" type="checkbox"/><label for="{{this.title}}">{{this.title}}</label></h4>
+		{{/each}}
+	</ul>
+	<a class="btn btn-default pull-right cancel_mission">Cancel</a>
+	<button type ="submit" class="btn btn-primary pull-right">Complete!</button>
+</li>
+</div>
