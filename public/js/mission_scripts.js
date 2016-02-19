@@ -90,77 +90,15 @@ function freqDetails(){
 		//$("#recurFreq").modal("toggle");
 }
 function modalSave() {
-
 	var freqType = $("input[name=frequency]:checked").attr("id");
-	var error_msg = (freqType === "new_freq_recurring")? "#recur_error_msg" : "#timed_error_msg";
 	var modalContent = $("#recurFreq .modal-body").html();
-	var deadline;
-	var isValid = true;
-	$(error_msg).html("");
-
-	if(freqType === "new_freq_recurring" && $("#new_task_recurring_dates").find(":checked").length == 0){
-		$(error_msg).append("<p>Please select at least one day for recurring task.</p>");
-		isValid = false;
+	if (freqType === "new_freq_recurring") {
+		//$("#new_freq_recurring_area").empty().append(modalContent);
+		$("#recurFreq").modal("toggle");
+	} else {
+		//$("#new_freq_timed_area").empty().append(modalContent);
+		$("#timedFreq").modal("toggle");
 	}
-	if(freqType === "new_freq_timed" && subtaskString == ""){
-		$(error_msg).append("<p>Please add at least one subtask.</p>");
-		isValid = false;
-	}
-	var today =new Date();
-	if(freqType === "new_freq_recurring"){
-		if($("#new_task_until_date").val().toString().trim() == ""){
-			$(error_msg).append("<p>Please select a valid date.</p>");
-     		isValid = false;
-		}
-	  	if(isValid){
-			deadline= new Date($("#new_task_until_date").val());
-			if(deadline < today){
-		  		$(error_msg).append("<p>Please select a future date.</p>");
-		     	isValid = false;
-		  	}
-	      	deadline.setHours(23);
-	      	deadline.setMinutes(59);
-	      	deadline.setSeconds(59);
-		}
-	}else if(freqType === "new_freq_timed"){
-		if($("#new_task_due_date").val().toString().trim() == ""){
-			$(error_msg).append("<p>Please select a valid date.</p>");
-     		isValid = false;
-		}else{
-			deadline= new Date($("#new_task_due_date").val());
-			if(deadline < today){
-		  		$(error_msg).append("<p>Please select a future date.</p>");
-		     	isValid = false;
-		  	}
-		}
-		
-		var dueTime = $("#new_task_due_time").val();
-      	if(!(/^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(dueTime.toString()))){
-      		$(error_msg).append("<p>Please select a valid time.</p>");
-         	isValid = false;
-      	}
-
-      	if(isValid){
-	      	deadline.setHours(Number(dueTime.split(":")[0]));
-	      	deadline.setMinutes(Number(dueTime.split(":")[1]));
-	      	deadline.setSeconds(0);
-      	}
-      	
-	}
-	
-	
-  	if(isValid){
-  		
-  		$(error_msg).html("");
-  		if (freqType === "new_freq_recurring") {
-			//$("#new_freq_recurring_area").empty().append(modalContent);
-			$("#recurFreq").modal("toggle");
-		} else {
-			//$("#new_freq_timed_area").empty().append(modalContent);
-			$("#timedFreq").modal("toggle");
-		}
-		$("#freqDetailsBtn").text(((freqType === "new_freq_timed")? "Due at: " : "End on: ") + dateString(deadline, freqType === "new_freq_timed"));
-  	}
 }
 
 function addSubtask(){
@@ -180,7 +118,7 @@ function generateRunner(){
 
 function saveTask(){
 	/*Validation*/
-	var title = $("#new_mission_name_textbox").val().trim();
+	var title = $("#new_mission_name_textbox").val();
 	var runner = null;
 	var resource = null;
 	var user = JSON.parse(window.localStorage.getItem("current_user"));
@@ -193,10 +131,16 @@ function saveTask(){
 		$("#error_msg").append("<p>Mission name is required.</p>");
 		isValid = false;
 	}
-	
-	/*Check time validity*/
 	if(!$("#new_freq_recurring").is(":checked") && !$("#new_freq_timed").is(":checked")){
-		$(error_msg).append("<p>Please select a frequency type before proceeding.</p>");
+		$("#error_msg").append("<p>Please select a frequency type before proceeding.</p>");
+		isValid = false;
+	}
+	if($("#new_freq_recurring").is(":checked") && $("#new_task_recurring_dates").find(":checked").length == 0){
+		$("#error_msg").append("<p>Please select at least one day for recurring task.</p>");
+		isValid = false;
+	}
+	if($("#new_freq_timed").is(":checked") && subtaskString == ""){
+		$("#error_msg").append("<p>Please add at least one subtask.</p>");
 		isValid = false;
 	}
 
@@ -209,7 +153,7 @@ function saveTask(){
       	deadline= new Date($("#new_task_due_date").val());
       	var dueTime = $("#new_task_due_time").val();
       	if(!(/^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(dueTime.toString()))){
-      		$(error_msg).append("<p>Please select a valid time.</p>");
+      		$("#error_msg").append("<p>Please select a valid time.</p>");
          	isValid = false;
       	}else{
 	      	deadline.setHours(Number(dueTime.split(":")[0]));
@@ -219,12 +163,15 @@ function saveTask(){
 	}
 	var today =new Date();
 	if (deadline.value == " "){
-		$(error_msg).append("<p>Please select a valid date.</p>");
+		$("#error_msg").append("<p>Please select a valid date.</p>");
      	isValid = false;
   	}else if(deadline < today){
-  		$(error_msg).append("<p>Please select a future date.</p>");
+  		$("#error_msg").append("<p>Please select a future date.</p>");
      	isValid = false;
   	}
+
+	/*Check time validity*/
+
 	if(isValid){
 		if($("#new_freq_recurring").is(":checked")){
 			var date= new Date();
