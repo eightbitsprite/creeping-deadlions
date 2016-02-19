@@ -24,14 +24,10 @@ $(document).ready(function() {
 function showCompleted(){
 	$("#completed-missions-list").css("display", "block");
 	$("#failed-missions-list").css("display", "none");
-	$("#history-completed-button").addClass("btn-selected");
-	$("#history-failed-button").removeClass("btn-selected");
 }
 function showFailed(){
 	$("#completed-missions-list").css("display", "none");
 	$("#failed-missions-list").css("display", "block");
-	$("#history-completed-button").removeClass("btn-selected");
-	$("#history-failed-button").addClass("btn-selected");
 }
 
 function showLog() {
@@ -71,34 +67,29 @@ function renderMissions(){
 	    success: function (results) {
 
 	    	if(results.length == 0){
-	    		 $("#missions-list").html("<li class='default-list'><em>No missions to display. <br/>Click <strong>'+ New Mission'</strong> to create a new mission.</em></li>");
+	    		 $("#missions-list").append("<li><em>No missions to display. Click '+ New Mission' to create a new mission.</em></li>");
 	    	}else{
 	    		var htmlBuilder = "";
 		        for (var i = 0; i < results.length; i++) {
 		            var data = results[i].toJSON();
 		           	var subtaskHtml = "";
-		           	var space = "&nbsp;&nbsp;&nbsp;&nbsp;"
 		           	for(var s = 0; s < data.subtasks.length; s++){
 		           		subtaskHtml += "<li><input id='" + data.objectId + "_" + data.subtasks[s].id + "'  type='checkbox' class='subtask_check'" + ((data.subtasks[s].completed)? "checked" : "") + "/>"
-		           					+ "<label for='"+ data.objectId + "_" + data.subtasks[s].id + "'>" + data.subtasks[s].title + "</label></li>";
-		           		if(data.subtasks[s].completed)
-		           			space += "&nbsp;&nbsp;&nbsp;";
+		           					+ "<label for='"+ data.objectId + "_" + data.subtasks[s].id + "'>" + data.subtasks[s].title + "</label></li>"
 		           	}
-		           	
-
 		           	var date = dateString(new Date(data.deadline.iso), !data.isRecurring);
 		           	console.log("date is", date);
-		            htmlBuilder += "<li class='mission_box container current_mission' id='" + data.objectId+"''>"
+		            htmlBuilder += "<li class='mission_box container' id='" + data.objectId+"''>"
 		            				+ "<div class='runner-progress'>"
 		            				+  		"<img src='" + "/images/lion-run-test.gif" +"' class='gif'/>"
-		            				+		"<span class='distance'>" + space + "</span>"
+		            				//+		"<span class='distance'>{{#each this.subtasks}}&nbsp;&nbsp;{{/each}}</span>
 		            				+		"<img src='/images/run-test.gif' class='gif'/>"
 		            				+	"</div>"
 		            				+	"<h4 class='pull-right'>" + ((data.isRecurring)? "Until: " : "Due: ") + date + "</h4>"
 		            				+	"<h3>Mission: " + data.title + "</h3>"
 		            				+ 	"<ul class='list-unstyled subtasks-list'>" + subtaskHtml + "</ul>"
-		            				+	"<a class='btn btn-custom pull-right cancel_mission' id='cancel_" + data.objectId + "'>Cancel</a>"
-		            				+	"<a class='btn pull-right complete_mission btn-custom' id='complete_" + data.objectId + "'></a>"
+		            				+	"<a class='btn btn-default pull-right cancel_mission' id='cancel_" + data.objectId + "'>Cancel</a>"
+		            				+	"<a class='btn pull-right complete_mission' id='complete_" + data.objectId + "'></a>"
 		            				+ "</li>"
 		        }
 		        $("#missions-list").html(htmlBuilder);
@@ -137,16 +128,16 @@ function renderCompleted(){
 	query.find({
 	    success: function (results) {
 	    	if(results.length == 0){
-	    		 $("#completed-missions-list").html("<li class='default-list'><em>No missions to display. <br/>Click <strong>'+ New Mission'</strong> to create a new mission.</em></li>");
+	    		 $("#completed-missions-list").append("<li><em>No missions to display. Click '+ New Mission' to create a new mission.</em></li>");
 	    	}else{
 	    		var htmlBuilder = "";
 		        for (var i = 0; i < results.length; i++) {
 		            var data = results[i].toJSON();
 		           	var date = dateString(new Date(data.updatedAt), true);
-		            htmlBuilder += "<li class='mission_box container history_mission' id='" + data.objectId+"''>"
+		            htmlBuilder += "<li class='mission_box container' id='" + data.objectId+"''>"
 		            				+	"<h3>Mission: " + data.title + "</h3>"
 		            				+	"<h5>Completed at: " + dateString(new Date(data.updatedAt), true) + "</h5>"
-		            				+	"<h6><em>Started at: " + dateString(new Date(data.createdAt), true) + "</em></h6>"
+		            				+	"<h5><em>Started at: " + dateString(new Date(data.createdAt), true) + "</em></h5>"
 		            				+ 	"<p>Time Elapsed: " + getTimeDifference(new Date(data.createdAt), new Date(data.updatedAt)) + "</p>"
 		            				+ "</li>"
 		        }
@@ -169,7 +160,7 @@ function renderFailed(){
 	query.find({
 	    success: function (results) {
 	    	if(results.length == 0){
-	    		 $("#failed-missions-list").html("<li class='default-list'><em>No failed missions.</em></li>");
+	    		 $("#failed-missions-list").append("<li><em>No failed missions.</em></li>");
 	    	}else{
 	    		var htmlBuilder = "";
 		        for (var i = 0; i < results.length; i++) {
@@ -180,7 +171,7 @@ function renderFailed(){
 		            		completeCount++;
 		            }
 		           	var date = dateString(new Date(data.deadline.iso), !data.isRecurring);
-		            htmlBuilder += "<li class='mission_box container history_mission'>"
+		            htmlBuilder += "<li class='mission_box container>"
 		            				+	"<h3>Mission: " + data.title + "</h3>"
 		            				+	"<h5>Completed " + completeCount + " out of " + data.subtasks.length + " subtasks | Lost: [runner name]</h5>"
 		            				+ "</li>"
@@ -215,12 +206,11 @@ function cancelMission(event){
 }
 
 function checkSubtask(event){
-	console.log($("#" + event.target.id).is(":checked"));
 	var id = event.target.id.split("_")[0];
 	var index = event.target.id.split("_")[1];
 	var to_update = $("#" + id).data("parseObject");
 	var list = to_update.get("subtasks");
-	list[index].completed = $("#" + event.target.id).is(":checked");
+	list[index].completed = true;
 	to_update.set("subtasks", list);
 	to_update.save({
 		success:function(){
