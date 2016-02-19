@@ -37,10 +37,12 @@ $(document).ready(function() {
 function initializePage() {
 	$("#add_task_button").click(addSubtask);
 	$("#new_mission_name_textbox").keydown(openTaskFrequency);
-	$("#new_freq_timed").change(toggleTimed);
-	$("#new_freq_recurring").change(toggleRecurring);
+	$("#new_freq_timed").change(freqDetails);
+	$("#new_freq_recurring").change(freqDetails);
 	$("#new_runner_randomize").click(generateRunner);
-	$("#new_run_button").click(saveTask);
+	$("#new_run_button").click(saveTask)
+	$("#freqDetailsBtn").click(freqDetails);
+	$(".modalSaveBtn").click(modalSave)
 	$("#select_all").click(checkAll)
 	var current = new Date();
 	console.log("current", current.getDate()+1);
@@ -52,6 +54,7 @@ function openTaskFrequency(){
 	$("#new_frequency_input").css("display","block");
 }
 
+/*
 function toggleTimed(){
 	$("#new_freq_recurring_area").css("display","none");
 	$("#new_freq_timed_area").css("display","block");
@@ -60,6 +63,42 @@ function toggleTimed(){
 function toggleRecurring(){
 	$("#new_freq_recurring_area").css("display","block");
 	$("#new_freq_timed_area").css("display","none");
+}
+*/
+function freqDetails(){
+	if(!$("#new_freq_recurring").is(":checked") && !$("#new_freq_timed").is(":checked")){
+		$("#error_msg").empty();
+		$("#error_msg").append("<p>Please select a frequency type before proceeding.</p>");
+		return;
+	}
+	var freqType = $("input[name=frequency]:checked").attr("id");
+	var modalContent, modalHead;
+	console.log(freqType);
+	if (freqType === "new_freq_recurring") {
+		//modalContent = $("#new_freq_recurring_area").html();
+		modalHead = "Recurring Event Details";
+		$("#recurFreq .modal-title").empty().append(modalHead);
+		$("#recurFreq").modal("toggle");
+	} else {
+		//modalContent = $("#new_freq_timed_area").html();
+		modalHead = "Timed Event Details";
+		$("#timedFreq .modal-title").empty().append(modalHead);
+		$("#timedFreq").modal("toggle");
+	}
+		//$("#recurFreq .modal-title").empty().append(modalHead);
+		//$("#recurFreq .modal-body").empty().append(modalContent);
+		//$("#recurFreq").modal("toggle");
+}
+function modalSave() {
+	var freqType = $("input[name=frequency]:checked").attr("id");
+	var modalContent = $("#recurFreq .modal-body").html();
+	if (freqType === "new_freq_recurring") {
+		//$("#new_freq_recurring_area").empty().append(modalContent);
+		$("#recurFreq").modal("toggle");
+	} else {
+		//$("#new_freq_timed_area").empty().append(modalContent);
+		$("#timedFreq").modal("toggle");
+	}
 }
 
 function addSubtask(){

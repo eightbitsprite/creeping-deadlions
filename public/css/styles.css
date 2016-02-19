@@ -62,6 +62,7 @@ h3,h4{
 	border:1px solid gray;
 	height: auto;
 	background-color: lightgray;
+	padding: 1vh 1vw;
 }
 
 #new_subtasks{
@@ -77,6 +78,9 @@ h3,h4{
 	height:30px;
 	font-size:20px;
 }
+#new_select_runner {
+	margin: 1vh 0vw;
+}
 #add_task_button{
 	font-size:25px;
 	cursor:pointer;
@@ -85,9 +89,11 @@ h3,h4{
 	font-size:18px;
 }
 
+/*
 .freq_option{
 	display:none;
 }
+*/
 .highlight-text{
 	font-weight: 400;
 	color: red;
@@ -197,6 +203,10 @@ h3,h4{
 	background-color: #BEB096;
   	border: 4px solid #361700;
   	padding: 2vh 2vw 1vh 2vw;
+}
+#main h1{
+	font-family: 'Anton', sans-serif;
+	font-size: 32pt;
 }
 
 ::-webkit-scrollbar {
