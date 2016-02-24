@@ -32,6 +32,7 @@
 				</ul>
 			</div>
 		
+			<label>Select Runner:</label>
 			<div class="new_input text-center" id="new_select_runner">
 			<ul class="list-inline">
 				<li>
@@ -39,7 +40,7 @@
 				</li>
 				<br/>
 				<li>
-					<label for="new_runner_textbox">Runner:</label>
+					<label for="new_runner_textbox">Name:</label>
 					<input type="text" id="new_runner_textbox" class="form_control" name="runner"/>
 				</li>
 				<li>
@@ -63,12 +64,11 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <h4 class="modal-title" id="myModalLabel">Select Date</h4>
       </div>
       <div class="modal-body">
 					<div id="new_freq_recurring_area" class="freq_option">
 						<em><h5 id="recur_error_msg"></h5></em>
-						<h4>Recurring:</h4>
 						<label for="new_task_recurring_dates">Days:</label>
 						
 						<ul id="new_task_recurring_dates" class="list-unstyled">
@@ -104,9 +104,9 @@
       <div class="modal-body">
       				<div id="new_freq_timed_area"class="freq_option">
       					<em><h5 id="timed_error_msg"></h5></em>
-						<h4>Timed:</h4>
 						<label for="new_task_due_date">Due Date:</label>
 						<input type="date" id="new_task_due_date" name="duedate"/>
+						<br/>
 						<label for="new_task_due_time">Time:</label>
 						<input type="time" id="new_task_due_time" name="duetime" value="00:00"/>
 						<div class="new_input" id="new_subtask_input">
@@ -115,7 +115,7 @@
 							<ul id="new_subtasks" class="list-unstyled"></ul>
 							<label id="new_subtask_label" for="subtask"></label>
 							<input id="new_subtask_textbox" type="text" placeholder="Enter subtask"/>
-						<a id="add_task_button">+</a>
+						<a id="add_task_button" class="btn btn-subtask">+</a>
 						</div>
 
 					</div>

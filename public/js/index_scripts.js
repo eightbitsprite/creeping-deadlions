@@ -75,31 +75,41 @@ function renderMissions(){
 	    success: function (results) {
 
 	    	if(results.length == 0){
-	    		 $("#missions-list").html("<li class='default-list'><em>No missions to display. <br/>Click <strong>'+ New Mission'</strong> to create a new mission.</em></li>");
+	    		 $("#missions-list").html("<li class='default-list'><em>No missions to display. <br/>Click <strong>'New Mission'</strong> to create a new mission.</em></li>");
 	    	}else{
 	    		var htmlBuilder = "";
 		        for (var i = 0; i < results.length; i++) {
 		            var data = results[i].toJSON();
 		           	var subtaskHtml = "";
-		           	var space = "&nbsp;&nbsp;&nbsp;&nbsp;"
-		           	for(var s = 0; s < data.subtasks.length; s++){
-		           		subtaskHtml += "<li><input id='" + data.objectId + "_" + data.subtasks[s].id + "'  type='checkbox' class='subtask_check'" + ((data.subtasks[s].completed)? "checked" : "") + "/>"
-		           					+ "<label for='"+ data.objectId + "_" + data.subtasks[s].id + "'>" + data.subtasks[s].title + "</label></li>";
-		           		if(data.subtasks[s].completed)
-		           			space += "&nbsp;&nbsp;&nbsp;";
+		           	var space = "&nbsp;&nbsp;&nbsp;&nbsp;";
+		           	if(data.isRecurring){
+		           		if(data.subtasks.length == 0)
+		           			subtaskHtml += "<li>No dates found. Click button to complete task!</li>";
+		           		else
+		           			subtaskHtml += "<li><input id='" + data.objectId + "_" + data.subtasks[0].id + "'  type='checkbox' class='subtask_check'" + ((data.subtasks[0].completed)? "checked" : "") + "/>"
+		           					+ "<label for='"+ data.objectId + "_" + data.subtasks[0].id + "'>" + data.subtasks[0].title + "</label></li>";
+		           	}else{
+		           		for(var s = 0; s < data.subtasks.length; s++){
+			           		subtaskHtml += "<li><input id='" + data.objectId + "_" + data.subtasks[s].id + "'  type='checkbox' class='subtask_check'" + ((data.subtasks[s].completed)? "checked" : "") + "/>"
+			           					+ "<label for='"+ data.objectId + "_" + data.subtasks[s].id + "'>" + data.subtasks[s].title + "</label></li>";
+			           		if(data.subtasks[s].completed)
+			           			space += "&nbsp;&nbsp;&nbsp;";
+			           	}
 		           	}
-		           	
 
 		           	var date = dateString(new Date(data.deadline.iso), !data.isRecurring);
 		           	console.log("date is", date);
-		            htmlBuilder += "<li class='mission_box container current_mission' id='" + data.objectId+"''>"
+		            htmlBuilder += "<li class='mission_box container current_mission' id='" + data.objectId +"''>"
+		            				+ "<ul class='dropdown-menu pull-right' aria-labelledby='dropdownMenu4'>"
+  									+ 	"<li><a class='editl_mission'>Edit</a></li>"
+  									+ 	"<li><a class='cancel_mission'>Delete</a></li></ul>"
 		            				+ "<div class='runner-progress'>"
-		            				+  		"<img src='" + "/images/lion-run-test.gif" +"' class='gif'/>"
+		            				+  		"<img src='" + "/images/lion-run-test.gif" +"' class='gif' id='lion_" + data.objectId + "'/>"
 		            				+		"<span class='distance'>" + space + "</span>"
-		            				+		"<img src='/images/run-test.gif' class='gif'/>"
+		            				+		"<img src='/images/run-test.gif' class='gif runner_gif' id='runner_" + data.objectId + "'/>"
 		            				+	"</div>"
-		            				+	"<h4 class='pull-right'>" + ((data.isRecurring)? "Until: " : "Due: ") + date + "</h4>"
-		            				+	"<h3>Mission: " + data.title + "</h3>"
+		            				+	"<h4 class='pull-right'>" + ((data.isRecurring)? data.dates + "<br/>Until: " : "Due: ") + date + "</h4>"
+		            				+	"<br/><h3>Mission: " + data.title + "</h3>"
 		            				+ 	"<ul class='list-unstyled subtasks-list'>" + subtaskHtml + "</ul>"
 		            				+	"<a class='btn btn-custom pull-right cancel_mission' id='cancel_" + data.objectId + "'>Cancel</a>"
 		            				+	"<a class='btn pull-right complete_mission btn-custom' id='complete_" + data.objectId + "'></a>"
@@ -109,8 +119,17 @@ function renderMissions(){
 		        for (var i = 0; i < results.length; i++) {
 		        	var data = results[i].toJSON();
 		             $("#" + data.objectId).data("parseObject", results[i]);
+
+		             /*Set up progress bar*/
+		             if(data.isRecurring){
+		             	console.log($("#lion_" + data.objectId));
+		             	$("#lion_" + data.objectId).css("margin-left", (Math.ceil((data.failedTasks / data.totalTasks) / 2) * 100) + "%");
+		             }/*else{
+		             	$("#lion_" + data.objectId).css("margin-right", "0em");
+		             }*/
+
+		             /*Determine if ready to complete*/
 		             var readyToComplete = $("#" + data.objectId).find(":checked").length == data.subtasks.length;
-		             console.log(data.title + " is ready? " + readyToComplete);
 		             if(readyToComplete){
 		             	$("#complete_" + data.objectId).addClass("btn-success");
 		             	$("#complete_" + data.objectId).removeClass("btn-secondary-outline");
@@ -141,7 +160,7 @@ function renderCompleted(){
 	query.find({
 	    success: function (results) {
 	    	if(results.length == 0){
-	    		 $("#completed-missions-list").html("<li class='default-list'><em>No missions to display. <br/>Click <strong>'+ New Mission'</strong> to create a new mission.</em></li>");
+	    		 $("#completed-missions-list").html("<li class='default-list'><em>No missions to display. <br/>Click <strong>'New Mission'</strong> to create a new mission.</em></li>");
 	    	}else{
 	    		var htmlBuilder = "";
 		        for (var i = 0; i < results.length; i++) {
@@ -175,21 +194,18 @@ function renderFailed(){
 	    	if(results.length == 0){
 	    		 $("#failed-missions-list").html("<li class='default-list'><em>No failed missions.</em></li>");
 	    	}else{
+	    		console.log(results);
 	    		var htmlBuilder = "";
 		        for (var i = 0; i < results.length; i++) {
 		            var data = results[i].toJSON();
-		            var completeCount = 0;
-		            for(var s = 0; s < data.subtasks.length; s++){
-		            	if(data.subtasks[s].completed)
-		            		completeCount++;
-		            }
 		           	var date = dateString(new Date(data.deadline.iso), !data.isRecurring);
 		            htmlBuilder += "<li class='mission_box container history_mission'>"
 		            				+	"<h3>Mission: " + data.title + "</h3>"
-		            				+	"<h5>Completed " + completeCount + " out of " + data.subtasks.length + " subtasks | Lost: [runner name]</h5>"
+		            				+	"<h5>Completed " + data.completedTasks + " out of " + data.totalTasks + " subtasks</h5>"
+		            				+	"<h6><em>RIP: [runner name]</em></h6>"
 		            				+ "</li>"
 		        }
-		        $("#missions-list").html(htmlBuilder);
+		        $("#failed-missions-list").html(htmlBuilder);
 	    	}
 	    },
 	    error: function (error) {
@@ -200,7 +216,6 @@ function renderFailed(){
 
 
 function initializePage() {
-	
 	$(".cancel_mission").click(cancelMission);
 	$(".subtask_check").change(checkSubtask);
 	$(".complete_mission").click(completeMission);
@@ -224,8 +239,15 @@ function checkSubtask(event){
 	var index = event.target.id.split("_")[1];
 	var to_update = $("#" + id).data("parseObject");
 	var list = to_update.get("subtasks");
-	list[index].completed = $("#" + event.target.id).is(":checked");
-	to_update.set("subtasks", list);
+	if(to_update.get("isRecurring")){
+		list.shift();
+	}else{
+		list[index].completed = $("#" + event.target.id).is(":checked");
+	}
+	to_update.set({
+		"subtasks": list,
+		"completedTasks": ($("#" + event.target.id).is(":checked") || to_update.get("isRecurring")) ? to_update.get("completedTasks") + 1 : to_update.get("completedTasks") - 1 
+	});
 	to_update.save({
 		success:function(){
 			renderMissions();
