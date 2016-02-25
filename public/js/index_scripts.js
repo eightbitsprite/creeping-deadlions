@@ -43,24 +43,29 @@ function showLog() {
 	$("#history").css("display","none");
 	$("#village").css("display","none");
 	$("#help").css("display","none");
+
+	$("#current_page_id").empty().append("Mission Log");
 }
 function showHistory() {
 	$("#missions").css("display","none");
 	$("#history").css("display","block");
 	$("#village").css("display","none");
 	$("#help").css("display","none");
+	$("#current_page_id").empty().append("History");
 }
 function showVillage() {
 	$("#missions").css("display","none");
 	$("#history").css("display","none");
 	$("#village").css("display","block");
 	$("#help").css("display","none");
+	$("#current_page_id").empty().append("My Village");
 }
 function showHelp() {
 	$("#missions").css("display","none");
 	$("#history").css("display","none");
 	$("#village").css("display","none");
 	$("#help").css("display","block");
+	$("#current_page_id").empty().append("Help");
 }
 
 
@@ -110,7 +115,9 @@ function renderMissions(){
 		            				+	"</div>"
 		            				+	"<h4 class='pull-right'>" + ((data.isRecurring)? data.dates + "<br/>Until: " : "Due: ") + date + "</h4>"
 		            				+	"<br/><h3>Mission: " + data.title + "</h3>"
-		            				+ 	"<ul class='list-unstyled subtasks-list'>" + subtaskHtml + "</ul>"
+		            				+	"<div class='tasklist'>" //For jQuery slideup/slidedown implementation
+		            				+	"<ul class='list-unstyled subtasks-list'>" + subtaskHtml + "</ul>"
+		            				+	"</div>"
 		            				+	"<a class='btn btn-custom pull-right cancel_mission' id='cancel_" + data.objectId + "'>Cancel</a>"
 		            				+	"<a class='btn pull-right complete_mission btn-custom' id='complete_" + data.objectId + "'></a>"
 		            				+ "</li>"
@@ -141,6 +148,9 @@ function renderMissions(){
 		           	 $("#complete_" + data.objectId).css("cursor", (readyToComplete)? "pointer" : "not-allowed");
 		           	  $("#complete_" + data.objectId).text((readyToComplete)? "Complete!" : "Incomplete");
 		        }	
+			$(".current_mission .tasklist").click(function(e) {e.stopPropagation();});
+			$(".current_mission .btn").click(function(e) {e.stopPropagation();});
+			$(".current_mission").click(toggleSubtaskList);
 	    	}
 	    	
 	        initializePage();
@@ -254,6 +264,12 @@ function checkSubtask(event){
 		}
 	});
 
+}
+
+function toggleSubtaskList(){
+	var currentBox = $(this);
+	var currentList = currentBox.children(".tasklist");
+	currentList.slideToggle(100);
 }
 
 function completeMission(event){

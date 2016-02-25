@@ -175,15 +175,24 @@ body{
 }
 
 #new_mission_button{
+	/*
 	background-color:#990000;
 	color:white;
 	margin: 0px 10px 0px 10px
-}
-#new_mission_button:hover{
-	background-color:#993333;
+	*/
+	/*float: left;*/
 }
 #menu_stats {
-	margin: 2px 20px 0px 20px;
+	margin: 0px 10px 0px 0px;
+	float: right;
+}
+#prof_dropdown {
+	/*float: right;*/
+}
+#current_page_id {
+	margin: 0 auto;
+	font-family: 'Anton', sans-serif;
+	font-size: 22pt;
 }
 /*Bottom menu bar information*/
 #navbar_bottom {

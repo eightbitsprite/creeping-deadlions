@@ -7,24 +7,21 @@
 <body>
 <div id="main" class="main">
 	<div class="navbar_cust" id="navbar_top"> <div class="row">
-		<div class="pull-left">
-			<a href="create_mission"><img src="../images/nav_newmission.png" class="nav_img"><a>
-		</div>
-		<div class="pull-right btn-group">
-				<a href="#" id="menu_stats" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<img src="../images/nav_profile.png" class="nav_img">
-				</a>
+		<div class="pull-left" id="new_mission_button"><a href="create_mission">
+			<img src="../images/nav_newmission.png" class="nav_img"></a></div>
+		<div class="pull-right btn-group" id="prof_dropdown">
+			<a href="#" id="menu_stats" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../images/nav_profile.png" class="nav_img"></a>
 			<ul class="dropdown-menu stat-dropdown">
 				<li>Village Level: 1</li>
 				<li>Food: 0</li>
    				<li>Wood: 0</li>
    				<li>Stone 0</li>
-   				
    				<li role="separator" class="divider"></li>
    				<li><a id="logoutbutton">Log Out</a></li>
-			</ul>	
+			</ul>
 		</div>
-		</div>
+		<div class="text-center" id="current_page_id">Mission Log</div>
+	  </div>
 	</div>
 	<!-- main navigation bar fixed @ bottom -->
 	<div class="navbar_cust" id="navbar_bottom">
@@ -34,7 +31,7 @@
 					<a href="#" id="menu_log"><img src="../images/nav_log.png" class="nav_img"></a></li>
 				<li>
 					<a href="#" id="menu_history"><img src="../images/nav_history.png" class="nav_img"></a></li>
-				<!-- CONFIRM: separate help section for the log screen; village screen will have its own 'help' section? -->
+				<!-- confirm: separate help section for the log screen; village screen will have its own 'help' section? -->
 				<li>
 					<a href="#" id="menu_help"><img src="../images/nav_help.png" class="nav_img"></a></li>
 				<li>
@@ -56,7 +53,6 @@
 
 		<!-- The history portion of the app -->
 		<div id="history">
-			<h1>Mission History</h1>
 			<nav>
 				<a class="btn btn-custom btn-selected history-button" id="history-completed-button">Completed Missions</a>
 				<a class="btn btn-custom history-button" id="history-failed-button">Failed Missions</a>
@@ -97,7 +93,6 @@
 
 		<!-- The village section of the app -->
 		<div id="village">
-			<h1>My Village</h1>
 			<div id="village_display" class="container-fluid">
 				<!--<img id="village" src="/images/basic_overworld.png"/>-->
 				<div id="gradient0">&nbsp;</div>
