@@ -322,17 +322,35 @@ body{
 	margin-right:15px;
 }
 
+.mission-dropdown {
+	border: 1px solid #361700;
+	background-color: #BEB096;
+	color: black;
+	padding: 3px;
+	z-index: 100;
+}
+/*
+.tasklist {
+	display: none;
+}
+*/
+
 .btn-selected{
 	background-color: #467E79;
+}
+#collapse_indicator {
+	display: inline;
 }
 
 .current_mission h3{
 	font-size: 15pt;
 	font-weight: bold;
 }
+
 .current_mission h4{
 	font-size: 10pt;
 	font-style:italic;
+	width: auto;
 }
 
 .subtasks-list label{
