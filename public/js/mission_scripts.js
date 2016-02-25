@@ -313,13 +313,6 @@ function saveTask(){
 				};
 				subtasks.push(newtask);
 			}
-			if($("#new_subtask_textbox").val().trim()!=""){
-				subtasks.push({
-					"id" : subtasks.length,
-					"title": $("#new_subtask_textbox").val(), 
-					"completed":false
-				});
-			}
 		}
 		console.log("subtasks", subtasks);
 		
