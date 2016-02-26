@@ -59,10 +59,10 @@ body{
 }
 .mission_background {
 	/*margin: 0vh -5vw 0vh -5vw;*/
-	padding: 5vh 7vw 0vh 5vw;
+	padding: 8vh 7vw 0vh 5vw;
 	background-color: rgba(0,0,0,0);
 	background-image: url("../images/parchment.png");
-	background-size: 90vw auto;
+	background-size: 92vw auto;
 }
 /*flat out overrides previous work, because I can't
 be bothered to find the other tags*/
@@ -385,13 +385,17 @@ be bothered to find the other tags*/
 
 /* index.handlebars::#village */
 #village{
-	height:60vh;
+	height:70vh;
 	width:90vw;
 	display: none;
-}
 
+}
 #village_display{
 	width:85vw;
+	height: 65vh;
+	overflow-x: scroll;
+	overflow-y: hidden;
+	margin: 0px auto;
 }
 #gradient0{
 	padding: 5vh 0px;
