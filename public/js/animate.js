@@ -4,6 +4,7 @@ $(document).ready(function() {
 })
 
 function newMission(){
+	$("#runner_start").attr("src", window.runner + "_panic_run.gif");
 	$("#deadlion_animate").css({
 		"margin-left": - $("#animation_screen").offset().left - $("#deadlion_animate").width()
 	});

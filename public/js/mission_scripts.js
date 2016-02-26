@@ -124,7 +124,7 @@ function nextPage(){
 	var isValid = true;
 	repeat_dates = [];
 	var daysString = "";
-
+	$("#new_subtasks").html("");
 	$("#error_msg").html("");
 
 	if(title.trim() == ""){
@@ -420,7 +420,7 @@ function saveTask(){
 			title: title,
 			runner : $(".runner_box input[type='radio']:checked+label img").attr("id"),
 			runnerName: $("#new_runner_textbox").val().trim(),
-			resouce : $(".resource_box input[type='radio']:checked+label img").attr("id"),
+			resource : $(".resource_box input[type='radio']:checked+label img").attr("id"),
 			user : user.username,
 			completed : false,
 			deadline : deadline,
@@ -435,8 +435,23 @@ function saveTask(){
 				var o = 0;
 				for(o; o < options.length; o++){
 					var missionInfo = new MissionInfoObject();
+					window.runner = $(".runner_box input[type='radio']:checked+label img").attr("id");
+					var current_list = $(options[o]).data("data");
+					var subtasks_list = [];
+					for(var s = 0; s < current_list.length; s++){
+						subtasks_list.push({
+							"title": current_list[s],
+							"id" : s,
+							"completed" : false
+						});
+					}
+					console.log("option",options[o]);
 					missionInfo.save({
-
+						missionId: mission.objectId,
+						subtasks: subtasks_list,
+						completed: false,
+						index: o,
+						title: $(options[o]).text()
 					},
 					{
 						success:function(){
