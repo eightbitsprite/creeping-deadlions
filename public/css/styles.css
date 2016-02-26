@@ -248,7 +248,7 @@ body{
 	color:red;
 }
 
-#error_msg, #recur_error_msg, #timed_error_msg{
+#error_msg, #modal_error_msg{
 	color:red;
 	text-align: center;
 }
@@ -279,17 +279,14 @@ body{
 	font-weight: normal;
 }
 #new_runner_textbox{
-	width:40vw;
+	width:60%;
+	max-width:300px;
 }
 #new_run_button{
-	margin-top:20px;
-	font-size:20pt;
-	width:80%;
-	margin-bottom:10px;
+	padding-left:40px;
+	padding-right:40px;
 }
 #new_cancel_button{
-	width:60%;
-	height:30px;
 }
 
 .stat-dropdown{
@@ -351,7 +348,8 @@ body{
 }
 .day_box + label{
 	font-weight:normal;
-	margin-left:5px;
+	padding-left:1px;
+	padding-right:5px;
 }
 
 .history_mission{
@@ -399,4 +397,95 @@ body{
 
 .delete_subtask{
 	margin-left: 5px;
+}
+
+.select_item_img{
+	width:30%;
+	height:30%;
+	min-width:70px;
+	min-height:70px;
+	border:1px solid gray;
+	background-color:white;
+	padding:0px;
+    margin-left: auto;
+    margin-top:10px;
+    cursor:pointer;
+}
+
+.submit_runner_resource_button{
+	width:100%;
+}
+
+.modal{
+	background-image: "/images/parchment.png";
+}
+
+#label_runner_name{
+	font-weight:normal;
+}
+
+#new_runner_randomize{
+	padding: 0px 5px;
+	border-radius:20px;
+	cursor:pointer;
+}
+
+.item_radio{
+	display:none;
+}
+
+.item_radio:checked + label img{
+	border: 4px solid #04B431;
+}
+
+#select_resource_button{
+	width:80%;
+}
+
+#select_all + label{
+	font-weight:normal;
+}
+
+#new_freq_recurring_area{
+	display:none;
+}
+
+#new_task_recurring_dates{
+	margin-left:5px;
+	margin-bottom:10px;
+}
+
+input[type='checkbox']{
+	height:18px;
+	width:18px;
+	vertical-align: middle;
+	display:inline-block;
+}
+#new_subtasks{
+	height:120px;
+	overflow-y:auto;
+}
+
+#selected_mission_date{
+	width:70%;
+	margin:5px;
+	font-size:12pt;
+}
+
+.subtask{
+	word-wrap: break-word;
+}
+
+.glyphicon{
+	margin-left:5px;
+}
+
+#due_text{
+	font-weight:normal;
+}
+
+#resource_selection_box{
+	cursor:pointer;
+	background-color:#ebda8b;
+	margin-bottom:10px;
 }
