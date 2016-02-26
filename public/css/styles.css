@@ -47,15 +47,18 @@ body{
 	margin-top:0;
 }
 
-#missions{
+#missions {
 	padding:5px;
 	overflow-x:hidden;
 }
-.mission_box{
+.mission_box {
 	border:1px solid gray;
 	height: auto;
 	background-color: #FFF9D9;
 	padding: 10px;
+}
+#subtaskToggle {
+	clear: both
 }
 
 #new_subtasks{
@@ -144,7 +147,28 @@ body{
 	display: none;
 	height:70vh;
 	overflow:auto;
-	color:white;
+	color:black;
+	background-color: #FFF9D9;
+	padding: 0px 1vw 2vh 1vw;
+}
+.help_img {
+	width: 15vw;
+	max-width:75px;
+	height: 15vw;
+	max-height:75px;
+	background-color: white;
+	border: 2px solid #361700;
+}
+.help_icon {
+	width: 12vw;
+	max-width: 60px;
+	height: 12vw;
+	max-height: 60px;
+	background-color: white;
+	border: 2px solid #361700;	
+}
+.help_img_box {
+	margin: 0px 0px 2vh 0px;
 }
 
 /*Navbar styling info*/
@@ -175,15 +199,24 @@ body{
 }
 
 #new_mission_button{
+	/*
 	background-color:#990000;
 	color:white;
 	margin: 0px 10px 0px 10px
-}
-#new_mission_button:hover{
-	background-color:#993333;
+	*/
+	/*float: left;*/
 }
 #menu_stats {
-	margin: 2px 20px 0px 20px;
+	margin: 0px 10px 0px 0px;
+	float: right;
+}
+#prof_dropdown {
+	/*float: right;*/
+}
+#current_page_id {
+	margin: 0 auto;
+	font-family: 'Anton', sans-serif;
+	font-size: 22pt;
 }
 /*Bottom menu bar information*/
 #navbar_bottom {
@@ -310,17 +343,33 @@ body{
 	margin-right:15px;
 }
 
+.mission-dropdown {
+	border: 1px solid #361700;
+	background-color: #BEB096;
+	color: black;
+	padding: 3px;
+	z-index: 100;
+}
+.tasklist {
+	display: none;
+}
+
 .btn-selected{
 	background-color: #467E79;
+}
+#collapse_indicator {
+	display: inline;
 }
 
 .current_mission h3{
 	font-size: 15pt;
 	font-weight: bold;
 }
+
 .current_mission h4{
 	font-size: 10pt;
 	font-style:italic;
+	width: auto;
 }
 
 .subtasks-list label{

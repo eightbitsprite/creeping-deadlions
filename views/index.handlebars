@@ -7,24 +7,21 @@
 <body>
 <div id="main" class="main">
 	<div class="navbar_cust" id="navbar_top"> <div class="row">
-		<div class="pull-left">
-			<a href="create_mission"><img src="../images/nav_newmission.png" class="nav_img"><a>
-		</div>
-		<div class="pull-right btn-group">
-				<a href="#" id="menu_stats" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<img src="../images/nav_profile.png" class="nav_img">
-				</a>
+		<div class="pull-left" id="new_mission_button"><a href="create_mission">
+			<img src="../images/nav_newmission.png" class="nav_img"></a></div>
+		<div class="pull-right btn-group" id="prof_dropdown">
+			<a href="#" id="menu_stats" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../images/nav_profile.png" class="nav_img"></a>
 			<ul class="dropdown-menu stat-dropdown">
 				<li>Village Level: 1</li>
 				<li>Food: 0</li>
    				<li>Wood: 0</li>
    				<li>Stone 0</li>
-   				
    				<li role="separator" class="divider"></li>
    				<li><a id="logoutbutton">Log Out</a></li>
-			</ul>	
+			</ul>
 		</div>
-		</div>
+		<div class="text-center" id="current_page_id">Mission Log</div>
+	  </div>
 	</div>
 	<!-- main navigation bar fixed @ bottom -->
 	<div class="navbar_cust" id="navbar_bottom">
@@ -34,7 +31,7 @@
 					<a href="#" id="menu_log"><img src="../images/nav_log.png" class="nav_img"></a></li>
 				<li>
 					<a href="#" id="menu_history"><img src="../images/nav_history.png" class="nav_img"></a></li>
-				<!-- CONFIRM: separate help section for the log screen; village screen will have its own 'help' section? -->
+				<!-- confirm: separate help section for the log screen; village screen will have its own 'help' section? -->
 				<li>
 					<a href="#" id="menu_help"><img src="../images/nav_help.png" class="nav_img"></a></li>
 				<li>
@@ -56,7 +53,6 @@
 
 		<!-- The history portion of the app -->
 		<div id="history">
-			<h1>Mission History</h1>
 			<nav>
 				<a class="btn btn-custom btn-selected history-button" id="history-completed-button">Completed Missions</a>
 				<a class="btn btn-custom history-button" id="history-failed-button">Failed Missions</a>
@@ -70,34 +66,53 @@
 
 		<!-- The help portion of the app -->
 		<div id="help">
-			<h3> General Mechanics </h4>
-			<p>In order to improve the village the runners live in, you must send out runners to retrieve necessary resources for village upgrades. Unfortunately, each time they leave the warm glow of the campfire, they risk discovery (and digestion) by the deadlions. Whether they live or not is up to whether or not <em>you</em> finish the mission assigned to them.
+			<h3> The Basics. </h3>
+			<p>&nbsp; It's a cat-eat-cat world out there! In order to keep the village fires burning and their bellies full, runners must brave the dark cat-vern of the vicious deadlions. Whether or not they return with what they seek is up to you..
 			</p>
-			<br/>
 			<hr/>
-			<h4>'Mission' Screen</h4>
-			<p>
-				This is a current list of all runners out in the field and the mission you must complete in order for them to escape the deadlion and bring back valuable resources to their village.
+			<div class="help_img_box"><img class="help_img" src="../images/nav_log.png"></div>
+			<p>&nbsp; A running tally of all den-defying runners - and the mission their fate hinges upon.
 
-				A deadlined mission is marked complete when you hit the 'Complete' button after finishing all the subtasks to particular to that specific mission, while a recurring mission can only be marked complete at the end of the current month.
+				With every objective you finish, with every checkbox you tick off, the runner gets closer and closer to making it back to the village - and not in a body bag. Safety will only be given to those runners whose mission has been completed.
 			</p>
-			<br/>
 			<hr/>
-			<h4> 'History' Screen </h4>
+			<div class="help_img_box"><img class="help_img" src="../images/nav_history.png"></div>
 			<p>
-				Here are all of your previous missions - whether they ended with the happy return of a runner into the camp, or the horrified last gasps of a living, sentient person being torn apart by the jaws of an undead feline.
+				&nbsp; ALL your previous missions - their glorious successes, or their digestive failures. Additional information will be found in each entry.
+
+				(Flowers will not be provided at any service you decide to hold.)
 			</p>
-			<br/>
 			<hr/>
-			<h4> 'Village' Screen </h4>
+			<div class="help_img_box"><img class="help_img" src="../images/nav_village.png"></div>
 			<p>
-				Here, you can check in on your villagers and see how they are doing. Keep completing missions to earn upgrades for your village!
+				&nbsp; Displays a view of the runner's village. Upgrades can be triggered from here. 
+				<br></br>
+				Ignore the gloom. They like it.
+			</p>
+			<hr/>
+			<div class="help_img_box"><img class="help_icon" src="../images/nav_newmission.png"></div>
+			<p>
+				&nbsp; Take the first step into the abyss - send a (about-to-be) lost soul into the darkness beyond the village torches, and assign a mission to them to determine their fate. 
+			</p>
+			<hr/>
+			<div class="help_img_box"><img class="help_icon" src="../images/nav_profile.png"></div>
+			<p>
+				&nbsp; Tells you the state of your village, how far you are from the next upgrade, and allows you to log out.
+			</p>
+			<hr/>
+			<div class="help_img_box"><img class="help_icon" src="../images/icon_recurring.png"></div>
+			<p>
+				&nbsp; Indicates a recurring mission.
+			</p>
+			<hr/>
+			<div class="help_img_box"><img class="help_icon" src="../images/icon_timed.png"></div>
+			<p>
+				&nbsp; Indicates a mission with a set deadlion.
 			</p>
 		</div>
 
 		<!-- The village section of the app -->
 		<div id="village">
-			<h1>My Village</h1>
 			<div id="village_display" class="container-fluid">
 				<!--<img id="village" src="/images/basic_overworld.png"/>-->
 				<div id="gradient0">&nbsp;</div>
