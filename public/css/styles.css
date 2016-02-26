@@ -147,7 +147,20 @@ body{
 	display: none;
 	height:70vh;
 	overflow:auto;
-	color:white;
+	color:black;
+	background-color: #FFF9D9;
+	padding: 0px 1vw 2vh 1vw;
+}
+.help_img {
+	width: 15vw;
+	max-width:75px;
+	height: 15vw;
+	max-height:75px;
+	background-color: white;
+	border: 2px solid #361700;
+}
+.help_img_box {
+	margin: 0px 0px 2vh 0px;
 }
 
 /*Navbar styling info*/
