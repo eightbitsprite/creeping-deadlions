@@ -446,7 +446,7 @@ function saveTask(){
 				}
 				
 
-				//window.location = "/new_mission";
+				window.location = "/new_mission";
 			}
 		});
 	}
@@ -563,6 +563,6 @@ function saveObjectives(){
 	}
 	$("#selected_mission_date").find(":selected").data("data", current_mission_objectives);
 	if($("#apply_to_all_btn").is(":checked")){
-			applyAll();
-		}
+		applyAll();
+	}
 }

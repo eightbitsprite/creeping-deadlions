@@ -506,12 +506,12 @@ input[type='checkbox']{
 #new_subtasks{
 	width:100%;
 	margin:0px;
-	height:85%;
+	height:80%;
 	margin-top:10px;
 
 }
 #subtask_area{
-	height:65vh;
+	height:45vh;
 	background-color:#ebda8b;
 }
 
@@ -523,7 +523,7 @@ input[type='checkbox']{
 }
 
 #new_subtask_textbox{
-	width:85%;
+	width:75%;
 	font-size:12pt;
 }
 
