@@ -125,6 +125,7 @@ function nextPage(){
 	repeat_dates = [];
 	var daysString = "";
 	$("#new_subtasks").html("");
+	$("#new_subtasks").append('<p id="subtask_prompt"><em>No objectives found. Enter objectives below.</em></p>');
 	$("#error_msg").html("");
 
 	if(title.trim() == ""){
@@ -317,7 +318,7 @@ function modalSave() {
   		var runner = $("#new_runner_textbox").val().trim();
 		var resource = $(".resource_box .item_radio:checked").attr("id");
 
-		var runner_img = $(".runner_box .item_radio:checked + label img").attr("src");
+		var runner_img = "/images/" + $(".runner_box .item_radio:checked + label img").attr("id") + "_happy_static.png";
 		var resource_img = $(".resource_box .item_radio:checked + label img").attr("src");
 
   		$("#modal_error_msg").html("");
@@ -435,7 +436,8 @@ function saveTask(){
 				var o = 0;
 				for(o; o < options.length; o++){
 					var missionInfo = new MissionInfoObject();
-					window.runner = $(".runner_box input[type='radio']:checked+label img").attr("id");
+					window.localStorage.setItem("runner",  $(".runner_box input[type='radio']:checked+label img").attr("id"));
+					console.log("runner",window.localStorage.getItem("runner"));
 					var current_list = $(options[o]).data("data");
 					var subtasks_list = [];
 					for(var s = 0; s < current_list.length; s++){
@@ -549,10 +551,10 @@ function selectRunner(event){
 		$("#new_runner_textbox").val(event.target.id);
 	}
 	$(".runner_box input[type='radio']+label img").each(function(){
-		this.src = this.id + "_happy_static.png";
+		this.src = "/images/" + this.id + "_happy_static.png";
 	});
 	var el = $(".runner_box input[type='radio']:checked+label img");
-	el.attr("src", el.attr("id") + "_happy_run.gif");
+	el.attr("src", "/images/" + el.attr("id") + "_happy_run.gif");
 }
 
 function applyAll(){
