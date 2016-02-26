@@ -104,7 +104,8 @@ function renderMissions(){
 
 		           	var date = dateString(new Date(data.deadline.iso), !data.isRecurring);
 		           	console.log("date is", date);
-		            htmlBuilder += "<li class='mission_box container current_mission' id='" + data.objectId +"''>"
+		            htmlBuilder +=  "<div class='mission_background' >"
+		            				+ "<li class='mission_box container current_mission' id='" + data.objectId +"''>"
 		            				+ "<div class='pull-right btn-group mdropdown'>"
 		            				+ 	"<a class='mdropdown-toggle' href='#' data-toggle='dropdown' "
 		            				+ 	"aria-haspopup='true' aria-expanded='false'>"
@@ -127,7 +128,7 @@ function renderMissions(){
 		            				+	"</div>"
 		            				//+	"<a class='btn btn-custom pull-right cancel_mission' id='cancel_" + data.objectId + "'>Cancel</a>"
 		            				+	"<a class='btn pull-right complete_mission btn-custom' id='complete_" + data.objectId + "'></a>"
-		            				+ "</li>"
+		            				+ "</li></div>"
 		        }
 		        $("#missions-list").html(htmlBuilder);
 		        for (var i = 0; i < results.length; i++) {
