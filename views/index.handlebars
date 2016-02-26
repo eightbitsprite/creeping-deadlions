@@ -113,21 +113,37 @@
 
 		<!-- The village section of the app -->
 		<div id="village">
+			<div id="village_bar" >
+				<ul class="list-inline">
+					<li>
+						<div id="village_namelvl" class=""><strong>Tent City: Lvl. 1</strong></div></li>
+					<li class="pull-right">
+						<button id="btn-upgrade" type="button" disabled>Upgrade</button></li>
+				</ul>
+				<ul id="resource_bar" class="list-inline">
+					<li>
+						<div class="resource_meter">
+							<img class="resource_icon" src="../images/resource_wood.png">
+							<span class="resource_counter">1/5</span>
+						</div></li>
+					<li>
+						<div class="resource_meter">
+							<img class="resource_icon" src="../images/resource_stone.png">
+							<span class="resource_counter">1/5</span>
+						</div></li>
+					<li>
+						<div class="resource_meter">
+							<img class="resource_icon" src="../images/resource_food.png">
+							<span class="resource_counter">0/5</span>
+						</div></li>
+				</ul>
+			</div>
+			<!-- #village_display holds visual representation of village -->
 			<div id="village_display" class="container-fluid">
-				<!--<img id="village" src="/images/basic_overworld.png"/>-->
 				<div id="gradient0">&nbsp;</div>
 				<div id="gradient1">&nbsp;</div>
 				<div id="gradient2">&nbsp;</div>
 				<div id="campfire"><img src="/images/village_stage01.gif"/></div>
-				<!--
-				<div><img src="{{image_link}}"></div>
-
-				<div>
-					<label>Wood: {{wood_count}}/{{wood_total}}</label>
-					<label>Stone: {{stone_count}}/{{stone_total}}</label>
-					<label>Food: {{food_count}}/{{food_total}}</label>
-				</div>
-	-->
 			</div>
 		</div>
 	</div>

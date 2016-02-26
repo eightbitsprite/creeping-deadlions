@@ -38,6 +38,11 @@ body{
 	margin: 2px 20px 0px 20px;
 }
 
+/* index.handlebars::#missions (hopefully) */
+#missions {
+	padding:5px;
+	overflow-x:hidden;
+}
 #current_missions{
 	overflow-y:auto;
 	height:70%;
@@ -46,16 +51,24 @@ body{
 	margin:30px;
 	margin-top:0;
 }
-
-#missions {
-	padding:5px;
-	overflow-x:hidden;
-}
 .mission_box {
 	border:1px solid gray;
 	height: auto;
 	background-color: #FFF9D9;
 	padding: 10px;
+}
+.mission_background {
+	/*margin: 0vh -5vw 0vh -5vw;*/
+	padding: 5vh 7vw 0vh 5vw;
+	background-color: rgba(0,0,0,0);
+	background-image: url("../images/parchment.png");
+	background-size: 90vw auto;
+}
+/*flat out overrides previous work, because I can't
+be bothered to find the other tags*/
+.current_mission.mission_box{
+	background-color: rgba(0,0,0,0);
+	border: none;
 }
 #subtaskToggle {
 	clear: both
@@ -91,29 +104,6 @@ body{
 	color: red;
 }
 
-#village{
-	height:60vh;
-	width:90vw;
-	display: none;
-}
-#gradient0{
-	padding: 5vh 0px;
-	background-color: #070504;
-}
-#gradient1{
-	padding: 5vh 0px;
-	background-color: #181008;
-}
-#gradient2{
-	padding: 5vh 0px;
-	background-color: #2c1d0e;
-}
-#campfire{
-	padding: 4vh 0px;
-	text-align: center;
-	background-color: #3f2a14;
-}
-
 .gif{
 	width:50px;
 	height:50px;
@@ -146,10 +136,11 @@ body{
 #help {
 	display: none;
 	height:70vh;
+	width: 85vw;
 	overflow:auto;
 	color:black;
 	background-color: #FFF9D9;
-	padding: 0px 1vw 2vh 1vw;
+	padding: 0px 2vw 2vh 2vw;
 }
 .help_img {
 	width: 15vw;
@@ -228,7 +219,7 @@ body{
 	font-family: 'Anton', sans-serif;
 	background-color: #BEB096;
   	border: 4px solid #361700;
-  	padding: 2vh 2vw 1vh 2vw;
+  	padding: 2vh 0vw 2vh 0vw;
 }
 #main h1{
 	font-family: 'Anton', sans-serif;
@@ -252,12 +243,22 @@ body{
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
 }
 
+/*login.handlebars styling*/
 #login h1{
 	font-family: 'Anton', sans-serif;
 	font-size: 32pt;
 	margin-bottom: 5vh;
-	margin-top:15vh;
+	margin-top: 5vh;
 	color:white;
+}
+.login_img {
+	max-width: 50vw;
+	max-height: 50vh;
+	background-color: white;
+	border: 4px solid #361700;
+
+	padding-left: 1vw;
+	margin-bottom: 1vh;
 }
 #login label{
 	margin: 2vh 0vw;
@@ -285,6 +286,8 @@ body{
 	color:red;
 	text-align: center;
 }
+/*END of login.handlebars styling (maybe?)*/
+
 .default-list{
 	color:white;
 	font-size: 12pt;
@@ -383,13 +386,69 @@ body{
 	width:70vw;
 }
 
-#village_description{
-	color:white;
+/* index.handlebars::#village */
+#village{
+	height:60vh;
+	width:90vw;
+	display: none;
 }
 
 #village_display{
 	width:85vw;
 }
+#gradient0{
+	padding: 5vh 0px;
+	background-color: #070504;
+}
+#gradient1{
+	padding: 5vh 0px;
+	background-color: #181008;
+}
+#gradient2{
+	padding: 5vh 0px;
+	background-color: #2c1d0e;
+}
+#campfire{
+	padding: 4vh 0px;
+	text-align: center;
+	background-color: #3f2a14;
+}
+
+#village_description{
+	color:white;
+}
+
+#village_namelvl {
+	vertical-align: bottom;
+}
+#village_bar {
+	background-color: #BEB096;
+	border: 1px solid white;	
+	width: 85vw;
+	padding: 2px 4px;
+	margin-bottom: 5px;
+}
+.resource_counter {
+}
+.resource_icon {
+	width: 5vw;
+	min-width: 20px;
+	height: 5vw;
+	min-height: 20px;
+	/*background-color: white;
+	border: 1px solid #361700;	
+	*/
+}
+.resource_meter {
+	margin-left: -1px;
+}
+#resource_bar {
+}
+
+#btn-upgrade {
+}
+
+/* END index.handlebars::#village styling*/
 
 .modal-dialog{
 	border:2px solid #361700;
