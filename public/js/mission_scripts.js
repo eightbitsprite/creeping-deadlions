@@ -401,15 +401,12 @@ function saveTask(){
 	}
 
 	var options = $("#selected_mission_date option");
-	var to_save = [];
 	for(var i = 0; i < options.length; i++){
 		if($(options[i]).data("data").length == 0){
 			$(options[i]).prop("selected", true);
 			switchSubtask();
 			$("#objectives_error_msg").append("<p>Empty mission detected.</p>");
 			var isValid = false;
-		}else{
-			to_save.push($(options[i]).data("data"));
 		}
 	}
 
@@ -437,7 +434,7 @@ function saveTask(){
 				for(o; o < options.length; o++){
 					var missionInfo = new MissionInfoObject();
 					window.localStorage.setItem("runner",  $(".runner_box input[type='radio']:checked+label img").attr("id"));
-					console.log("runner",window.localStorage.getItem("runner"));
+					console.log("runner", window.localStorage.getItem("runner"));
 					var current_list = $(options[o]).data("data");
 					var subtasks_list = [];
 					for(var s = 0; s < current_list.length; s++){
@@ -447,9 +444,9 @@ function saveTask(){
 							"completed" : false
 						});
 					}
-					console.log("option",options[o]);
+					console.log("option",mission);
 					missionInfo.save({
-						missionId: mission.objectId,
+						missionId: mission.id,
 						subtasks: subtasks_list,
 						completed: false,
 						index: o,
@@ -457,13 +454,15 @@ function saveTask(){
 					},
 					{
 						success:function(){
-
+							console.log(o);
+							if(o == options.length){}
+								window.location = "/new_mission";
 						}
-					})
+					});
 				}
 				
 
-				window.location = "/new_mission";
+				
 			}
 		});
 	}

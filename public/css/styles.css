@@ -124,7 +124,7 @@ body{
 }
 .runner-progress{
 	background-color:white;
-	width:100%;
+	width:95%;
 }
 
 #animation_screen{
@@ -555,7 +555,7 @@ input[type='checkbox']{
 #new_subtasks{
 	width:100%;
 	margin:0px;
-	height:80%;
+	height:75%;
 	margin-top:10px;
 
 }
