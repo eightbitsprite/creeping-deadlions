@@ -248,7 +248,7 @@ body{
 	color:red;
 }
 
-#error_msg, #modal_error_msg{
+#error_msg, #modal_error_msg, #subtask_error_msg, #objectives_error_msg{
 	color:red;
 	text-align: center;
 }
@@ -395,9 +395,6 @@ body{
 	right:0em;
 }
 
-.delete_subtask{
-	margin-left: 5px;
-}
 
 .select_item_img{
 	width:30%;
@@ -467,9 +464,9 @@ input[type='checkbox']{
 }
 
 #selected_mission_date{
-	width:70%;
+	width:75%;
 	margin:5px;
-	font-size:12pt;
+	font-size:10pt;
 }
 
 .subtask{
@@ -488,4 +485,48 @@ input[type='checkbox']{
 	cursor:pointer;
 	background-color:#ebda8b;
 	margin-bottom:10px;
+}
+
+.resource_chosen{
+	text-align:center;
+	font-style:bold;
+	cursor:pointer;
+}
+
+.subtask_glyphicon{
+	font-size:12pt;
+	margin-left:10px;
+}
+
+#new_subtask_input{
+	width:100%;
+	margin-bottom:10px;
+}
+
+#new_subtasks{
+	width:100%;
+	margin:0px;
+	height:85%;
+	margin-top:10px;
+
+}
+#subtask_area{
+	height:65vh;
+	background-color:#ebda8b;
+}
+
+.switch_deadline{
+	font-weight: bold;
+	font-size:12pt;
+	cursor:pointer;
+	margin:5px;
+}
+
+#new_subtask_textbox{
+	width:85%;
+	font-size:12pt;
+}
+
+#apply_to_all_btn{
+	margin-left:10px;
 }

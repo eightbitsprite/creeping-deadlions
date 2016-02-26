@@ -24,6 +24,8 @@ var runners = ["Granny PawPaw",
 var subtaskString = "";
 var subtaskIndex = 0;
 var repeat_dates = [];
+var objectives = [];
+var current_mission_objectives = [];
 
 $(document).ready(function() {
 	Parse.initialize("YXlPjDOZPGg2dnC4z2XBGHk5xg8jirJVclFEMTmo", "IWqi5XWUalPKb9uXMX8WCkFNaEuyrIxTzOeH9tPH");
@@ -33,7 +35,6 @@ $(document).ready(function() {
 
 function initializePage() {
 	$("#add_task_button").click(addSubtask);
-	$("#new_mission_name_textbox").keydown(openTaskFrequency);
 	$("#resource_selection_box").click(openRunnersAndResources);
 	$("#new_runner_randomize").click(generateRunner);
 	$("#new_run_button").click(saveTask);
@@ -44,6 +45,10 @@ function initializePage() {
 	$("#new_task_until_date").datepicker();
 	$("#next_button").click(nextPage);
 	$("#back_button").click(previousPage);
+	$("#left-switch").click(previousOption);
+	$("#right-switch").click(nextOption);
+	$("#selected_mission_date").change(switchSubtask);
+	$("#apply_to_all_btn").change(applyAll);
 
 	$("#new_subtask_textbox").keydown(function(event){
 		if(event.keyCode == 13){
@@ -57,7 +62,56 @@ function initializePage() {
 	$("#objectives").css("display", "none");
 
 	$(".date-select").val(new Date());
+	$("#apply_to_all_btn").prop("disabled", true);
+	$("#apply_to_all_btn+label").text("Create one default objective first.");
 } 
+
+function previousOption(){
+	var el = $("#selected_mission_date");
+	console.log(el.find(":selected").attr("id"));
+	var index = Number(el.find(":selected").attr("id").split("_")[1]);
+	index --;
+	if(index < 0)
+		index = repeat_dates.length-1;
+	$("#option_"+index).prop("selected", true);
+	switchSubtask();
+}
+function nextOption(){
+	var el = $("#selected_mission_date");
+	console.log(el.find(":selected").attr("id"));
+	var index = Number(el.find(":selected").attr("id").split("_")[1]);
+	index ++;
+	if(index >= repeat_dates.length)
+		index = 0;
+	$("#option_"+index).prop("selected", true);
+	switchSubtask();
+}
+
+function switchSubtask(){
+	console.log("changed");
+	console.log($("#selected_mission_date").find(":selected"));
+	
+	current_mission_objectives = $("#selected_mission_date").find(":selected").data("data");
+	$("#new_subtasks").html("");
+	if(current_mission_objectives.length == 0){
+		$("#new_subtasks").append('<p id="subtask_prompt"><em>No objectives found. Enter objectives below.</em></p>');
+	}else{
+		for(subtaskIndex = 0; subtaskIndex < current_mission_objectives.length; subtaskIndex++){
+			$("#new_subtasks").append("<li id='subtask_item_" + subtaskIndex + "'>"
+										+ "<h4 class='subtask' for='check_" + subtaskIndex + "' id='subtask_" + subtaskIndex + "'>"
+										+ 		"<span class='pull-right'>"
+										+			"<span id='edit_" + subtaskIndex + "' class='edit_subtask subtask_glyphicon glyphicon glyphicon-pencil' aria-hidden='true'></span>"
+										+			"<span id='delete_" + subtaskIndex + "' class='delete_subtask subtask_glyphicon glyphicon glyphicon-remove' aria-hidden='true'></span>"
+										+		"</span>"
+										+ 		"<span class='subtask_name'>" + current_mission_objectives[subtaskIndex] + "</span>" 
+										+ "</h4></li>");
+			$("#subtask_" + subtaskIndex).data("data", current_mission_objectives[subtaskIndex]);
+			$("#new_subtask_textbox").val("");
+			$("#edit_" + subtaskIndex).click(editSubtask);
+			$("#delete_" + subtaskIndex).click(deleteSubtask);
+		}
+	}
+}
 
 function nextPage(){
 	/*Validation*/
@@ -78,13 +132,8 @@ function nextPage(){
 		isValid = false;
 	}
 
-	if($(".runner_box .item_radio:checked").length == 0){
-		$("#error_msg").append("<p>Please select a runner.</p>");
-		isValid = false;
-	}
-
-	if($(".resource_box .item_radio:checked").length == 0){
-		$("#error_msg").append("<p>Please select a resource.</p>");
+	if($(".resource_box .item_radio:checked").length == 0 || $(".runner_box .item_radio:checked").length == 0){
+		$("#error_msg").append("<p>Please select a runner and resource.</p>");
 		isValid = false;
 	}
 
@@ -99,7 +148,7 @@ function nextPage(){
       		$("#error_msg").append("<p>Please select a valid time.</p>");
          	isValid = false;
       	}else{
-	      	deadline.setHours(Number(dueTime.split(":")[0]) + 24);
+	      	deadline.setHours(Number(dueTime.split(":")[0]));
 	      	deadline.setMinutes(Number(dueTime.split(":")[1]));
 	      	deadline.setSeconds(0);
       	}
@@ -118,6 +167,7 @@ function nextPage(){
 		}else{
 			var today = new Date();
 			until_date = new Date($("#new_task_until_date").val());
+			until_date.setHours(24);
 			if(until_date < today){
 				$("#error_msg").append("<p>Please select a future end date.</p>");
 				isValid = false;
@@ -167,13 +217,16 @@ function nextPage(){
 			}else{
 				var index = 0;
 				var date= new Date();
+				date.setHours(Number(dueTime.split(":")[0]) + 24);
+	      		date.setMinutes(Number(dueTime.split(":")[1]));
+	      		date.setSeconds(0);
+				console.log(date);
 				while(date <= until_date){
 					if(days.indexOf(date.getDay()) >= 0){
 						console.log("adding date", date);
 						repeat_dates.push({
 							"id": index,
-							"title" : dateString(date, true),
-							"date" : date.toString(),
+							"date" : dateString(date),
 							"completed":false
 						});
 						index ++;
@@ -184,20 +237,37 @@ function nextPage(){
 				if(repeat_dates.length ==0){
 					isValid = false;
 					$("#error_msg").append("<p>None of days selected occur between given start and end date.</p>");
-				}	
+				}
 			}		
 		}
 	}else{
 		repeat_dates.push({
 			"id": 0,
-			"date" : dateString(deadline, true),
+			"date" : dateString(deadline),
 			"completed":false
 		});
-		$("#selected_mission_date").append("<option id='option_0' selected>Default")
+	
 	}
+	loadSelector();
 	if(isValid){
+		
 		$("#frequency").css("display", "none");
 		$("#objectives").css("display", "block");		
+	}
+}
+
+function loadSelector(){
+	var dropdown = $("#selected_mission_date");
+	dropdown.html("");
+	if(repeat_dates.length ==1)
+		$(".apply_all_wrapper").css("display", "none");
+	else
+		$(".apply_all_wrapper").css("display", "block");
+	for(var i = 0; i < repeat_dates.length; i++){
+		console.log(repeat_dates[i]);
+		$("#selected_mission_date").append("<option id='option_" + i + "' " + ((i==0)? "selected" : "") + ">" 
+											+ repeat_dates[i].date + "</option>");
+		$("#option_" + i).data("data", []);
 	}
 }
 
@@ -214,21 +284,6 @@ function toggleRecurring(event){
 	$("#due_text").html(($("#new_freq_recurring").is(":checked")) ? "Start:" : "Due:");
 }
 
-function openTaskFrequency(){
-	$("#new_frequency_input").css("display","block");
-}
-
-/*
-function toggleTimed(){
-	$("#new_freq_recurring_area").css("display","none");
-	$("#new_freq_timed_area").css("display","block");
-}
-
-function toggleRecurring(){
-	$("#new_freq_recurring_area").css("display","block");
-	$("#new_freq_timed_area").css("display","none");
-}
-*/
 function openRunnersAndResources(){
 	var modalContent, modalHead;
 	modalContent = $("#new_freq_recurring_area").html();
@@ -236,6 +291,7 @@ function openRunnersAndResources(){
 	$("#recurFreq .modal-title").empty().append(modalHead);
 	$("#recurFreq").modal("toggle");
 }
+
 function modalSave() {
 	var isValid = true;
 
@@ -275,21 +331,35 @@ function modalSave() {
 }
 
 function addSubtask(){
+	console.log("called");
 	var subtask = $("#new_subtask_textbox").val();
-	$("#new_subtasks").append("<li id='subtask_item_" + subtaskIndex + "'>"
+	$("#subtask_error_msg").html("");
+	if(subtask.trim()== ""){
+		$("#subtask_error_msg").append("<p>Field cannot be blank</p>");
+	}else{
+		$("#subtask_prompt").css("display", "none");
+		console.log($("#new_subtasks"));
+		$("#new_subtasks").append("<li id='subtask_item_" + subtaskIndex + "'>"
 									+ "<h4 class='subtask' for='check_" + subtaskIndex + "' id='subtask_" + subtaskIndex + "'>"
 									+ 		"<span class='pull-right'>"
-									+			"<span id='edit_" + subtaskIndex + "' class='edit_subtask glyphicon glyphicon-pencil' aria-hidden='true'></span>"
-									+			"<span id='delete_" + subtaskIndex + "' class='delete_subtask glyphicon glyphicon-remove' aria-hidden='true'></span>"
+									+			"<span id='edit_" + subtaskIndex + "' class='edit_subtask subtask_glyphicon glyphicon glyphicon-pencil' aria-hidden='true'></span>"
+									+			"<span id='delete_" + subtaskIndex + "' class='delete_subtask subtask_glyphicon glyphicon glyphicon-remove' aria-hidden='true'></span>"
 									+		"</span>"
-									+ 		subtask 
+									+ 		"<span class='subtask_name'>" + subtask + "</span>" 
 									+ "</h4></li>");
-	$("#subtask_" + subtaskIndex).data("data", subtask);
-	$("#new_subtask_textbox").val("");
-	
-	$("#edit_" + subtaskIndex).click(editSubtask);
-	$("#delete_" + subtaskIndex).click(deleteSubtask);
-	subtaskIndex++;
+		$("#subtask_" + subtaskIndex).data("data", subtask);
+		current_mission_objectives.push(subtask);
+		$("#selected_mission_date").find(":selected").data("data", current_mission_objectives);
+		$("#new_subtask_textbox").val("");
+		$("#edit_" + subtaskIndex).click(editSubtask);
+		$("#delete_" + subtaskIndex).click(deleteSubtask);
+		subtaskIndex++;
+		$("#apply_to_all_btn").prop("disabled", false);
+		$("#apply_to_all_btn+label").text("Apply All");
+		if($("#apply_to_all_btn").is(":checked")){
+			applyAll();
+		}
+	}
 }
 
 function generateRunner(){
@@ -302,140 +372,81 @@ function saveTask(){
 	var runner = null;
 	var resource = null;
 	var user = JSON.parse(window.localStorage.getItem("current_user"));
-	var deadline;
-	var subtasks = [];
+	var deadline = new Date($("#new_task_due_date").val());
 	var isRecurring = $("#new_freq_recurring").is(":checked");
 	var isValid = true;
+	var daysString = "";
+
 	$("#error_msg").html("");
+
 	if(title.trim() == ""){
 		$("#error_msg").append("<p>Mission name is required.</p>");
 		isValid = false;
 	}
 
-	if($(".runner_box .item_radio:checked").length == 0){
-		$("#error_msg").append("<p>Please select a runner.</p>");
-		isValid = false;
-	}else if($("#new_runner_textbox").val().trim() == ""){
-		$("#error_msg").append("<p>Runner name cannot be blank.</p>");
-		isValid = false;
+	var dueTime = $("#new_task_due_time").val();
+	deadline.setHours(Number(dueTime.split(":")[0]));
+  	deadline.setMinutes(Number(dueTime.split(":")[1]));
+  	deadline.setSeconds(0);
+
+  	if(isRecurring){	
+		if($("#sunday_box").is(":checked")) daysString += "Su,";	
+		if($("#monday_box").is(":checked"))daysString += "M,";
+		if($("#tuesday_box").is(":checked"))daysString+="T,";
+		if($("#wednesday_box").is(":checked"))daysString+= "W,";
+		if($("#thursday_box").is(":checked"))daysString +="Th,"
+		if($("#friday_box").is(":checked"))daysString += "F,";
+		if($("#saturday_box").is(":checked"))daysString += "S,";
 	}
 
-	if($(".resource_box .item_radio:checked").length == 0){
-		$("#error_msg").append("<p>Please select a resource.</p>");
-		isValid = false;
-	}
-
-	
-
-	if($("#new_freq_recurring").is(":checked")){
-      	deadline= new Date($("#new_task_until_date").val());
-      	deadline.setHours(23 + 24);
-      	deadline.setMinutes(59);
-      	deadline.setSeconds(59);
-	}else if($("#new_freq_timed").is(":checked")){
-      	deadline= new Date($("#new_task_due_date").val());
-      	var dueTime = $("#new_task_due_time").val();
-      	if(!(/^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(dueTime.toString()))){
-      		$(error_msg).append("<p>Please select a valid time.</p>");
-         	isValid = false;
-      	}else{
-	      	deadline.setHours(Number(dueTime.split(":")[0]) + 24);
-	      	deadline.setMinutes(Number(dueTime.split(":")[1]));
-	      	deadline.setSeconds(0);
-      	}
-	}
-	var today =new Date();
-	if (deadline.value == " "){
-		$(error_msg).append("<p>Please select a valid date.</p>");
-     	isValid = false;
-  	}else if(deadline < today){
-  		$(error_msg).append("<p>Please select a future date.</p>");
-     	isValid = false;
-  	}
-  	var daysString = "";
-	if(isValid){
-		if($("#new_freq_recurring").is(":checked")){
-			var date= new Date();
-			var days = [];
-			
-			if($("#sunday_box").is(":checked")){
-				days.push(0);
-				daysString += "Su,";
-			}
-				
-			if($("#monday_box").is(":checked")){
-				daysString += "M,";
-				days.push(1);
-			}
-			if($("#tuesday_box").is(":checked")){
-				daysString+="T,";
-				days.push(2);
-			}
-			if($("#wednesday_box").is(":checked")){
-				days.push(3);
-				daysString+= "W,";
-			}
-			if($("#thursday_box").is(":checked")){
-				days.push(4);
-				daysString +="Th,"
-			}
-			if($("#friday_box").is(":checked")){
-				days.push(5);
-				daysString += "F,";
-			}
-				
-			if($("#saturday_box").is(":checked")){
-				days.push(6);
-				daysString += "S,";
-			}
-				
-			var index = 0;
-			while(date <= deadline){
-				if(days.indexOf(date.getDay()) >= 0){
-					console.log("adding date", date);
-					subtasks.push({
-						"id": index,
-						"title" : dateString(date, false),
-						"date" : date.toString(),
-						"completed":false,
-					});
-					index ++;
-				}
-				date.setDate(date.getDate() + 1);
-			}
+	var options = $("#selected_mission_date option");
+	var to_save = [];
+	for(var i = 0; i < options.length; i++){
+		if($(options[i]).data("data").length == 0){
+			$(options[i]).prop("selected", true);
+			switchSubtask();
+			$("#objectives_error_msg").append("<p>Empty mission detected.</p>");
+			var isValid = false;
 		}else{
-			var list = $("#new_subtasks").find(".subtask");
-			for(var i = 0;i < list.length; i++){
-				console.log(list[i].tagName );
-				var newtask = {
-					"id" : i,
-					"title": (list[i].tagName == "LABEL") ? $("#" + list[i].id).data("data") : $("#" + list[i].id).val(), 
-					"completed":false
-				};
-				subtasks.push(newtask);
-			}
+			to_save.push($(options[i]).data("data"));
 		}
-		console.log("subtasks", subtasks);
-		
-		var TaskObject = Parse.Object.extend("Task");
-		var task = new TaskObject();
-		task.save({
+	}
+
+	if(isValid){	
+		var MissionObject = Parse.Object.extend("Mission");
+		var MissionInfoObject = Parse.Object.extend("Objective");
+		var mission = new MissionObject();
+		mission.save({
 			title: title,
-			runner : runner,
-			resouce : resource,
+			runner : $(".runner_box input[type='radio']:checked+label img").attr("id"),
+			runnerName: $("#new_runner_textbox").val().trim(),
+			resouce : $(".resource_box input[type='radio']:checked+label img").attr("id"),
 			user : user.username,
 			completed : false,
 			deadline : deadline,
-			subtasks : subtasks,
-			isRecurring: $("#new_freq_recurring").is(":checked"),
 			failed:false,
-			totalTasks : subtasks.length,
+			totalTasks : options.length,
 			completedTasks: 0,
 			failedTasks: 0,
 			dates : (daysString) ? daysString.substring(0, daysString.length-1) : null
 		}, {
 			success:function(){
-				window.location = "/new_mission";
+				var submissions = [];
+				var o = 0;
+				for(o; o < options.length; o++){
+					var missionInfo = new MissionInfoObject();
+					missionInfo.save({
+
+					},
+					{
+						success:function(){
+
+						}
+					})
+				}
+				
+
+				//window.location = "/new_mission";
 			}
 		});
 	}
@@ -491,14 +502,17 @@ function editSubtask(event){
 function deleteSubtask(event){
 	event.preventDefault();
 	event.stopPropagation();
+
 	var el = event.target.parentNode.parentNode.parentNode;
-	console.log(el);
-	el.remove();
+	if(confirm("Are you sure you want to delete objective: " + $(el).find(".subtask_name").text())){
+		console.log(el);
+		el.remove();
+		saveObjectives();
+	}
 }
 function submitSubtask(event){
 	var el = event.target;
 	var index = el.id.split("_")[1];
-	console.log(el.id);
 	var title = $("#editing_" + index).val().trim();
 	$("#" + el.parentNode.id).html("<h4 class='subtask' for='check_" + index + "' id='subtask_" + index + "'>"
 									+ 		"<span class='pull-right'>"
@@ -507,14 +521,48 @@ function submitSubtask(event){
 									+		"</span>"
 									+ 		title 
 									+ "</h4>");
+	$("#subtask_" + index).data("data", title);
+	saveObjectives();
 	$("#edit_" + index).click(editSubtask);
 	$("#delete_" + index).click(deleteSubtask);
 	$("#subtask_" + index).data("data", title);
 }
 
 function selectRunner(event){
-	var presets = ["Maully", "Deniel", "Clawdia", "Charmane", "Savannah", "Jawnny"];
+	var presets = ["Maully", "Deniel", "Clawdia", "Charmane", "Roarie", "Jawnny"];
 	if($("#new_runner_textbox").val().trim()=="" || presets.indexOf($("#new_runner_textbox").val().trim()) >= 0){
 		$("#new_runner_textbox").val(event.target.id);
 	}
+	$(".runner_box input[type='radio']+label img").each(function(){
+		this.src = this.id + "_happy_static.png";
+	});
+	var el = $(".runner_box input[type='radio']:checked+label img");
+	el.attr("src", el.attr("id") + "_happy_run.gif");
+}
+
+function applyAll(){
+	if(current_mission_objectives.length == 0){
+		$("#objectives_error_msg").append("<p>Enter at least one objective first.</p>");
+		return false;
+	}else{
+		var options = $("#selected_mission_date option");
+		for(var i = 0; i < options.length; i++){
+			var newArray = current_mission_objectives.slice();
+			$(options[i]).data("data", newArray);
+		}
+	}
+	return true;
+}
+
+function saveObjectives(){
+	current_mission_objectives = [];
+	var list = $("#new_subtasks .subtask");
+	for(var i = 0; i < list.length; i++){
+		console.log($("#" + list[i].id).data("data"));
+		current_mission_objectives.push($("#" + list[i].id).data("data"));
+	}
+	$("#selected_mission_date").find(":selected").data("data", current_mission_objectives);
+	if($("#apply_to_all_btn").is(":checked")){
+			applyAll();
+		}
 }
