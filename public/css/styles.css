@@ -47,15 +47,18 @@ body{
 	margin-top:0;
 }
 
-#missions{
+#missions {
 	padding:5px;
 	overflow-x:hidden;
 }
-.mission_box{
+.mission_box {
 	border:1px solid gray;
 	height: auto;
 	background-color: #FFF9D9;
 	padding: 10px;
+}
+#subtaskToggle {
+	clear: both
 }
 
 #new_subtasks{
@@ -329,11 +332,9 @@ body{
 	padding: 3px;
 	z-index: 100;
 }
-/*
 .tasklist {
 	display: none;
 }
-*/
 
 .btn-selected{
 	background-color: #467E79;

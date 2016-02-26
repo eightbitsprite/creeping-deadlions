@@ -106,7 +106,8 @@ function renderMissions(){
 		           	console.log("date is", date);
 		            htmlBuilder += "<li class='mission_box container current_mission' id='" + data.objectId +"''>"
 		            				+ "<div class='pull-right btn-group mdropdown'>"
-		            				+ 	"<a class='mdropdown-toggle' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>"
+		            				+ 	"<a class='mdropdown-toggle' href='#' data-toggle='dropdown' "
+		            				+ 	"aria-haspopup='true' aria-expanded='false'>"
 		            				+ 	"<span class='glyphicon glyphicon-chevron-down'></span>"
 		            				+ 	"<span class='sr-only'>Menu</span>	</a>"
 		            				+ 	"<ul class='dropdown-menu mission-dropdown' aria-labelledby='dropdownMenu4'>"
@@ -118,8 +119,9 @@ function renderMissions(){
 		            				+		"<img src='/images/run-test.gif' class='gif runner_gif' id='runner_" + data.objectId + "'/>"
 		            				+	"</div>"
 		            				+	"<h4 class='pull-right'>" + ((data.isRecurring)? data.dates + "<br/>Until: " : "Due: ") + date + "</h4>"
-		            				+	"<h3 id='subtaskToggle'>Mission: " + data.title + "</h3>   "
-		            				+	"<span id='collapse_indicator' class='collapsed'><span class='glyphicon glyphicon-chevron-up'></span></span> </br>"
+		            				+	"<div id='subtaskToggle'><h3>" + data.title + "   "
+		            				+	"<span id='collapse_indicator' class='collapsed glyphicon glyphicon-chevron-up'>"
+		            				+	"</span>    </h3></div>"
 		            				+	"<div class='tasklist'>" //For jQuery slideup/slidedown implementation
 		            				+	"<ul class='list-unstyled subtasks-list'>" + subtaskHtml + "</ul>"
 		            				+	"</div>"
@@ -281,15 +283,15 @@ function toggleSubtaskList(event){
 	var currentList = currentBox.children(".tasklist");
 
 	var indicator = $("#collapse_indicator");
-	indicator = indicator.children(".glphyicon");
-	if (indicator.has(".collapsed")) {
-		indicator.removeClass(".glyphicon-chevron-up");
-		indicator.addClass(".glyphicon-chevron-down");
-		indicator.toggleClass(".collapsed");
+	//indicator = indicator.children(".glphyicon");
+	if (indicator.has("collapsed")) {
+		indicator.toggleClass("glyphicon-chevron-up");
+		indicator.toggleClass("glyphicon-chevron-down");
+		indicator.toggleClass("collapsed");
 	} else {
-		indicator.removeClass(".glyphicon-chevron-down");
-		indicator.addClass(".glyphicon-chevron-up");
-		indicator.toggleClass(".collapsed");
+		indicator.toggleClass("glyphicon-chevron-down");
+		indicator.toggleClass("glyphicon-chevron-up");
+		indicator.toggleClass("collapsed");
 	}
 
 	currentList.slideToggle(100);
