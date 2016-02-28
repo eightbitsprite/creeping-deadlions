@@ -169,7 +169,6 @@ function renderMissions(){
 
 	    	}
 			/*$(".current_mission .tasklist").click(function(e) {e.stopPropagation();});
-=======
 		        for (var i = 0; i < results.length; i++) {
 		            var data = results[i].toJSON();
 		           	var subtaskHtml = "";
@@ -258,7 +257,6 @@ function renderMissions(){
 		        }	
 		    /*
 			$(".current_mission .tasklist").click(function(e) {e.stopPropagation();});
->>>>>>> 865c2bfcd5010ff362e6b68b22b3d66625adcd9b
 			$(".current_mission .btn").click(function(e) {e.stopPropagation();});
 			$(".current_mission .mdropdown").click(function(e) {
 				e.stopPropagation();
@@ -386,12 +384,7 @@ function checkSubtask(event){
 
 /* Collapses/Expands the subtasklist for the current mission*/
 function toggleSubtaskList(event){
-<<<<<<< HEAD
-	console.log("toggling");
-	var currentBox = $(".current_mission");
-=======
 	var currentBox = $(this).parent();
->>>>>>> 865c2bfcd5010ff362e6b68b22b3d66625adcd9b
 	var currentList = currentBox.children(".tasklist");
 
 	//debugger;
