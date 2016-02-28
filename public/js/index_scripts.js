@@ -139,7 +139,7 @@ function renderMissions(){
 							+ 				"<li><a class='cancel_mission' id='cancel_" + data.objectId + "'>Delete</a></li>"
 							+			"</ul></div>"
 							+		 "<div class='runner-progress'>"
-							+			"<br/><div class='progress_background'>"
+							+			"<br/><div class='progress_background'><div class='pBar_r'>&nbsp;</div>"
 							+				"<div id='distance_" + mission.objectId + "' class='distance'></div>"
 	            			+  			"<img src='" + "/images/deadlion_leap.png" +"' class='progress_img lion_img' id='lion_" + mission.objectId + "'/>"	
 	            			+			"<img src='/images/" + mission.runner + "_panic_static.png' class='progress_img runner_img pull-right' id='runner_" + mission.objectId + "'/>"
