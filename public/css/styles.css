@@ -2,6 +2,7 @@ body{
 	padding: 10px 10px;
 	background-image: url("../images/background.png");
 }
+/* index.handlebars */
 .main{
 	/*background-color: #000000;
 	opacity: 0.6;
@@ -37,8 +38,70 @@ body{
 	color: white; 
 	margin: 2px 20px 0px 20px;
 }
+/* STARTOF index.handlebars::navbar */
+.navbar_cust {
+  position: fixed;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+  max-height:100px;
+  padding: 0px;
+  padding-left: 2px;
+}
+	/*Top menu bar information*/
+#navbar_top {
+	top: 0;
+	background-color: #BEB096;
+  	border: 1px solid #361700;
+  	padding:0px 10px;
+  	padding-left:20px;
+}
+.nav_img {
+	width: 15vw;
+	max-width:50px;
+	height: 15vw;
+	max-height:50px;
+}
+#new_mission_button{
+	/*
+	background-color:#990000;
+	color:white;
+	margin: 0px 10px 0px 10px
+	*/
+	/*float: left;*/
+}
+#menu_stats {
+	margin: 0px 10px 0px 0px;
+	float: right;
+}
+#prof_dropdown {
+	/*float: right;*/
+}
+#current_page_id {
+	margin: 0 auto;
+	font-family: 'Anton', sans-serif;
+	font-size: 22pt;
+}
+	/*Bottom menu bar information*/
+#navbar_bottom {
+	bottom:0;
+}
 
-/* index.handlebars::#missions (hopefully) */
+#main-nav > li > a {
+	color: #361700;
+	font-family: 'Anton', sans-serif;
+	background-color: #BEB096;
+  	border: 4px solid #361700;
+  	padding: 2vh 0vw 2vh 0vw;
+}
+/* END index.handlebars::navbar */
+
+#main h1{
+	font-family: 'Anton', sans-serif;
+	font-size: 20pt;
+	color:white;
+}
+/* STARTOF index.handlebars::#missions (hopefully) */
 #missions {
 	padding:5px;
 	overflow-x:hidden;
@@ -127,12 +190,31 @@ be bothered to find the other tags*/
 	position:absolute;
 	z-index:1;
 }
-
+/* ENDOF index.handlebars::#missions (hopefully) */
+/* STARTOF index.handlebars::#history */
 #history {
 	display: none;
 	height:70vh;
 	overflow:auto;
 }
+.history_mission{
+	margin-bottom: 15px;
+}
+.history_mission h3{
+	font-size: 15pt;
+	font-weight:bold;
+}
+
+.history_mission h5{
+	font-size: 10pt;
+}
+.history_mission p{
+	font-size: 10pt;
+	font-weight:bold;
+	font-style:italic;
+}
+/* ENDOF index.handlebars::#history */
+/* STARTOF index.handlebars::#help */
 #help {
 	display: none;
 	height:70vh;
@@ -161,133 +243,7 @@ be bothered to find the other tags*/
 .help_img_box {
 	margin: 0px 0px 2vh 0px;
 }
-
-/*Navbar styling info*/
-.navbar_cust {
-  position: fixed;
-  right: 0;
-  left: 0;
-  z-index: 1030;
-  max-height:100px;
-  padding: 0px;
-  padding-left: 2px;
-
-}
-/*Top menu bar information*/
-#navbar_top {
-	top: 0;
-	background-color: #BEB096;
-  	border: 1px solid #361700;
-  	padding:0px 10px;
-  	padding-left:20px;
-}
-
-.nav_img {
-	width: 15vw;
-	max-width:50px;
-	height: 15vw;
-	max-height:50px;
-}
-
-#new_mission_button{
-	/*
-	background-color:#990000;
-	color:white;
-	margin: 0px 10px 0px 10px
-	*/
-	/*float: left;*/
-}
-#menu_stats {
-	margin: 0px 10px 0px 0px;
-	float: right;
-}
-#prof_dropdown {
-	/*float: right;*/
-}
-#current_page_id {
-	margin: 0 auto;
-	font-family: 'Anton', sans-serif;
-	font-size: 22pt;
-}
-/*Bottom menu bar information*/
-#navbar_bottom {
-	bottom:0;
-}
-
-#main-nav > li > a {
-	color: #361700;
-	font-family: 'Anton', sans-serif;
-	background-color: #BEB096;
-  	border: 4px solid #361700;
-  	padding: 2vh 0vw 2vh 0vw;
-}
-#main h1{
-	font-family: 'Anton', sans-serif;
-	font-size: 20pt;
-	color:white;
-}
-
-::-webkit-scrollbar {
-	width: 12px;
-	margin-left:-100px;
-	position: absolute;
-}
- 
-::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-	border-radius: 10px;
-}
- 
-::-webkit-scrollbar-thumb {
-	border-radius: 10px;
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
-}
-
-/*login.handlebars styling*/
-#login h1{
-	font-family: 'Anton', sans-serif;
-	font-size: 32pt;
-	margin-bottom: 5vh;
-	margin-top: 5vh;
-	color:white;
-}
-.login_img {
-	max-width: 50vw;
-	max-height: 50vh;
-	background-color: white;
-	border: 4px solid #361700;
-
-	padding-left: 1vw;
-	margin-bottom: 1vh;
-}
-#login label{
-	margin: 2vh 0vw;
-	color:white;
-}
-
-#sign-in, #sign-up{
-	display:none;
-}
-
-#sign-in:target{
-	display:block;
-}
-
-#sign-up:target{
-	display:block;
-}
-
-#password_error{
-	display:none;
-	color:red;
-}
-
-#error_msg, #recur_error_msg, #timed_error_msg{
-	color:red;
-	text-align: center;
-}
-/*END of login.handlebars styling (maybe?)*/
-
+/* ENDOF index.handlebars::#help */
 .default-list{
 	color:white;
 	font-size: 12pt;
@@ -382,11 +338,8 @@ be bothered to find the other tags*/
 	font-weight:normal;
 	margin-left:5px;
 }
-.btn-login{
-	width:70vw;
-}
 
-/* index.handlebars::#village */
+/* STARTOF index.handlebars::#village */
 #village{
 	height:70vh;
 	width:90vw;
@@ -451,9 +404,58 @@ be bothered to find the other tags*/
 
 #btn-upgrade {
 }
+/* ENDOF index.handlebars::#village styling*/
+/* ENDOFFILE index.handlebars */
 
-/* END index.handlebars::#village styling*/
+/* FILE login.handlebars styling*/
+#login h1{
+	font-family: 'Anton', sans-serif;
+	font-size: 32pt;
+	margin-bottom: 5vh;
+	margin-top: 5vh;
+	color:white;
+}
+.login_img {
+	max-width: 50vw;
+	max-height: 50vh;
+	background-color: white;
+	border: 4px solid #361700;
 
+	padding-left: 1vw;
+	margin-bottom: 1vh;
+}
+#login label{
+	margin: 2vh 0vw;
+	color:white;
+}
+
+#sign-in, #sign-up{
+	display:none;
+}
+
+#sign-in:target{
+	display:block;
+}
+
+#sign-up:target{
+	display:block;
+}
+
+#password_error{
+	display:none;
+	color:red;
+}
+#error_msg, #recur_error_msg, #timed_error_msg{
+	color:red;
+	text-align: center;
+}
+.btn-login{
+	width:70vw;
+}
+/* ENDOFFILE of login.handlebars styling (maybe?)*/
+
+/* FILE mission_form.handlebars (NOTE: classes/ids may be in
+								index.handlebars::#mission) */
 .modal-dialog{
 	border:2px solid #361700;
 	background-color: #BEB096;
@@ -466,22 +468,6 @@ be bothered to find the other tags*/
 	margin-left:5px;
 }
 
-.history_mission{
-	margin-bottom: 15px;
-}
-.history_mission h3{
-	font-size: 15pt;
-	font-weight:bold;
-}
-
-.history_mission h5{
-	font-size: 10pt;
-}
-.history_mission p{
-	font-size: 10pt;
-	font-weight:bold;
-	font-style:italic;
-}
 
 .subtask_check + label{
 	font-weight:normal;
@@ -511,4 +497,21 @@ be bothered to find the other tags*/
 
 .delete_subtask{
 	margin-left: 5px;
+}
+/* ENDOF mission_form.handlebars */
+
+::-webkit-scrollbar {
+	width: 12px;
+	margin-left:-100px;
+	position: absolute;
+}
+ 
+::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+	border-radius: 10px;
+}
+ 
+::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
 }
