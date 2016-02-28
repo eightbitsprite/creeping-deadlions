@@ -22,6 +22,7 @@ $(document).ready(function() {
 
 		setInterval(function() {
 		    // your code goes here...
+		    console.log("calculating distances...");
 		    var list = $(".current_mission");
 		    $.each(list, function(){
 		    	var mission = $(this).data("mission").toJSON();
@@ -30,7 +31,6 @@ $(document).ready(function() {
 		    		var target = new Date(mission.deadline.iso);
 		    		var created = new Date(objective.createdAt);
 		    		if(new Date() <= target){
-		    			console.log((1- ((target - new Date()) / (target - created))) + "%");
 		    			$("#lion_" + mission.objectId).css("margin-left", ((1- ((target - new Date()) / (target - created))) * 80) + "%");	
 		    			$("#distance_" + mission.objectId).css("width", Math.min(100, (1- ((target - new Date()) / (target - created))) * 100)  + "%");
 		    		}
@@ -38,7 +38,7 @@ $(document).ready(function() {
 		    	}
 
 		    });
-		}, 60 * 1000); // 60 * 1000 milsec
+		}, 2 * 1000); // 60 * 1000 milsec
 	}
 })
 function logOut() {
@@ -300,7 +300,6 @@ function toggleSubtaskList(event){
 function completeMission(event){
 	var to_complete = $("#" + event.target.id.split("_")[1]).data("parseObject");
 	var mission =$("#" + to_complete.get("missionId")).data("mission");
-	console.log(runner);
 	window.localStorage.setItem("runner", mission.get("runner"));
 	console.log("task", to_complete);
 	var now = new Date();
