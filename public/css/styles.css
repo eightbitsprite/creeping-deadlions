@@ -667,6 +667,24 @@ input[type='checkbox']{
 	height:10px;
 	width:97%;
 	margin-top:10px;
+	margin-right: -10px;
+
+	background: linear-gradient(to right, rgba(156,209,122,0),rgba(156,209,122,.5)28%, 
+		#9CD17A 30%); 
+}
+.pBar_r{
+	background-color: #9CD17A;
+
+	height: 10px;
+
+	min-width: 30px;
+	width: 3vw;
+	max-width: 100px;
+
+	float: right;
+	margin-right: -20px;
+
+	background: linear-gradient(to right, #9CD17A, rgba(156,209,122,0));
 }
 
 .distance{
@@ -674,6 +692,8 @@ input[type='checkbox']{
 	background-color:#E25957;
 	width:40%;
 	margin-right:-10px;
+
+	background: linear-gradient(to left, rgba(226,89,87,.1), #E25957 5%, #E25957 80%, rgba(226,89,87,0) 95%);
 }
 
 .delete_subtask{
