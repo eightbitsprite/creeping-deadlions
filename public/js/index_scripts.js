@@ -173,72 +173,60 @@ function renderMissions(){
 		        }
 		    });
 		});
-		console.log("finished");
 	});
 }
 
 function renderCompleted(){
 	var username = JSON.parse(window.localStorage.getItem("current_user")).username;
-	var Task = Parse.Object.extend("Task");
-	var query = new Parse.Query(Task);
+	var MissionObject = Parse.Object.extend("Mission");
+	var query = new Parse.Query(MissionObject);
 	query.equalTo("user", username);
 	query.equalTo("completed", true);
-	query.find({
-	    success: function (results) {
-	    	if(results.length == 0){
-	    		 $("#completed-missions-list").html("<li class='default-list'><em>No missions to display. <br/>"
-	    		 	+ "Click <strong>'New Mission'</strong> to create a new mission.</em></li>");
-	    	}else{
-	    		var htmlBuilder = "";
-		        for (var i = 0; i < results.length; i++) {
-		            var data = results[i].toJSON();
-		           	var date = dateString(new Date(data.updatedAt), true);
-		            htmlBuilder += "<li class='mission_box container history_mission' id='" + data.objectId+"''>"
-		            				+	"<h3>Mission: " + data.title + "</h3>"
-		            				+	"<h5>Completed at: " + dateString(new Date(data.updatedAt), true) + "</h5>"
-		            				+	"<h6><em>Started at: " + dateString(new Date(data.createdAt), true) + "</em></h6>"
-		            				+ 	"<p>Time Elapsed: " + getTimeDifference(new Date(data.createdAt), new Date(data.updatedAt)) + "</p>"
-		            				+ "</li>"
-		        }
-		        $("#completed-missions-list").html(htmlBuilder);
-	    	}
-	    },
-	    error: function (error) {
-	        alert("Error: " + error.code + " " + error.message);
-	    }
+	query.find().then(function(results){
+    	if(results.length == 0){
+    		 $("#completed-missions-list").html("<li class='default-list'><em>No missions to display. <br/>"
+    		 	+ "Click <strong>'New Mission'</strong> to create a new mission.</em></li>");
+    	}else{
+    		var htmlBuilder = "";
+	        for (var i = 0; i < results.length; i++) {
+	            var data = results[i].toJSON();
+	           	var date = dateString(new Date(data.updatedAt), true);
+	            htmlBuilder += "<li class='mission_box container history_mission' id='" + data.objectId+"''>"
+	            				+	"<h3>Mission: " + data.title + "</h3>"
+	            				+	"<h5>Completed at: " + dateString(new Date(data.updatedAt), true) + "</h5>"
+	            				+	"<h6><em>Started at: " + dateString(new Date(data.createdAt), true) + "</em></h6>"
+	            				+ 	"<p>Time Elapsed: " + getTimeDifference(new Date(data.createdAt), new Date(data.updatedAt)) + "</p>"
+	            				+ "</li>"
+	        }
+	        $("#completed-missions-list").html(htmlBuilder);
+    	}
 	});
 }
 
-
 function renderFailed(){
 	var username = JSON.parse(window.localStorage.getItem("current_user")).username;
-	var Task = Parse.Object.extend("Task");
-	var query = new Parse.Query(Task);
+	var MissionObject = Parse.Object.extend("Mission");
+	var query = new Parse.Query(MissionObject);
 	query.equalTo("user", username);
 	query.equalTo("failed", true);
-	query.find({
-	    success: function (results) {
-	    	if(results.length == 0){
-	    		 $("#failed-missions-list").html("<li class='default-list'><em>No failed missions.</em></li>");
-	    	}else{
-	    		console.log(results);
-	    		var htmlBuilder = "";
-		        for (var i = 0; i < results.length; i++) {
-		            var data = results[i].toJSON();
-		           	var date = dateString(new Date(data.deadline.iso), !data.isRecurring);
-		            htmlBuilder += "<li class='mission_box container history_mission'>"
-		            				+	"<h3>Mission: " + data.title + "</h3>"
-		            				+	"<h5>Completed " + data.completedTasks + " out of " 
-		            				+ 		data.totalTasks + " subtasks</h5>"
-		            				+	"<h6><em>RIP: [runner name]</em></h6>"
-		            				+ "</li>"
-		        }
-		        $("#failed-missions-list").html(htmlBuilder);
-	    	}
-	    },
-	    error: function (error) {
-	        alert("Error: " + error.code + " " + error.message);
-	    }
+	query.find().then(function(results){
+    	if(results.length == 0){
+    		 $("#failed-missions-list").html("<li class='default-list'><em>No failed missions.</em></li>");
+    	}else{
+    		console.log(results);
+    		var htmlBuilder = "";
+	        for (var i = 0; i < results.length; i++) {
+	            var data = results[i].toJSON();
+	           	var date = dateString(new Date(data.deadline.iso), true);
+	            htmlBuilder += "<li class='mission_box container history_mission'>"
+	            				+	"<h3>Mission: " + data.title + "</h3>"
+	            				+	"<h5>Completed " + data.completedTasks + " out of " 
+	            				+ 		data.totalTasks + " subtasks</h5>"
+	            				+	"<h6><em>RIP: " + data.runner + "</em></h6>"
+	            				+ "</li>"
+	        }
+	        $("#failed-missions-list").html(htmlBuilder);
+    	}
 	});
 }
 
@@ -311,15 +299,22 @@ function toggleSubtaskList(event){
 
 function completeMission(event){
 	var to_complete = $("#" + event.target.id.split("_")[1]).data("parseObject");
-	var runner =$("#" + to_complete.get("missionId")).data("mission").get("runner");
+	var mission =$("#" + to_complete.get("missionId")).data("mission");
 	console.log(runner);
-	window.localStorage.setItem("runner", runner);
+	window.localStorage.setItem("runner", mission.get("runner"));
 	console.log("task", to_complete);
 	var now = new Date();
-	//to_complete.set("completed", true);
-	to_complete.save({
+	mission.set("completedTasks", mission.get("completedTasks") + 1);
+	//if(mission.get("completedTasks") == mission.get("totalTasks"))
+	//true- set alert, not animation; false set animation then alert
+	mission.save({
 		success:function(){
-			window.location = "/mission_complete";
+			to_complete.destroy({
+				success:function(){
+					window.location = "/mission_complete";
+				}
+			});
 		}
-	})
+	});
+	/**/
 }
