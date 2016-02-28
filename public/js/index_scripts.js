@@ -16,6 +16,10 @@ $(document).ready(function() {
 		$("#history-failed-button").click(showFailed);
 		$("#failed-missions-list").css("display", "none");
 		$("#logoutbutton").click(logOut);
+
+		$("#next_button").click(nextPage);		
+		$("#back_button").click(previousPage);
+		$(".close_editmission").click(previousPage);
 		renderMissions();
 		//renderCompleted();
 		//renderFailed();
@@ -121,6 +125,10 @@ function renderMissions(){
 					findings.sort(function(x, y){
 					    return x.index - y.index;
 					});
+					if(!findings[0]) {
+						alert("Error: Empty mission found! \n You may need to create a new account.");
+						return;
+					}
 					var data = findings[0].toJSON();
 					var subtaskHtml = "";
 		            for(var s = 0; s < data.subtasks.length; s++){
@@ -157,6 +165,8 @@ function renderMissions(){
             		$("#missions-list").append(htmlBuilder);
 
             		$("#mission_"+ mission.objectId).click(toggleSubtaskList);
+            		$("#edit_"+ data.objectId).click(editMission);
+
             		$("#" + data.objectId).data("parseObject", findings[0]);
             		$("#" + mission.objectId).data("mission", result);
             		var target = new Date(mission.deadline.iso);
@@ -307,6 +317,40 @@ function toggleSubtaskList(event){
 	}
 
 	currentList.slideToggle(100);
+}
+
+function editMission(event) {
+	//debugger;
+	var editMission_modal = $(".editmission_modal");
+	var dataId = event.target.id.split("_")[1];
+	var dataObject = $("#"+dataId).data("parseObject");
+	//console.log(dataObject);
+	var missionId = dataObject.get("missionId");
+
+	var missionObject = $("#"+missionId).data("mission");
+	var missionName = missionObject.get("title");
+	var missionDate = missionObject.get("deadline");
+	//console.log("Title: "+missionName);
+
+	editMission_modal.removeAttr("id");
+	editMission_modal.attr("id", missionId);
+	editMission_modal.find("#editmission_modaltitle").empty().append(missionName);
+
+	$("#new_mission_name_textbox").empty().val(missionName);
+	$("#new_task_due_date").empty().val(missionDate.toLocaleDateString());
+	$("#new_task_due_time").empty().val(missionDate.toLocaleTimeString());
+
+	/*display modal*/
+	editMission_modal.modal({"show":true});
+}
+/* Barebones implementation, just flashes to the next part of popup*/	
+function nextPage(event) {
+	$("#frequency").css("display", "none");
+	$("#objectives").css("display", "block");	
+}
+function previousPage(event) {
+	$("#frequency").css("display", "block");
+	$("#objectives").css("display", "none");	
 }
 
 function completeMission(event){
