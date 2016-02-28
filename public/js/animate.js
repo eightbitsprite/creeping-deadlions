@@ -27,6 +27,7 @@ function newMission(){
 }
 
 function completeMission(){
+	$("#runner_start").attr("src", "/images/" + window.localStorage.getItem("runner") + "_happy_run.gif");
 	$("#runner_start").css("margin-left", - $("#animation_screen").offset().left - $("#runner_start").width());
 	$("#runner_start").animate({
 		"margin-left" : $("#animation_screen").width()

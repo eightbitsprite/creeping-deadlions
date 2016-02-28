@@ -19,6 +19,26 @@ $(document).ready(function() {
 		renderMissions();
 		//renderCompleted();
 		//renderFailed();
+
+		setInterval(function() {
+		    // your code goes here...
+		    var list = $(".current_mission");
+		    $.each(list, function(){
+		    	var mission = $(this).data("mission").toJSON();
+		    	var objective = $(this).find(".tasklist").data("parseObject").toJSON();
+		    	if(!mission.completed){
+		    		var target = new Date(mission.deadline.iso);
+		    		var created = new Date(objective.createdAt);
+		    		if(new Date() <= target){
+		    			console.log((1- ((target - new Date()) / (target - created))) + "%");
+		    			$("#lion_" + mission.objectId).css("margin-left", ((1- ((target - new Date()) / (target - created))) * 80) + "%");	
+		    			$("#distance_" + mission.objectId).css("width", Math.min(100, (1- ((target - new Date()) / (target - created))) * 100)  + "%");
+		    		}
+		    		
+		    	}
+
+		    });
+		}, 60 * 1000); // 60 * 1000 milsec
 	}
 })
 function logOut() {
@@ -80,135 +100,80 @@ function renderMissions(){
 	query.equalTo("user", username);
 	query.equalTo("completed", false);
 	query.equalTo("failed", false);
-	query.find({
-	    success: function (results) {
-	    	if(results.length == 0){
-	    		 $("#missions-list").html("<li class='default-list'><em>No missions to display."
-	    		 	+ "<br/>Click <strong>'New Mission'</strong> to create a new mission.</em></li>");
-	    	}else{
-	    		for (var i = 0; i < results.length; i++) {
-	    			var mission = results[i].toJSON();
-	    			console.log(mission);
-	    			var htmlBuilder = "";
-	    			var oquery = new Parse.Query(ObjectiveObject);
-					oquery.equalTo("missionId", mission.objectId);
-					oquery.equalTo("completed", false);
-					oquery.equalTo("failed", false);
-					oquery.find({
-						async:false,
-						success:function(findings){
-							findings.sort(function(x, y){
-							    return x.createdAt - y.createdAt;
-							});
-							var data = findings[0].toJSON();
-							var subtaskHtml = "";
-				            for(var s = 0; s < data.subtasks.length; s++){
-				            	console.log(data.subtasks[i]);
-				           		subtaskHtml += "<li><input id='" + data.objectId + "_" + data.subtasks[s].id + "'  type='checkbox' class='subtask_check'" + ((data.subtasks[s].completed)? "checked" : "") + "/>"
-				           					+ "<label for='"+ data.objectId + "_" + data.subtasks[s].id + "'>" + data.subtasks[s].title + "</label></li>";
-				           	}
-				           	var date = dateString(new Date(mission.deadline.iso), true);
-				           	console.log("date is", date);
-							htmlBuilder +=  "<div class='mission_background'>"
-									+ "<li class='mission_box container current_mission' id='" + mission.objectId +"''>"
-									+ 	"<div class='pull-right btn-group mdropdown'>"
-									+	 	"<a class='mdropdown-toggle' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>"
-			            			+ 		"<span class='glyphicon glyphicon-chevron-down'></span>"
-			            			+ 		"<span class='sr-only'>Menu</span>	</a>"
-		            				+ 		"<ul class='dropdown-menu mission-dropdown' aria-labelledby='dropdownMenu4'>"
-  									+ 			"<li><a class='editl_mission' id='edit_" + mission.objectId + "'>Edit</a></li>"
-  									+ 			"<li><a class='cancel_mission' id='cancel_" + mission.objectId + "'>Delete</a></li>"
-  									+		"</ul></div>"
-  									+	 "<div class='runner-progress'>"
-  									+		"<br/><div class='progress_background'>"
-	  								+			"<div id='distance_" + mission.objectId + "' class='distance'></div>"
-			            			+  			"<img src='" + "/images/deadlion_leap.png" +"' class='progress_img lion_img' id='lion_" + mission.objectId + "'/>"	
-			            			+			"<img src='/images/" + mission.runner + "_panic_static.png' class='progress_img runner_img pull-right' id='runner_" + mission.objectId + "'/>"
-		            				+		"</div>"
-		            				+	"</div>"
-		            				+	"<h4 class='pull-right mission_dates'>" + ((mission.dates != "")? "Every " + mission.dates  + "<br/>Until: " : "Due: ") + date + "</h4>"
-									+ 	"<h3 class='subtaskToggle' id='mission_" + mission.objectId + "'>" + mission.title + "&nbsp;"
-			            			+		"<span id='collapse_indicator' class='collapsed glyphicon glyphicon-chevron-up'></span>"
-			            			+	"</h3>"
-			            			+	"<div class='tasklist'>"
-			            			+		"<ul class='list-unstyled subtasks-list'>" + subtaskHtml + "</ul>"
-			            			+	"</div>"
-			            			+	"<a class='btn pull-right complete_mission btn-custom' id='complete_" + mission.objectId + "'>Incomplete</a>"
-			            			+ "</li></div>";
-		            		$("#missions-list").append(htmlBuilder);
-
-		            		$("#mission_"+ mission.objectId).click(toggleSubtaskList);
-
-
-
-		            		/*for (var i = 0; i < findings.length; i++) {
-					        	var data = findings[i].toJSON();
-					             $("#" + data.objectId).data("parseObject", findings[i]);
-
-					             /*Determine if ready to complete*/
-					       /*      var readyToComplete = $("#" + data.objectId).find(":checked").length == data.subtasks.length;
-					             if(readyToComplete){
-					             	$("#complete_" + data.objectId).addClass("btn-success");
-					             	$("#complete_" + data.objectId).removeClass("btn-secondary-outline");
-					             }else{
-					             	$("#complete_" + data.objectId).removeClass("btn-success");
-					             	$("#complete_" + data.objectId).addClass("btn-secondary-outline");
-					             }
-					           	 $("#complete_" + data.objectId).prop("disable", !readyToComplete);
-					           	 $("#complete_" + data.objectId).css("cursor", (readyToComplete)? "pointer" : "not-allowed");
-					           	 $("#complete_" + data.objectId).text((readyToComplete)? "Click to Complete!" : "Incomplete");
-					        }	*/
-						}
+	query.find().then(function(results){
+		var promise = Parse.Promise.as();
+		if(results.length == 0){
+    		 $("#missions-list").html("<li class='default-list'><em>No missions to display."
+    		 	+ "<br/>Click <strong>'New Mission'</strong> to create a new mission.</em></li>");
+    	}
+    	console.log(results);
+    	results.sort(function(x, y){
+		    return x.updatedAt - y.updatedAt;
+		});
+		results.forEach(function(result){
+			var mission = result.toJSON();
+			var oquery = new Parse.Query(ObjectiveObject);
+			oquery.equalTo("missionId", mission.objectId);
+			oquery.equalTo("completed", false);
+			oquery.equalTo("failed", false);
+			oquery.find({
+				success:function(findings){
+					findings.sort(function(x, y){
+					    return x.index - y.index;
 					});
-	    		}
+					var data = findings[0].toJSON();
+					var subtaskHtml = "";
+		            for(var s = 0; s < data.subtasks.length; s++){
+		           		subtaskHtml += "<li><input id='" + data.objectId + "_" + data.subtasks[s].id + "'  type='checkbox' class='subtask_check'" + ((data.subtasks[s].completed)? "checked" : "") + "/>"
+		           					+ "<label for='"+ data.objectId + "_" + data.subtasks[s].id + "'>" + data.subtasks[s].title + "</label></li>";
+		           	}
+		           	var date = dateString(new Date(mission.deadline.iso), true);
+					var htmlBuilder =  "<div class='mission_background'>"
+							+ "<li class='mission_box container current_mission' id='" + mission.objectId +"'>"
+							+ 	"<div class='pull-right btn-group mdropdown'>"
+							+	 	"<a class='mdropdown-toggle' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>"
+	            			+ 		"<span class='glyphicon glyphicon-chevron-down'></span>"
+	            			+ 		"<span class='sr-only'>Menu</span>	</a>"
+            				+ 		"<ul class='dropdown-menu mission-dropdown' aria-labelledby='dropdownMenu4'>"
+							+ 				"<li><a class='editl_mission' id='edit_" + data.objectId + "'>Edit</a></li>"
+							+ 				"<li><a class='cancel_mission' id='cancel_" + data.objectId + "'>Delete</a></li>"
+							+			"</ul></div>"
+							+		 "<div class='runner-progress'>"
+							+			"<br/><div class='progress_background'>"
+							+				"<div id='distance_" + mission.objectId + "' class='distance'></div>"
+	            			+  			"<img src='" + "/images/deadlion_leap.png" +"' class='progress_img lion_img' id='lion_" + mission.objectId + "'/>"	
+	            			+			"<img src='/images/" + mission.runner + "_panic_static.png' class='progress_img runner_img pull-right' id='runner_" + mission.objectId + "'/>"
+            				+		"</div>"
+            				+	"</div>"
+            				+	"<h4 class='pull-right mission_dates'>" + ((mission.dates)? "Every " + mission.dates  + "<br/>Until: " + data.title + " at " + date.split(" ")[date.split(" ").length -1]: "Due: " + date) + "</h4>"
+							+ 	"<h3 class='subtaskToggle' id='mission_" + mission.objectId + "'>" + mission.title + "&nbsp;"
+	            			+		"<span id='collapse_indicator' class='collapsed glyphicon glyphicon-chevron-up'></span>"
+	            			+	"</h3>"
+	            			+	"<div class='tasklist' id='" + data.objectId + "'>"
+	            			+		"<ul class='list-unstyled subtasks-list'>" + subtaskHtml + "</ul>"
+	            			+	"</div>"
+	            			+	"<a class='btn pull-right complete_mission btn-custom' id='complete_" + data.objectId + "'>Incomplete</a>"
+	            			+ "</li></div>";
+            		$("#missions-list").append(htmlBuilder);
 
+            		$("#mission_"+ mission.objectId).click(toggleSubtaskList);
+            		$("#" + data.objectId).data("parseObject", findings[0]);
+            		$("#" + mission.objectId).data("mission", result);
+            		var target = new Date(mission.deadline.iso);
+		    		$("#lion_" + mission.objectId).css("margin-left", Math.min(80, (1- ((target - new Date()) / (target - new Date(data.createdAt)))) * 80)  + "%");
+		    		$("#distance_" + mission.objectId).css("width", Math.min(100, (1- ((target - new Date()) / (target - new Date(data.createdAt)))) * 100)  + "%");
 
-	    	}
-	    	/*
-		        $("#missions-list").html(htmlBuilder);
-		        for (var i = 0; i < results.length; i++) {
-		        	var data = results[i].toJSON();
-		             $("#" + data.objectId).data("parseObject", results[i]);
+            		checkForCompleted(data);
+            	
+            		$("#cancel_" + data.objectId).click(cancelMission);
+					$("#" + data.objectId + " .subtask_check").change(checkSubtask);
+					$("#complete_" + data.objectId).click(completeMission);
 
-		             /*Set up progress bar*/
-		             /*if(data.isRecurring){
-		             	console.log($("#lion_" + data.objectId));
-		             	$("#lion_" + data.objectId).css("margin-left", 
-		             		(Math.ceil((data.failedTasks / data.totalTasks) / 2) * 100) + "%");
-		             }/*else{
-		             	$("#lion_" + data.objectId).css("margin-right", "0em");
-		             }*/
-
-		             /*Determine if ready to complete*/
-		             /*var readyToComplete = $("#" + data.objectId).find(":checked").length == data.subtasks.length;
-		             if(readyToComplete){
-		             	$("#complete_" + data.objectId).addClass("btn-success");
-		             	$("#complete_" + data.objectId).removeClass("btn-secondary-outline");
-		             }else{
-		             	$("#complete_" + data.objectId).removeClass("btn-success");
-		             	$("#complete_" + data.objectId).addClass("btn-secondary-outline");
-		             }
-		           	 $("#complete_" + data.objectId).prop("disable", !readyToComplete);
-		           	 $("#complete_" + data.objectId).css("cursor", (readyToComplete)? "pointer" : "not-allowed");
-		        	 $("#complete_" + data.objectId).text((readyToComplete)? "Click to Complete!" : "Incomplete");
-		        }	
-		    /*
-			$(".current_mission .tasklist").click(function(e) {e.stopPropagation();});
-			$(".current_mission .btn").click(function(e) {e.stopPropagation();});
-			$(".current_mission .mdropdown").click(function(e) {
-				e.stopPropagation();
-				$(".mdropdown-toggle").dropdown('toggle');
-			});*/
-
-			/* Adds click handler to allow collapsion/expansion of subtasklist*/
-			$(".subtaskToggle").click(toggleSubtaskList);
-	    	//}
-	    	
-	        initializePage();
-	    },
-	    error: function (error) {
-	        alert("Error: " + error.code + " " + error.message);
-	    }
+            		return promise;
+		        }
+		    });
+		});
+		console.log("finished");
 	});
 }
 
@@ -277,14 +242,6 @@ function renderFailed(){
 	});
 }
 
-
-function initializePage() {
-	$(".cancel_mission").click(cancelMission);
-	$(".subtask_check").change(checkSubtask);
-	$(".complete_mission").click(completeMission);
-} 
-
-
 function cancelMission(event){
 	var to_delete = $("#" + event.target.id.split("_")[1]).data("parseObject");
 	if(confirm("Are you sure you want to cancel Mission: " + to_delete.get("title") + "?")){
@@ -297,26 +254,36 @@ function cancelMission(event){
 }
 
 function checkSubtask(event){
-	console.log($("#" + event.target.id).is(":checked"));
 	var id = event.target.id.split("_")[0];
 	var index = event.target.id.split("_")[1];
 	var to_update = $("#" + id).data("parseObject");
+	console.log(to_update);
 	var list = to_update.get("subtasks");
-	if(to_update.get("isRecurring")){
-		list.shift();
-	}else{
-		list[index].completed = $("#" + event.target.id).is(":checked");
-	}
+	list[index].completed = $("#" + event.target.id).is(":checked");
+
 	to_update.set({
-		"subtasks": list,
-		"completedTasks": ($("#" + event.target.id).is(":checked") || to_update.get("isRecurring")) ? to_update.get("completedTasks") + 1 : to_update.get("completedTasks") - 1 
+		"subtasks": list
 	});
 	to_update.save({
 		success:function(){
-			renderMissions();
+			checkForCompleted(to_update.toJSON());
 		}
 	});
+}
 
+function checkForCompleted(data){
+	var readyToComplete = $("#" + data.objectId).find(":checked").length == data.subtasks.length;
+     if(readyToComplete){
+     	$("#complete_" + data.objectId).addClass("btn-success");
+     	$("#complete_" + data.objectId).removeClass("btn-secondary-outline");
+     }else{
+     	$("#complete_" + data.objectId).removeClass("btn-success");
+     	$("#complete_" + data.objectId).addClass("btn-secondary-outline");
+     }
+
+    $("#complete_" + data.objectId).prop("disable", !readyToComplete);
+   	$("#complete_" + data.objectId).css("cursor", (readyToComplete)? "pointer" : "not-allowed");
+   	$("#complete_" + data.objectId).text((readyToComplete)? "Click to Complete!" : "Incomplete");
 }
 
 /* Collapses/Expands the subtasklist for the current mission*/
@@ -344,9 +311,12 @@ function toggleSubtaskList(event){
 
 function completeMission(event){
 	var to_complete = $("#" + event.target.id.split("_")[1]).data("parseObject");
+	var runner =$("#" + to_complete.get("missionId")).data("mission").get("runner");
+	console.log(runner);
+	window.localStorage.setItem("runner", runner);
 	console.log("task", to_complete);
 	var now = new Date();
-	to_complete.set("completed", true);
+	//to_complete.set("completed", true);
 	to_complete.save({
 		success:function(){
 			window.location = "/mission_complete";

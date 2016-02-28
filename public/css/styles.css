@@ -164,9 +164,6 @@ be bothered to find the other tags*/
 	height:50px;
 }
 
-.distance{
-	min-width: 100px;
-}
 .runner-progress{
 	width:90%;
 }
@@ -652,7 +649,7 @@ input[type='checkbox']{
 	height:55px;
 	margin-top:-60px;
 	left:-100px;
-	margin-left:35%;
+	margin-left:0%;
 }
 
 .runner_img{
@@ -660,6 +657,7 @@ input[type='checkbox']{
 	height:45px;
 	margin-right:-18px;
 	margin-top:-40px;
+	position:relative;
 }
 
 .progress_background{
@@ -672,8 +670,8 @@ input[type='checkbox']{
 .distance{
 	height:10px;
 	background-color:#E25957;
-	width:40%;
-	margin-right:-10px;
+	width:0%;
+	min-width:30px;
 }
 
 .delete_subtask{
