@@ -17,8 +17,8 @@ $(document).ready(function() {
 		$("#failed-missions-list").css("display", "none");
 		$("#logoutbutton").click(logOut);
 		renderMissions();
-		renderCompleted();
-		renderFailed();
+		//renderCompleted();
+		//renderFailed();
 	}
 })
 function logOut(){
@@ -70,101 +70,106 @@ function showHelp() {
 
 
 function renderMissions(){
+	console.log("rendering missions");
 	var username = JSON.parse(window.localStorage.getItem("current_user")).username;
-	var Task = Parse.Object.extend("Task");
-	var query = new Parse.Query(Task);
+	var MissionObject = Parse.Object.extend("Mission");
+	var ObjectiveObject = Parse.Object.extend("Objective");
+	var query = new Parse.Query(MissionObject);
 	query.equalTo("user", username);
 	query.equalTo("completed", false);
 	query.equalTo("failed", false);
 	query.find({
 	    success: function (results) {
-
 	    	if(results.length == 0){
 	    		 $("#missions-list").html("<li class='default-list'><em>No missions to display. <br/>Click <strong>'New Mission'</strong> to create a new mission.</em></li>");
 	    	}else{
 	    		var htmlBuilder = "";
-		        for (var i = 0; i < results.length; i++) {
-		            var data = results[i].toJSON();
-		           	var subtaskHtml = "";
-		           	var space = "&nbsp;&nbsp;&nbsp;&nbsp;";
-		           	if(data.isRecurring){
-		           		if(data.subtasks.length == 0)
-		           			subtaskHtml += "<li>No dates found. Click button to complete task!</li>";
-		           		else
-		           			subtaskHtml += "<li><input id='" + data.objectId + "_" + data.subtasks[0].id + "'  type='checkbox' class='subtask_check'" + ((data.subtasks[0].completed)? "checked" : "") + "/>"
-		           					+ "<label for='"+ data.objectId + "_" + data.subtasks[0].id + "'>" + data.subtasks[0].title + "</label></li>";
-		           	}else{
-		           		for(var s = 0; s < data.subtasks.length; s++){
-			           		subtaskHtml += "<li><input id='" + data.objectId + "_" + data.subtasks[s].id + "'  type='checkbox' class='subtask_check'" + ((data.subtasks[s].completed)? "checked" : "") + "/>"
-			           					+ "<label for='"+ data.objectId + "_" + data.subtasks[s].id + "'>" + data.subtasks[s].title + "</label></li>";
-			           		if(data.subtasks[s].completed)
-			           			space += "&nbsp;&nbsp;&nbsp;";
-			           	}
-		           	}
-
-		           	var date = dateString(new Date(data.deadline.iso), !data.isRecurring);
-		           	console.log("date is", date);
-		            htmlBuilder +=  "<div class='mission_background' >"
-		            				+ "<li class='mission_box container current_mission' id='" + data.objectId +"''>"
-		            				+ "<div class='pull-right btn-group mdropdown'>"
-		            				+ 	"<a class='mdropdown-toggle' href='#' data-toggle='dropdown' "
-		            				+ 	"aria-haspopup='true' aria-expanded='false'>"
-		            				+ 	"<span class='glyphicon glyphicon-chevron-down'></span>"
-		            				+ 	"<span class='sr-only'>Menu</span>	</a>"
-		            				+ 	"<ul class='dropdown-menu mission-dropdown' aria-labelledby='dropdownMenu4'>"
-  									+ 		"<li><a class='editl_mission'>Edit</a></li>"
-  									+ 		"<li><a class='cancel_mission' id='cancel_" + data.objectId + "'>Delete</a></li></ul></div>"
-		            				+ "<div class='runner-progress'>"
-		            				+  		"<img src='" + "/images/lion-run-test.gif" +"' class='gif' id='lion_" + data.objectId + "'/>"
-		            				+		"<span class='distance'>" + space + "</span>"
-		            				+		"<img src='/images/run-test.gif' class='gif runner_gif' id='runner_" + data.objectId + "'/>"
+	    		for (var i = 0; i < results.length; i++) {
+	    			var mission = results[i].toJSON();
+	    			console.log(mission);
+	    			
+	    			var oquery = new Parse.Query(ObjectiveObject);
+					oquery.equalTo("missionId", mission.objectId);
+					oquery.equalTo("completed", false);
+					oquery.equalTo("failed", false);
+					oquery.find({
+						async:false,
+						success:function(findings){
+							findings.sort(function(x, y){
+							    return x.createdAt - y.createdAt;
+							});
+							var data = findings[0].toJSON();
+							var subtaskHtml = "";
+				            for(var s = 0; s < data.subtasks.length; s++){
+				            	console.log(data.subtasks[i]);
+				           		subtaskHtml += "<li><input id='" + data.objectId + "_" + data.subtasks[s].id + "'  type='checkbox' class='subtask_check'" + ((data.subtasks[s].completed)? "checked" : "") + "/>"
+				           					+ "<label for='"+ data.objectId + "_" + data.subtasks[s].id + "'>" + data.subtasks[s].title + "</label></li>";
+				           	}
+				           	var date = dateString(new Date(mission.deadline.iso), true);
+				           	console.log("date is", date);
+							htmlBuilder +=  "<div class='mission_background'>"
+									+ "<li class='mission_box container current_mission' id='" + mission.objectId +"''>"
+									+ 	"<div class='pull-right btn-group mdropdown'>"
+									+	 	"<a class='mdropdown-toggle' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>"
+			            			+ 		"<span class='glyphicon glyphicon-chevron-down'></span>"
+			            			+ 		"<span class='sr-only'>Menu</span>	</a>"
+		            				+ 		"<ul class='dropdown-menu mission-dropdown' aria-labelledby='dropdownMenu4'>"
+  									+ 			"<li><a class='editl_mission' id='edit_" + mission.objectId + "'>Edit</a></li>"
+  									+ 			"<li><a class='cancel_mission' id='cancel_" + mission.objectId + "'>Delete</a></li>"
+  									+		"</ul></div>"
+  									+	 "<div class='runner-progress'>"
+		            				+  		"<img src='" + "/images/lion-run-test.gif" +"' class='progress_img' id='lion_" + mission.objectId + "'/>"
+		            				+		"<img src='/images/" + mission.runner + "_panic_static.png' class='progress_img runner_img' id='runner_" + mission.objectId + "'/>"
 		            				+	"</div>"
-		            				+	"<h4 class='pull-right'>" + ((data.isRecurring)? data.dates + "<br/>Until: " : "Due: ") + date + "</h4>"
-		            				+	"<div id='subtaskToggle'><h3>" + data.title + "   "
-		            				+	"<span id='collapse_indicator' class='collapsed glyphicon glyphicon-chevron-up'>"
-		            				+	"</span>    </h3></div>"
+									+ 	"<h3 class='subtaskToggle' id='mission_" + mission.objectId + "'>" + mission.title + "&nbsp;"
+			            			+		"<span id='collapse_indicator' class='collapsed glyphicon glyphicon-chevron-up'></span>"
+			            			+	"</h3>"
+			            			+ "</li></div>";
+
+		            				/*
+		            				
+		            				+	"<h4 class='pull-right'>" + ((mission.isRecurring)? mission.dates + "<br/>Until: " : "Due: ") + date + "</h4>"
+		            				+		"<h3 class='subtaskToggle'>" + mission.title + "   "
+		            				+		"<span id='collapse_indicator' class='collapsed glyphicon glyphicon-chevron-up'></span>"
+		            				+	"</h3>"
 		            				+	"<div class='tasklist'>" //For jQuery slideup/slidedown implementation
 		            				+	"<ul class='list-unstyled subtasks-list'>" + subtaskHtml + "</ul>"
 		            				+	"</div>"
-		            				//+	"<a class='btn btn-custom pull-right cancel_mission' id='cancel_" + data.objectId + "'>Cancel</a>"
-		            				+	"<a class='btn pull-right complete_mission btn-custom' id='complete_" + data.objectId + "'></a>"
-		            				+ "</li></div>"
-		        }
-		        $("#missions-list").html(htmlBuilder);
-		        for (var i = 0; i < results.length; i++) {
-		        	var data = results[i].toJSON();
-		             $("#" + data.objectId).data("parseObject", results[i]);
+		            				+	"<a class='btn pull-right complete_mission btn-custom' id='complete_" + mission.objectId + "'></a>"
+		            				+ "</li></div>";*/
+		            		$("#missions-list").html(htmlBuilder);
+		            		$("#mission_"+ mission.objectId).click(toggleSubtaskList);
+		            		/*for (var i = 0; i < findings.length; i++) {
+					        	var data = findings[i].toJSON();
+					             $("#" + data.objectId).data("parseObject", findings[i]);
 
-		             /*Set up progress bar*/
-		             if(data.isRecurring){
-		             	console.log($("#lion_" + data.objectId));
-		             	$("#lion_" + data.objectId).css("margin-left", (Math.ceil((data.failedTasks / data.totalTasks) / 2) * 100) + "%");
-		             }/*else{
-		             	$("#lion_" + data.objectId).css("margin-right", "0em");
-		             }*/
+					             /*Determine if ready to complete*/
+					       /*      var readyToComplete = $("#" + data.objectId).find(":checked").length == data.subtasks.length;
+					             if(readyToComplete){
+					             	$("#complete_" + data.objectId).addClass("btn-success");
+					             	$("#complete_" + data.objectId).removeClass("btn-secondary-outline");
+					             }else{
+					             	$("#complete_" + data.objectId).removeClass("btn-success");
+					             	$("#complete_" + data.objectId).addClass("btn-secondary-outline");
+					             }
+					           	 $("#complete_" + data.objectId).prop("disable", !readyToComplete);
+					           	 $("#complete_" + data.objectId).css("cursor", (readyToComplete)? "pointer" : "not-allowed");
+					           	 $("#complete_" + data.objectId).text((readyToComplete)? "Click to Complete!" : "Incomplete");
+					        }	*/
+						}
+					});
+	    		}
 
-		             /*Determine if ready to complete*/
-		             var readyToComplete = $("#" + data.objectId).find(":checked").length == data.subtasks.length;
-		             if(readyToComplete){
-		             	$("#complete_" + data.objectId).addClass("btn-success");
-		             	$("#complete_" + data.objectId).removeClass("btn-secondary-outline");
-		             }else{
-		             	$("#complete_" + data.objectId).removeClass("btn-success");
-		             	$("#complete_" + data.objectId).addClass("btn-secondary-outline");
-		             }
-		           	 $("#complete_" + data.objectId).prop("disable", !readyToComplete);
-		           	 $("#complete_" + data.objectId).css("cursor", (readyToComplete)? "pointer" : "not-allowed");
-		           	  $("#complete_" + data.objectId).text((readyToComplete)? "Click to Complete!" : "Incomplete");
-		        }	
-		    /*
-			$(".current_mission .tasklist").click(function(e) {e.stopPropagation();});
+
+	    	}
+			/*$(".current_mission .tasklist").click(function(e) {e.stopPropagation();});
 			$(".current_mission .btn").click(function(e) {e.stopPropagation();});
 			$(".current_mission .mdropdown").click(function(e) {
 				e.stopPropagation();
 				$(".mdropdown-toggle").dropdown('toggle');
 			});*/
-			$("#subtaskToggle").click(toggleSubtaskList);
-	    	}
+			
+	    	//}*/
 	    	
 	        initializePage();
 	    },
@@ -280,6 +285,7 @@ function checkSubtask(event){
 }
 
 function toggleSubtaskList(event){
+	console.log("toggling");
 	var currentBox = $(".current_mission");
 	var currentList = currentBox.children(".tasklist");
 

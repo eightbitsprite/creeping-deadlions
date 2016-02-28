@@ -5,6 +5,7 @@
 	<script src="js/index_scripts.js"></script>
 </head>
 <body>
+
 <div id="main" class="main">
 	<div class="navbar_cust" id="navbar_top"> <div class="row">
 		<div class="pull-left" id="new_mission_button"><a href="create_mission">
@@ -31,7 +32,6 @@
 					<a href="#" id="menu_log"><img src="../images/nav_log.png" class="nav_img"></a></li>
 				<li>
 					<a href="#" id="menu_history"><img src="../images/nav_history.png" class="nav_img"></a></li>
-				<!-- confirm: separate help section for the log screen; village screen will have its own 'help' section? -->
 				<li>
 					<a href="#" id="menu_help"><img src="../images/nav_help.png" class="nav_img"></a></li>
 				<li>
@@ -40,120 +40,34 @@
 		</div>
 	</div>	
 
-<div id="main" class="container">
-	
-	<div class="main-content">
-		<!-- The mission log portion of the app -->
-		<div id="missions" class="row ">
-			<div id="missions-list-wrapper">
-				<ul id="missions-list" class="list-unstyled">
-				</ul>
+	<div id="main" class="container">
+			
+		<div class="main-content">
+			
+			<!-- The mission log portion of the app -->
+			<div id="missions" class="row ">
+				<div id="missions-list-wrapper">
+					<ul id="missions-list" class="list-unstyled">
+					</ul>
+				</div>
+			</div>
+
+			<!-- The history portion of the app -->
+			<div id="history">
+				{{> history}}
+			</div>
+
+			<!-- The help portion of the app -->
+			<div id="help">
+				{{> help}}
+			</div>
+
+			<!-- The village section of the app -->
+			<div id="village">
+				{{> village}}
 			</div>
 		</div>
 
-		<!-- The history portion of the app -->
-		<div id="history">
-			<nav>
-				<a class="btn btn-custom btn-selected history-button" id="history-completed-button">Completed Missions</a>
-				<a class="btn btn-custom history-button" id="history-failed-button">Failed Missions</a>
-			</nav>
-			<br/>
-			<ul id="completed-missions-list" class="list-unstyled">
-			</ul>
-			<ul id="failed-missions-list" class="list-unstyled">
-			</ul>
-		</div>
-
-		<!-- The help portion of the app -->
-		<div id="help">
-			<h3> The Basics. </h3>
-			<p>&nbsp; It's a cat-eat-cat world out there! In order to keep the village fires burning and their bellies full, runners must brave the dark cat-vern of the vicious deadlions. Whether or not they return with what they seek is up to you..
-			</p>
-			<hr/>
-			<div class="help_img_box"><img class="help_img" src="../images/nav_log.png"></div>
-			<p>&nbsp; A running tally of all den-defying runners - and the mission their fate hinges upon.
-
-				With every objective you finish, with every checkbox you tick off, the runner gets closer and closer to making it back to the village - and not in a body bag. Safety will only be given to those runners whose mission has been completed.
-			</p>
-			<hr/>
-			<div class="help_img_box"><img class="help_img" src="../images/nav_history.png"></div>
-			<p>
-				&nbsp; ALL your previous missions - their glorious successes, or their digestive failures. Additional information will be found in each entry.
-
-				(Flowers will not be provided at any service you decide to hold.)
-			</p>
-			<hr/>
-			<div class="help_img_box"><img class="help_img" src="../images/nav_village.png"></div>
-			<p>
-				&nbsp; Displays a view of the runner's village. Upgrades can be triggered from here. 
-				<br></br>
-				Ignore the gloom. They like it.
-			</p>
-			<hr/>
-			<div class="help_img_box"><img class="help_icon" src="../images/nav_newmission.png"></div>
-			<p>
-				&nbsp; Take the first step into the abyss - send a (about-to-be) lost soul into the darkness beyond the village torches, and assign a mission to them to determine their fate. 
-			</p>
-			<hr/>
-			<div class="help_img_box"><img class="help_icon" src="../images/nav_profile.png"></div>
-			<p>
-				&nbsp; Tells you the state of your village, how far you are from the next upgrade, and allows you to log out.
-			</p>
-			<hr/>
-			<div class="help_img_box"><img class="help_icon" src="../images/icon_recurring.png"></div>
-			<p>
-				&nbsp; Indicates a recurring mission.
-			</p>
-			<hr/>
-			<div class="help_img_box"><img class="help_icon" src="../images/icon_timed.png"></div>
-			<p>
-				&nbsp; Indicates a mission with a set deadlion.
-			</p>
-		</div>
-
-		<!-- The village section of the app -->
-		<div id="village">
-			<div id="village_bar" >
-				<ul class="list-inline">
-					<li>
-						<div id="village_namelvl" class=""><strong>Tent City: Lvl. 1</strong></div></li>
-					<li class="pull-right">
-						<button id="btn-upgrade" type="button" disabled>Upgrade</button></li>
-				</ul>
-				<ul id="resource_bar" class="list-inline">
-					<li>
-						<div class="resource_meter">
-							<img class="resource_icon" src="../images/resource_wood.png">
-							<span class="resource_counter">1/5</span>
-						</div></li>
-					<li>
-						<div class="resource_meter">
-							<img class="resource_icon" src="../images/resource_stone.png">
-							<span class="resource_counter">1/5</span>
-						</div></li>
-					<li>
-						<div class="resource_meter">
-							<img class="resource_icon" src="../images/resource_food.png">
-							<span class="resource_counter">0/5</span>
-						</div></li>
-				</ul>
-			</div>
-			<!-- #village_display holds visual representation of village -->
-			<div id="village_display" class="container-fluid">
-				<!-- <div id="gradient0">&nbsp;</div>
-				<div id="gradient1">&nbsp;</div>
-				<div id="gradient2">&nbsp;</div>
-				<div id="campfire"><img src="/images/village_stage01.gif"/></div>
-				-->
-				<div><img src="/images/tentcity.gif"></div>
-			</div>
-		</div>
 	</div>
-
-</div>
-  <script id="mission_item_template" type="text/x-handlebars-template">
-	  {{> mission_item}}
-  </script>
- 
  </body>
 </html>

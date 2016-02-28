@@ -450,12 +450,13 @@ function saveTask(){
 						subtasks: subtasks_list,
 						completed: false,
 						index: o,
-						title: $(options[o]).text()
+						title: $(options[o]).text(),
+						failed : false
 					},
 					{
 						success:function(){
 							console.log(o);
-							if(o == options.length){}
+							if(o == options.length)
 								window.location = "/new_mission";
 						}
 					});

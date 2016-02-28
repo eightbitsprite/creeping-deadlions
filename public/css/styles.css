@@ -114,7 +114,7 @@ be bothered to find the other tags*/
 }
 .runner-progress{
 	background-color:white;
-	width:95%;
+	width:90%;
 }
 
 #animation_screen{
@@ -641,4 +641,13 @@ input[type='checkbox']{
 
 #apply_to_all_btn{
 	margin-left:10px;
+}
+
+.progress_img{
+	height:40px;
+	width:40px;
+}
+
+.runner_img{
+	right:0em;
 }
