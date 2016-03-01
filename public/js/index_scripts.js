@@ -172,14 +172,12 @@ function renderMissions(){
 					var htmlBuilder =  "<div class='mission_background'>"
 							+ "<li class='mission_box container current_mission' id='" + mission.objectId +"'>"
 							+ 	"<div class='pull-right btn-group mdropdown'>"
-							+	 	"<a class='mdropdown-toggle' href='#' data-toggle='dropdown' "
-							+			"id='dropdownMenu4' aria-haspopup='true' aria-expanded='false'>"
-	            			+ 		"<span class='glyphicon glyphicon-chevron-down'></span>"
-	            			+ 		"<span class='sr-only'>Menu</span></a>"
-            				+ 		"<ul class='dropdown-menu mission-dropdown' aria-labelledby='dropdownMenu4'>"
-							+ 			"<li><a class='editl_mission' id='edit_" + data.id + "'>Edit</a></li>"
+   							+	"<a class='btn dropdown-toggle mission_dropdown' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>"
+     						+ 		"<span class='glyphicon glyphicon-chevron-down'></span></a>"
+     						+ 		"<ul class='dropdown-menu mission_options'>"
+   							+ 			"<li><a class='edit_mission' id='edit_" + data.id + "'>Edit</a></li>"
 							+ 			"<li><a class='cancel_mission' id='cancel_" + data.id + "'>Delete</a></li>"
-							+		"</ul>"
+    						+		"</ul>"
 							+	"</div>"
 							+	"<div class='runner-progress'>"
 							+		"<br/><div class='progress_background'><div class='pBar_r'>&nbsp;</div>"
@@ -187,7 +185,7 @@ function renderMissions(){
 	            			+  		"<img src='" + "/images/deadlion_leap.png" +"' class='progress_img lion_img' id='lion_" + mission.objectId + "'/>"	
 	            			+		"<img src='/images/" + mission.runner + "_panic_static.png' class='progress_img runner_img pull-right' id='runner_" + mission.objectId + "'/>"
             				+	"</div>"
-            				+	"<h4 class='mission_dates'>Due: " + dateString(data.get("deadline"), true) + "</h4>"
+            				+	"<h4 class='mission_dates'><img src='/images/icon_timed.png' class='time_img'/>&nbsp;Due: " + dateString(data.get("deadline"), true) + "</h4>"
 							+ 	"<h3 class='subtaskToggle' id='mission_" + mission.objectId + "'>" + mission.title + "&nbsp;"
 	            			+		"<span class='collapse_indicator collapsed glyphicon glyphicon-chevron-up'></span>"
 	            			+	"</h3>"
@@ -196,7 +194,8 @@ function renderMissions(){
 	            			+		"<ul class='list-unstyled subtasks-list'>" + subtaskHtml + "</ul>"
 	            			+	"</div>"
 	            			+	"<a class='btn pull-right complete_mission btn-custom' id='complete_" + data.id + "'>Incomplete</a>"
-	            			+ "</li></div>";
+	            			+ "</li>"
+	            			+ "</div>";
             		$("#missions-list").append(htmlBuilder);
 
             		$("#mission_"+ mission.objectId).click(toggleSubtaskList);
@@ -213,7 +212,6 @@ function renderMissions(){
             	
             		$("#cancel_" + data.id).click(cancelMission);
 					$("#" + data.id + " .subtask_check").change(checkSubtask);
-					$("#complete_" + data.id).click(completeMission);
 
             		return promise;
 		        }
@@ -310,14 +308,17 @@ function checkForCompleted(data){
      if(readyToComplete){
      	$("#complete_" + data.objectId).addClass("btn-success");
      	$("#complete_" + data.objectId).removeClass("btn-secondary-outline");
+     	$("#complete_" + data.objectId).click(completeMission);
      }else{
      	$("#complete_" + data.objectId).removeClass("btn-success");
      	$("#complete_" + data.objectId).addClass("btn-secondary-outline");
+     	$("#complete_" + data.objectId).off("click");
      }
 
     $("#complete_" + data.objectId).prop("disable", !readyToComplete);
    	$("#complete_" + data.objectId).css("cursor", (readyToComplete)? "pointer" : "not-allowed");
    	$("#complete_" + data.objectId).text((readyToComplete)? "Click to Complete!" : "Incomplete");
+   	
 }
 
 /* Collapses/Expands the subtasklist for the current mission*/

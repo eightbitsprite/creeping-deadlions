@@ -130,6 +130,21 @@ body{
 	background-size: 92vw auto;
 }
 
+.time_img{
+	width:20px;
+	height:20px;
+}
+
+.mission_dropdown{
+	margin-left:5px;
+}
+
+.mission_options{
+	border:2px solid #361700;
+	background-color: #BEB096;
+	color:black;
+}
+
 /*flat out overrides previous work, because I can't
 be bothered to find the other tags*/
 .current_mission.mission_box{
@@ -161,7 +176,7 @@ be bothered to find the other tags*/
 }
 
 .runner-progress{
-	width:90%;
+	width:85%;
 }
 
 #animation_screen{
@@ -533,6 +548,36 @@ be bothered to find the other tags*/
 	padding: 0px 5px;
 	border-radius:20px;
 	cursor:pointer;
+}
+
+.loading_bar{
+	height:64px;
+	overflow:hidden;
+	width:100%;
+}
+.loading_progress_background{
+	overflow:hidden;
+	width:100%;
+	word-wrap:break-word;
+}
+#mission_title{
+	font-size: 16px;
+	max-height:50px;
+}
+
+#lion-load{
+	display:none;
+}
+
+.no_padding{
+	padding:0;
+	margin-top:20%;
+}
+
+.loading_img{
+	height:64px;
+	width:64px;
+	position:absolute;
 }
 
 .item_radio{
