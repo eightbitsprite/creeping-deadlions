@@ -96,12 +96,12 @@ function showHelp() {
 
 function renderVillage() { 
 	console.log("rendering village");
-	$.get("/vinfo",getVillageLevel);
+	$.get("/vInfo",getVillageLevel);
 
 }
-function getVillageLevel(result) {
+function getVillageLevel(vInfo) {
 	console.log("getVillageLevel() ");
-	console.log(result);
+	console.log(vInfo);
 	var username = JSON.parse(window.localStorage.getItem("current_user")).username;
 	var userObject = Parse.Object.extend("User");
 	//var ObjectiveObject = Parse.Object.extend("Objective");
@@ -115,11 +115,27 @@ function getVillageLevel(result) {
 				console.log("That's strange. Something should be happening.");
 				return;
 			}
-			else {
-				var villageImg = result.villageReqs[findings[0].get("villageLevel")].image;
-				//console.log(villageImg);
-				$("#village_display").append("<div><img src='"+villageImg+"'></div>");
-			}
+			var village = vInfo.villageReqs[findings[0].get("villageLevel")];
+			$("#village_display").html("<div><img src='"+village.image+"'></div>");
+			var oquery = new Parse.Query(Parse.Object.extend("hasObtained"));
+			/*"user" should have search key for user ID */
+			oquery.equalTo("user", username);
+			oquery.find({
+				success:function(rfindings) {
+					console.log(rfindings);
+					if(!rfindings.length) {
+						console.log("No resource information found for "+username+". Seek help.");
+						return;
+					}
+					console.log(village.req_wood);
+					$("resource_wood").empty().append("/"+village.req_wood);
+					$("resource_stone").empty().append("/"+village.req_stone);
+					$("resource_food").empty().append("/"+village.req_food);
+				},
+				error:function(rfindings){
+					console.log("No resource information found for "+username+". Seek help.");
+				}
+			});
 		}
 	});
 }
