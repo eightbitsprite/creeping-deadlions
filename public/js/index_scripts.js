@@ -20,7 +20,14 @@ $(document).ready(function() {
 		renderCompleted();
 		renderFailed();
 	}
+	initializePage();
 })
+function initializePage() {
+	$("#new_mission_button").click(clickListener);
+}
+function clickListener(){
+	ga("send", "event", "make", "click");
+}
 function logOut() {
 	window.localStorage.setItem("current_user", null);
 	window.location = "/login#sign-in";
