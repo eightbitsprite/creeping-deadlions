@@ -7,22 +7,23 @@
 <body>
 
 <div id="main" class="main">
-	<div class="navbar_cust" id="navbar_top"> <div class="row">
-		<div class="pull-left" id="new_mission_button"><a href="create_mission">
-			<img src="../images/nav_newmission.png" class="nav_img"></a></div>
-		<div class="pull-right btn-group" id="prof_dropdown">
-			<a href="#" id="menu_stats" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../images/nav_profile.png" class="nav_img"></a>
-			<ul class="dropdown-menu stat-dropdown">
-				<li>Village Level: 1</li>
-				<li>Food: 0</li>
-   				<li>Wood: 0</li>
-   				<li>Stone 0</li>
-   				<li role="separator" class="divider"></li>
-   				<li><a id="logoutbutton">Log Out</a></li>
-			</ul>
-		</div>
-		<div class="text-center" id="current_page_id">Mission Log</div>
-	  </div>
+	<div class="navbar_cust" id="navbar_top"> 
+		<div class="row">
+			<div class="pull-left" id="new_mission_button"><a href="create_mission">
+				<img src="../images/nav_newmission.png" class="nav_img"></a></div>
+			<div class="pull-right btn-group" id="prof_dropdown">
+				<a href="#" id="menu_stats" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../images/nav_profile.png" class="nav_img"></a>
+				<ul class="dropdown-menu stat-dropdown">
+					<li>Village Level: 1</li>
+					<li>Food: 0</li>
+	   				<li>Wood: 0</li>
+	   				<li>Stone 0</li>
+	   				<li role="separator" class="divider"></li>
+	   				<li><a id="logoutbutton">Log Out</a></li>
+				</ul>
+			</div>
+			<div class="text-center" id="current_page_id">Mission Log</div>
+	  	</div>
 	</div>
 	<!-- main navigation bar fixed @ bottom -->
 	<div class="navbar_cust" id="navbar_bottom">
@@ -66,9 +67,9 @@
 				{{> village}}
 			</div>
 		</div>
-
 	</div>
 
 	{{> index_popups}}
+</div>
  </body>
 </html>

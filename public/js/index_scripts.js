@@ -129,14 +129,15 @@ function renderMissions(){
 						alert("Error: Empty mission found! \n You may need to create a new account.");
 						return;
 					}
+					console.log(findings[0]);
 					var data = findings[0];
 					var subtaskHtml = "";
 		            for(var s = 0; s < data.get("subtasks").length; s++){
-		           		subtaskHtml += "<li><input id='" + data.get("objectId") + "_" + data.get("subtasks")[s].id + "'  type='checkbox' class='subtask_check'" + ((data.get("subtasks")[s].completed)? "checked" : "") + "/>"
-		           					+ "<label for='"+ data.get("objectId") + "_" + data.get("subtasks")[s].id + "'>" + data.get("subtasks")[s].title + "</label></li>";
+		           		subtaskHtml += "<li><input id='" + data.id + "_" + data.get("subtasks")[s].id + "'  type='checkbox' class='subtask_check'" + ((data.get("subtasks")[s].completed)? "checked" : "") + "/>"
+		           					+ "<label for='"+ data.id + "_" + data.get("subtasks")[s].id + "'>" + data.get("subtasks")[s].title + "</label></li>";
 		           	}
 		           	var date = dateString(new Date(mission.deadline.iso), true);
-		           	console.log
+		           console.log("#edit_"+ data.id);
 					var htmlBuilder =  "<div class='mission_background'>"
 							+ "<li class='mission_box container current_mission' id='" + mission.objectId +"'>"
 							+ 	"<div class='pull-right btn-group mdropdown'>"
@@ -144,8 +145,8 @@ function renderMissions(){
 	            			+ 		"<span class='glyphicon glyphicon-chevron-down'></span>"
 	            			+ 		"<span class='sr-only'>Menu</span>	</a>"
             				+ 		"<ul class='dropdown-menu mission-dropdown' aria-labelledby='dropdownMenu4'>"
-							+ 				"<li><a class='editl_mission' id='edit_" + data.get("objectId") + "'>Edit</a></li>"
-							+ 				"<li><a class='cancel_mission' id='cancel_" + data.get("objectId") + "'>Delete</a></li>"
+							+ 				"<li><a class='editl_mission' id='edit_" + data.id + "'>Edit</a></li>"
+							+ 				"<li><a class='cancel_mission' id='cancel_" + data.id + "'>Delete</a></li>"
 							+			"</ul></div>"
 							+		 "<div class='runner-progress'>"
 							+			"<br/><div class='progress_background'><div class='pBar_r'>&nbsp;</div>"
@@ -153,23 +154,23 @@ function renderMissions(){
 	            			+  			"<img src='" + "/images/deadlion_leap.png" +"' class='progress_img lion_img' id='lion_" + mission.objectId + "'/>"	
 	            			+			"<img src='/images/" + mission.runner + "_panic_static.png' class='progress_img runner_img pull-right' id='runner_" + mission.objectId + "'/>"
             				+		"</div>"
-            				+	"</div>"
             				+	"<h4 class='mission_dates'>Due: " + dateString(data.get("deadline"), true) + "</h4>"
 							+ 	"<h3 class='subtaskToggle' id='mission_" + mission.objectId + "'>" + mission.title + "&nbsp;"
 	            			+		"<span class='collapse_indicator collapsed glyphicon glyphicon-chevron-up'></span>"
 	            			+	"</h3>"
-	            			+	"<div class='tasklist' id='" + data.get("objectId") + "'>"
+	            			+	"<div class='tasklist' id='" + data.id + "'>"
 	            			+		((mission.dates) ? "<h4 class='mission_dates'>Every " + mission.dates  + "<br/>Until: " + dateString(new Date(mission.deadline.iso), false) + "</h4>" : "")
 	            			+		"<ul class='list-unstyled subtasks-list'>" + subtaskHtml + "</ul>"
 	            			+	"</div>"
-	            			+	"<a class='btn pull-right complete_mission btn-custom' id='complete_" + data.get("objectId") + "'>Incomplete</a>"
+	            			+	"<a class='btn pull-right complete_mission btn-custom' id='complete_" + data.id + "'>Incomplete</a>"
 	            			+ "</li></div>";
             		$("#missions-list").append(htmlBuilder);
 
             		$("#mission_"+ mission.objectId).click(toggleSubtaskList);
-            		$("#edit_"+ data.get("objectId")).click(editMission);
+            		console.log($("#edit_"+ data.id));
+            		$("#edit_"+ data.id).click(editMission);
 
-            		$("#" + data.get("objectId")).data("parseObject", findings[0]);
+            		$("#" + data.id).data("parseObject", findings[0]);
             		$("#" + mission.objectId).data("mission", result);
             		var target = new Date(mission.deadline.iso);
 		    		$("#lion_" + mission.objectId).css("margin-left", Math.min(80, (1- ((target - new Date()) / (target - new Date(data.get("createdAt"))))) * 80)  + "%");
@@ -177,9 +178,9 @@ function renderMissions(){
 
             		checkForCompleted(data.toJSON());
             	
-            		$("#cancel_" + data.get("objectId")).click(cancelMission);
-					$("#" + data.get("objectId") + " .subtask_check").change(checkSubtask);
-					$("#complete_" + data.get("objectId")).click(completeMission);
+            		$("#cancel_" + data.id).click(cancelMission);
+					$("#" + data.id + " .subtask_check").change(checkSubtask);
+					$("#complete_" + data.id).click(completeMission);
 
             		return promise;
 		        }
