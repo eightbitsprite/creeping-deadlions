@@ -64,6 +64,14 @@ function initializePage() {
 	$(".date-select").val(new Date());
 	$("#apply_to_all_btn").prop("disabled", true);
 	$("#apply_to_all_btn+label").text("Create one default objective first.");
+
+	$("#runner-load").css({
+		"margin-left": - $(".loading_progress_background").offset().left - $("#runner-load").outerWidth() - 10
+	});
+	$("#lion-load").css("display", "none");
+	$("#lion-load").css({
+		"margin-left": - $(".loading_progress_background").offset().left - $("#lion-load").outerWidth() - 10
+	});
 } 
 
 function previousOption(){
@@ -269,9 +277,9 @@ function loadSelector(){
 		$(".apply_all_wrapper").css("display", "block");
 	for(var i = 0; i < repeat_dates.length; i++){
 		$("#selected_mission_date").append("<option id='option_" + i + "' " + ((i==0)? "selected" : "") + ">" 
-											+ dateString(repeat_dates[i].date) + "</option>");
+											+ dateString(new Date(repeat_dates[i].date)) + "</option>");
 		$("#option_" + i).data("data", []);
-		$("#option_" + i).data("date", repeat_dates[i].date);
+		$("#option_" + i).data("date", new Date(repeat_dates[i].date));
 	}
 }
 
@@ -330,6 +338,7 @@ function modalSave() {
 		$("#selected_resource_img").attr("src", resource_img);
 		$("#selected_runner_name").html( runner);
 		$("#selected_resource_name").html(resource);
+		$("#runner-load").attr("src", "/images/" + $(".runner_box input[type='radio']:checked+label img").attr("id")+ "_panic_run.gif");
 		//$("#freqDetailsBtn").text(((freqType === "new_freq_timed")? "Due at: " : "End on: ") + dateString(deadline, freqType === "new_freq_timed"));
   	}
 }
@@ -418,6 +427,9 @@ function saveTask(){
 		var MissionInfoObject = Parse.Object.extend("Objective");
 		var mission = new MissionObject();
 		window.localStorage.setItem("runner",  $(".runner_box input[type='radio']:checked+label img").attr("id"));
+
+		$(".loading_modal").modal({"show":true});
+		$("body").prop("disabled",true);
 		mission.save({
 			title: title,
 			runner : $(".runner_box input[type='radio']:checked+label img").attr("id"),
@@ -433,7 +445,8 @@ function saveTask(){
 			dates : (daysString) ? daysString.substring(0, daysString.length-1) : null
 		}).then(function() {
 			var promise = Parse.Promise.as();
-			
+			var increment = 1/ options.length;
+			$(".mission_title").text("Starting mission: " + title);
 			 _.each(options, function(select) {
 			 	promise = promise.then(function(){
 			 		var missionInfo = new MissionInfoObject();	
@@ -447,6 +460,13 @@ function saveTask(){
 							"completed" : false
 						});
 					}
+
+					if(options.length > 10){
+						increment += 1/options.length;
+						console.log((increment * 100));
+						$("#runner-load").css("margin-left", (increment * 100) + "%");
+					}	
+
 					return missionInfo.save({
 						missionId: mission.id,
 						subtasks: subtasks_list,
@@ -464,8 +484,18 @@ function saveTask(){
 			});
 			return promise;
 		}).then(function(){
-			console.log("running");
-			window.location = "/new_mission";
+			$("body").prop("disabled",false);
+			$("#lion-load").css("display", "block");
+			$("#runner-load").animate({
+				"margin-left" : (options.length > 10)? $("#runner-load").css("margin-left") + 10 : $(".loading_progress_background").offset().left + $(".loading_progress_background").width()}, 
+				(options.length > 10)? 100 : 4000, function(){
+					$("#lion-load").animate({
+						"margin-left" : $(".loading_progress_background").offset().left + $(".loading_progress_background").width()}, 
+							3000, function(){
+								window.location = "/";
+						});
+				}
+			);
 		});
 	}
 }
