@@ -15,6 +15,7 @@ var login = require('./routes/login');
 var cutscene = require('./routes/cutscene');
 var village = require('./routes/village');
 var mission_form = require('./routes/mission_form');
+var _ = require('underscore');
 // Example route
 // var user = require('./routes/user');
 

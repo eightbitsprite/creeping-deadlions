@@ -130,10 +130,6 @@ body{
 	background-size: 92vw auto;
 }
 
-.mission_dates{
-	text-align: right;
-}
-
 /*flat out overrides previous work, because I can't
 be bothered to find the other tags*/
 .current_mission.mission_box{
@@ -177,6 +173,10 @@ be bothered to find the other tags*/
 #deadlion_animate{
 	position:absolute;
 	z-index:1;
+}
+
+.subtaskToggle{
+	cursor:pointer;
 }
 /* ENDOF index.handlebars::#missions (hopefully) */
 

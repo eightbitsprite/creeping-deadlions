@@ -168,7 +168,9 @@ function nextPage(){
 		}else{
 			var today = new Date();
 			until_date = new Date($("#new_task_until_date").val());
-			until_date.setHours(24);
+			until_date.setHours(Number(dueTime.split(":")[0]) + 24);
+	      	until_date.setMinutes(Number(dueTime.split(":")[1]));
+	      	until_date.setSeconds(0);
 			if(until_date < today){
 				$("#error_msg").append("<p>Please select a future end date.</p>");
 				isValid = false;
@@ -218,16 +220,17 @@ function nextPage(){
 			}else{
 				var index = 0;
 				var date= new Date();
-				date.setHours(Number(dueTime.split(":")[0]) + 24);
+				date.setHours(Number(dueTime.split(":")[0]));
 	      		date.setMinutes(Number(dueTime.split(":")[1]));
 	      		date.setSeconds(0);
-				console.log(date);
+	      		date =  new Date(Math.max(date.getTime(), deadline.getTime()));
+	      		console.log(date);
 				while(date <= until_date){
 					if(days.indexOf(date.getDay()) >= 0){
 						console.log("adding date", date);
 						repeat_dates.push({
 							"id": index,
-							"date" : dateString(date),
+							"date" : new Date(date),
 							"completed":false
 						});
 						index ++;
@@ -244,7 +247,7 @@ function nextPage(){
 	}else{
 		repeat_dates.push({
 			"id": 0,
-			"date" : dateString(deadline),
+			"date" : deadline,
 			"completed":false
 		});
 	
@@ -265,10 +268,10 @@ function loadSelector(){
 	else
 		$(".apply_all_wrapper").css("display", "block");
 	for(var i = 0; i < repeat_dates.length; i++){
-		console.log(repeat_dates[i]);
 		$("#selected_mission_date").append("<option id='option_" + i + "' " + ((i==0)? "selected" : "") + ">" 
-											+ repeat_dates[i].date + "</option>");
+											+ dateString(repeat_dates[i].date) + "</option>");
 		$("#option_" + i).data("data", []);
+		$("#option_" + i).data("date", repeat_dates[i].date);
 	}
 }
 
@@ -373,8 +376,8 @@ function saveTask(){
 	var runner = null;
 	var resource = null;
 	var user = JSON.parse(window.localStorage.getItem("current_user"));
-	var deadline = new Date($("#new_task_due_date").val());
 	var isRecurring = $("#new_freq_recurring").is(":checked");
+	var deadline = (isRecurring)? new Date($("#new_task_until_date").val()) : new Date($("#new_task_due_date").val());
 	var isValid = true;
 	var daysString = "";
 
@@ -414,6 +417,7 @@ function saveTask(){
 		var MissionObject = Parse.Object.extend("Mission");
 		var MissionInfoObject = Parse.Object.extend("Objective");
 		var mission = new MissionObject();
+		window.localStorage.setItem("runner",  $(".runner_box input[type='radio']:checked+label img").attr("id"));
 		mission.save({
 			title: title,
 			runner : $(".runner_box input[type='radio']:checked+label img").attr("id"),
@@ -427,15 +431,14 @@ function saveTask(){
 			completedTasks: 0,
 			failedTasks: 0,
 			dates : (daysString) ? daysString.substring(0, daysString.length-1) : null
-		}, {
-			success:function(){
-				var submissions = [];
-				var o = 0;
-				for(o; o < options.length; o++){
-					var missionInfo = new MissionInfoObject();
-					window.localStorage.setItem("runner",  $(".runner_box input[type='radio']:checked+label img").attr("id"));
-					console.log("runner", window.localStorage.getItem("runner"));
-					var current_list = $(options[o]).data("data");
+		}).then(function() {
+			var promise = Parse.Promise.as();
+			
+			 _.each(options, function(select) {
+			 	promise = promise.then(function(){
+			 		var missionInfo = new MissionInfoObject();	
+					console.log($(select).text());
+					var current_list = $(select).data("data");
 					var subtasks_list = [];
 					for(var s = 0; s < current_list.length; s++){
 						subtasks_list.push({
@@ -444,27 +447,25 @@ function saveTask(){
 							"completed" : false
 						});
 					}
-					console.log("option",mission);
-					missionInfo.save({
+					return missionInfo.save({
 						missionId: mission.id,
 						subtasks: subtasks_list,
 						completed: false,
-						index: o,
-						title: $(options[o]).text(),
-						failed : false
-					},
-					{
+						index: Number($(select).attr("id").split("_")[1]),
+						title: $(select).text(),
+						failed : false,
+						deadline : $(select).data("date")
+					}, {
 						success:function(){
-							console.log(o);
-							if(o == options.length)
-								window.location = "/new_mission";
+							return Parse.Promise.as("success!");
 						}
 					});
-				}
-				
-
-				
-			}
+			 	});
+			});
+			return promise;
+		}).then(function(){
+			console.log("running");
+			window.location = "/new_mission";
 		});
 	}
 }
@@ -565,6 +566,9 @@ function applyAll(){
 		var options = $("#selected_mission_date option");
 		for(var i = 0; i < options.length; i++){
 			var newArray = current_mission_objectives.slice();
+			/* TODO: figure out how to preserve subtasks assigned to specific dates when applying to all
+			var oldArray = $(options[i]).data("data");
+			*/
 			$(options[i]).data("data", newArray);
 		}
 	}
