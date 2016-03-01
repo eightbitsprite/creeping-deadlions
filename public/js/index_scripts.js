@@ -1,5 +1,7 @@
 'use strict';
 
+var queue = [];
+
 $(document).ready(function() {
 	Parse.initialize("YXlPjDOZPGg2dnC4z2XBGHk5xg8jirJVclFEMTmo", "IWqi5XWUalPKb9uXMX8WCkFNaEuyrIxTzOeH9tPH");
 	console.log("user",JSON.parse(window.localStorage.getItem("current_user")));
@@ -37,6 +39,14 @@ $(document).ready(function() {
 		    		if(new Date() <= target){
 		    			$("#lion_" + mission.objectId).css("margin-left", ((1- ((target - new Date()) / (target - created))) * 80) + "%");	
 		    			$("#distance_" + mission.objectId).css("width", Math.min(100, (1- ((target - new Date()) / (target - created))) * 100)  + "%");
+		    		}else{
+		    			if(queue.indexOf(objective) < 0){
+		    				queue.push({"pass" : 0 , "objective" : objective});
+		    				$(".mission_title").text(mission.title);
+		    				$(".failed_dialog").modal({"show":true});
+		    			}
+		    				
+
 		    		}
 		    		
 		    	}

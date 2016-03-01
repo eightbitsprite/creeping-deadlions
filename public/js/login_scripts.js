@@ -19,6 +19,7 @@ function initializePage() {
 			$("#error_msg").html("Passwords do not match.");
 		} else{
 			var UserObject = Parse.Object.extend("User");
+			var ObtainedObject = Parse.Object.extend("hasObtained");
 			var query = new Parse.Query(UserObject);
 			query.equalTo("username", username);
 			query.find({
@@ -26,15 +27,40 @@ function initializePage() {
 			  	if(results.length == 0){
 			  		$("#error_msg").html("");
 					var user = new UserObject();
+					var wood = new ObtainedObject();
+					var stone = new ObtainedObject();
+					var food = new ObtainedObject();
 					console.log("REACHED");
 					user.save({
 						username: username,
 						password: password,
 						villageLevel:1,
 						finishedTutorial:false
+					}, {
+						success:function(){
+							window.localStorage.setItem("current_user", JSON.stringify(user));
+							wood.save({
+								resourceType: "wood",
+								quantity:0,
+								user: user.id
+							}).then(function(){
+								stone.save({
+									resourceType: "stone",
+									quantity:0,
+									user: user.id
+								}).then(function(){
+									food.save({
+										resourceType: "food",
+										quantity:0,
+										user: user.id
+									}).then(function(){
+										window.location = "/";
+									});
+								});
+							});
+						}
 					});
-					window.localStorage.setItem("current_user", JSON.stringify(user));
-					window.location = "/";
+					
 			  	}else{
 			  		$("#error_msg").html("Username already taken.");
 
