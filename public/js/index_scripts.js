@@ -6,7 +6,6 @@ $(document).ready(function() {
 	Parse.initialize("YXlPjDOZPGg2dnC4z2XBGHk5xg8jirJVclFEMTmo", "IWqi5XWUalPKb9uXMX8WCkFNaEuyrIxTzOeH9tPH");
 	console.log("user",JSON.parse(window.localStorage.getItem("current_user")));
 	if(JSON.parse(window.localStorage.getItem("current_user")) == null){
-		console.log("not logged in");
 		window.location = "/login#sign-in";
 	}else{
 		
