@@ -93,6 +93,8 @@ function showVillage() {
 	$("#village").css("display","block");
 	$("#help").css("display","none");
 	$("#current_page_id").empty().append("My Village");
+
+	renderVillage();
 }
 function showHelp() {
 	$("#missions").css("display","none");
@@ -102,6 +104,51 @@ function showHelp() {
 	$("#current_page_id").empty().append("Help");
 }
 
+function renderVillage() { 
+	console.log("rendering village");
+	$.get("/vInfo",getVillageLevel);
+
+}
+function getVillageLevel(vInfo) {
+	console.log("getVillageLevel() ");
+	console.log(vInfo);
+	var username = JSON.parse(window.localStorage.getItem("current_user")).username;
+	var userObject = Parse.Object.extend("User");
+	//var ObjectiveObject = Parse.Object.extend("Objective");
+	var query = new Parse.Query(userObject);
+	query.equalTo("username", username);
+	query.greaterThanOrEqualTo("villageLevel", 0);
+	query.find({
+		success:function(findings) {
+			console.log(findings);
+			if (!findings.length) {
+				console.log("That's strange. Something should be happening.");
+				return;
+			}
+			var village = vInfo.villageReqs[findings[0].get("villageLevel")];
+			$("#village_display").html("<div><img src='"+village.image+"'></div>");
+			var oquery = new Parse.Query(Parse.Object.extend("hasObtained"));
+			/*"user" should have search key for user ID */
+			oquery.equalTo("user", username);
+			oquery.find({
+				success:function(rfindings) {
+					console.log(rfindings);
+					if(!rfindings.length) {
+						console.log("No resource information found for "+username+". Seek help.");
+						return;
+					}
+					console.log(village.req_wood);
+					$("resource_wood").empty().append("/"+village.req_wood);
+					$("resource_stone").empty().append("/"+village.req_stone);
+					$("resource_food").empty().append("/"+village.req_food);
+				},
+				error:function(rfindings){
+					console.log("No resource information found for "+username+". Seek help.");
+				}
+			});
+		}
+	});
+}
 
 /* Renders the mission log from Parse database
 	args: 	*/

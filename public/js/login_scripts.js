@@ -34,7 +34,7 @@ function initializePage() {
 					user.save({
 						username: username,
 						password: password,
-						villageLevel:1,
+						villageLevel:0,
 						finishedTutorial:false
 					}, {
 						success:function(){
