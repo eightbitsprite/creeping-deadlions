@@ -43,7 +43,7 @@ if ('development' == app.get('env')) {
 
 // Add routes here
 app.get('/', index.view);
-app.get('/vinfo', index.data);
+app.get('/vInfo', index.data);
 app.get('/login', login.view);
 app.get('/create_mission', mission_form.view);
 app.get('/new_mission', cutscene.new);

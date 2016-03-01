@@ -5,54 +5,54 @@
 			"title": "Contemptible Clearing",
 			"image": "/images/contemptibleClearing.gif",
 
-			"wood": 1,
-			"food": 1,
-			"stone": 0
+			"req_wood": 1,
+			"req_food": 1,
+			"req_stone": 0
 		},
 		{ 	
 			"level": 1,
 			"title": "Tent City",
 			"image": "/images/tentcity.gif",
 
-			"wood": 3,
-			"food": 3,
-			"stone": 3
+			"req_wood": 2,
+			"req_food": 3,
+			"req_stone": 4
 		},
 		{ 	
 			"level": 2,
 			"title": "Small Hamlet",
 			"image": "/images/smallHamlet.gif",
 
-			"wood": 2,
-			"food": 2,
-			"stone": 2
+			"req_wood": 2,
+			"req_food": 2,
+			"req_stone": 2
 		},
 		{ 	
 			"level": 3,
 			"title": "Small Hamlet",
 			"image": "/images/smallHamletTailor.gif",
 
-			"wood": 5,
-			"food": 5,
-			"stone": 5
+			"req_wood": 5,
+			"req_food": 5,
+			"req_stone": 5
 		},
 		{ 	
 			"level": 4,
 			"title": "Not Insignificant Town",
 			"image": "/images/notInsigTown.gif",
 
-			"wood": 10,
-			"food": 10,
-			"stone": 10
+			"req_wood": 10,
+			"req_food": 10,
+			"req_stone": 10
 		},
 		{
 		 	"level": 5,
 		 	"title": "Not Insignificant Town",
 		 	"image": "/images/notInsigTownTavern.gif",
 
-			"wood": 100,
-			"food": 100,
-			"stone": 100
+			"req_wood": 100,
+			"req_food": 100,
+			"req_stone": 100
 		}
 	]
 }
