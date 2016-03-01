@@ -30,7 +30,7 @@ function initializePage() {
 					user.save({
 						username: username,
 						password: password,
-						villageLevel:1,
+						villageLevel:0,
 						finishedTutorial:false
 					});
 					window.localStorage.setItem("current_user", JSON.stringify(user));

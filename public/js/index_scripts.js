@@ -83,6 +83,8 @@ function showVillage() {
 	$("#village").css("display","block");
 	$("#help").css("display","none");
 	$("#current_page_id").empty().append("My Village");
+
+	renderVillage();
 }
 function showHelp() {
 	$("#missions").css("display","none");
@@ -92,6 +94,35 @@ function showHelp() {
 	$("#current_page_id").empty().append("Help");
 }
 
+function renderVillage() { 
+	console.log("rendering village");
+	$.get("/vinfo",getVillageLevel);
+
+}
+function getVillageLevel(result) {
+	console.log("getVillageLevel() ");
+	console.log(result);
+	var username = JSON.parse(window.localStorage.getItem("current_user")).username;
+	var userObject = Parse.Object.extend("User");
+	//var ObjectiveObject = Parse.Object.extend("Objective");
+	var query = new Parse.Query(userObject);
+	query.equalTo("username", username);
+	query.greaterThanOrEqualTo("villageLevel", 0);
+	query.find({
+		success:function(findings) {
+			console.log(findings);
+			if (!findings.length) {
+				console.log("That's strange. Something should be happening.");
+				return;
+			}
+			else {
+				var villageImg = result.villageReqs[findings[0].get("villageLevel")].image;
+				//console.log(villageImg);
+				$("#village_display").append("<div><img src='"+villageImg+"'></div>");
+			}
+		}
+	});
+}
 
 /* Renders the mission log from Parse database
 	args: 	*/

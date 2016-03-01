@@ -9,7 +9,30 @@ function initializePage() {
 	$("#menu_help").click(showHelp);
 	$("#menu_village").click(showVillage);
 	$("#menu_population").click(showPopulation);
+
+	renderVillage();
 } 
+
+function renderVillage() { 
+	console.log("rendering village");
+	var username = JSON.parse(window.localStorage.getItem("current_user")).username;
+	var userObject = Parse.Object.extend("User");
+	//var ObjectiveObject = Parse.Object.extend("Objective");
+	var query = new Parse.Query(userObject);
+	query.equalTo("user", username);
+	query.greaterThanOrEqualTo("villageLevel", 0);
+	query.find(
+		success:function(result) {
+			console.log(result);
+			if (!result) {
+				console.log("That's strange. Something should be happening.");
+				return;
+			}
+			else {
+				$("#village_display").append("<div><img src='/images/tentcity.gif'></div>");
+			}
+	});
+}
 
 /* Menu functions: showLog, showHistory, showHelp */
 function showHelp() {

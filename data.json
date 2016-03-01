@@ -3,9 +3,8 @@
 		{ 	
 			"level": 0,
 			"title": "Contemptible Clearing",
-			"image": "/images/contemptibleClearing.gif"
+			"image": "/images/contemptibleClearing.gif",
 
-			/*Required resources to advance to Lvl.1*/
 			"wood": 1,
 			"food": 1,
 			"stone": 0
@@ -13,9 +12,8 @@
 		{ 	
 			"level": 1,
 			"title": "Tent City",
-			"image": "/images/tentcity.gif"
+			"image": "/images/tentcity.gif",
 
-			/*Required resources to advance to Lvl.2*/
 			"wood": 3,
 			"food": 3,
 			"stone": 3
@@ -23,39 +21,35 @@
 		{ 	
 			"level": 2,
 			"title": "Small Hamlet",
-			"image": "/images/smallHamlet.gif"
+			"image": "/images/smallHamlet.gif",
 
-			/*Required resources to advance to Lvl.3*/
 			"wood": 2,
 			"food": 2,
 			"stone": 2
 		},
 		{ 	
 			"level": 3,
-			"title": "Small Hamlet"
-			"image": "/images/smallHamletTailor.gif"
+			"title": "Small Hamlet",
+			"image": "/images/smallHamletTailor.gif",
 
-			/*Required resources to advance to Lvl.4*/
 			"wood": 5,
 			"food": 5,
 			"stone": 5
 		},
 		{ 	
 			"level": 4,
-			"title": "Not Insignificant Town"
-			"image": "/images/notInsigTown.gif"
+			"title": "Not Insignificant Town",
+			"image": "/images/notInsigTown.gif",
 
-			/*Required resources to advance to Lvl.5*/
 			"wood": 10,
 			"food": 10,
 			"stone": 10
 		},
 		{
 		 	"level": 5,
-		 	"title": "Not Insignificant Town"
-		 	"image": "/images/notInsigTownTavern.gif"
+		 	"title": "Not Insignificant Town",
+		 	"image": "/images/notInsigTownTavern.gif",
 
-			/*Required resources to advance to Lvl.6 NOT IMPLEMENTED*/
 			"wood": 100,
 			"food": 100,
 			"stone": 100
