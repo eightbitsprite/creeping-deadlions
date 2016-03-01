@@ -139,20 +139,22 @@ function renderMissions(){
 					var htmlBuilder =  "<div class='mission_background'>"
 							+ "<li class='mission_box container current_mission' id='" + mission.objectId +"'>"
 							+ 	"<div class='pull-right btn-group mdropdown'>"
-							+	 	"<a class='mdropdown-toggle' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>"
+							+	 	"<a class='mdropdown-toggle' href='#' data-toggle='dropdown' "
+							+			"id='dropdownMenu4' aria-haspopup='true' aria-expanded='false'>"
 	            			+ 		"<span class='glyphicon glyphicon-chevron-down'></span>"
-	            			+ 		"<span class='sr-only'>Menu</span>	</a>"
+	            			+ 		"<span class='sr-only'>Menu</span></a>"
             				+ 		"<ul class='dropdown-menu mission-dropdown' aria-labelledby='dropdownMenu4'>"
 							+ 				"<li><a class='editl_mission' id='edit_" + data.objectId + "'>Edit</a></li>"
 							+ 				"<li><a class='cancel_mission' id='cancel_" + data.objectId + "'>Delete</a></li>"
-							+			"</ul></div>"
-							+		 "<div class='runner-progress'>"
-							+			"<br/><div class='progress_background'><div class='pBar_r'>&nbsp;</div>"
-							+				"<div id='distance_" + mission.objectId + "' class='distance'></div>"
-	            			+  			"<img src='" + "/images/deadlion_leap.png" +"' class='progress_img lion_img' id='lion_" + mission.objectId + "'/>"	
-	            			+			"<img src='/images/" + mission.runner + "_panic_static.png' class='progress_img runner_img pull-right' id='runner_" + mission.objectId + "'/>"
-            				+		"</div>"
+							+		"</ul>"
+							+	"</div>"
+							+	"<div class='runner-progress'>"
+							+		"<br/><div class='progress_background'><div class='pBar_r'>&nbsp;</div>"
+							+			"<div id='distance_" + mission.objectId + "' class='distance'></div>"
+	            			+  		"<img src='" + "/images/deadlion_leap.png" +"' class='progress_img lion_img' id='lion_" + mission.objectId + "'/>"	
+	            			+		"<img src='/images/" + mission.runner + "_panic_static.png' class='progress_img runner_img pull-right' id='runner_" + mission.objectId + "'/>"
             				+	"</div>"
+            				//+	"</div>"
             				+	"<h4 class='pull-right mission_dates'>" + ((mission.dates)? "Every " + mission.dates  + "<br/>Until: " + data.title + " at " + date.split(" ")[date.split(" ").length -1]: "Due: " + date) + "</h4>"
 							+ 	"<h3 class='subtaskToggle' id='mission_" + mission.objectId + "'>" + mission.title + "&nbsp;"
 	            			+		"<span id='collapse_indicator' class='collapsed glyphicon glyphicon-chevron-up'></span>"
@@ -290,7 +292,7 @@ function toggleSubtaskList(event){
 	var currentList = currentBox.children(".tasklist");
 
 	//debugger;
-	var indicator = currentBox.find(".collapse_indicator");
+	var indicator = currentBox.find("#collapse_indicator");
 	//indicator = indicator.find("span");
 	//currentBox.children(".collapse_indicator").children("span");
 	//indicator = indicator.children(".glphyicon");
@@ -308,7 +310,7 @@ function toggleSubtaskList(event){
 }
 
 function editMission(event) {
-	//debugger;
+	debugger;
 	var editMission_modal = $(".editmission_modal");
 	var dataId = event.target.id.split("_")[1];
 	var dataObject = $("#"+dataId).data("parseObject");
