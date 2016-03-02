@@ -20,8 +20,8 @@
 		},
 		{ 	
 			"level": 2,
-			"title": "Small Hamlet",
-			"image": "/images/smallHamlet.gif",
+			"title": "Hovel Hamlet",
+			"image": "/images/vimg_hovelHamlet.gif",
 
 			"req_wood": 2,
 			"req_food": 2,
@@ -30,9 +30,9 @@
 		{ 	
 			"level": 3,
 			"title": "Small Hamlet",
-			"image": "/images/vimg_smallHamletTailor.gif",
+			"image": "/images/vimg_hovelHamletTailor.gif",
 
-			"req_wood": 5,
+			:"req_wood": 5,
 			"req_food": 5,
 			"req_stone": 5
 		},
