@@ -3,7 +3,7 @@
 		{ 	
 			"level": 0,
 			"title": "Contemptible Clearing",
-			"image": "/images/contemptibleClearing.gif",
+			"image": "/images/vimg_contemptibleClearing.gif",
 
 			"req_wood": 1,
 			"req_food": 1,
@@ -12,7 +12,7 @@
 		{ 	
 			"level": 1,
 			"title": "Tent City",
-			"image": "/images/tentcity.gif",
+			"image": "/images/vimg_tentCity.gif",
 
 			"req_wood": 2,
 			"req_food": 3,
@@ -30,7 +30,7 @@
 		{ 	
 			"level": 3,
 			"title": "Small Hamlet",
-			"image": "/images/smallHamletTailor.gif",
+			"image": "/images/vimg_smallHamletTailor.gif",
 
 			"req_wood": 5,
 			"req_food": 5,
@@ -39,7 +39,7 @@
 		{ 	
 			"level": 4,
 			"title": "Not Insignificant Town",
-			"image": "/images/notInsigTown.gif",
+			"image": "/images/vimg_notInsigTown.gif",
 
 			"req_wood": 10,
 			"req_food": 10,
@@ -48,7 +48,7 @@
 		{
 		 	"level": 5,
 		 	"title": "Not Insignificant Town",
-		 	"image": "/images/notInsigTownTavern.gif",
+		 	"image": "/images/vimg_notInsigTownTavern.gif",
 
 			"req_wood": 100,
 			"req_food": 100,

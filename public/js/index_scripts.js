@@ -136,10 +136,24 @@ function getVillageLevel(vInfo) {
 						console.log("No resource information found for "+username+". Seek help.");
 						return;
 					}
-					console.log(village.req_wood);
-					$("resource_wood").empty().append("/"+village.req_wood);
-					$("resource_stone").empty().append("/"+village.req_stone);
-					$("resource_food").empty().append("/"+village.req_food);
+					for (var i = 0; i<rfindings.length; i++) {
+						console.log("Village: " + village.req_wood);
+						var resourceType = rfindings[i].get("resourceType");
+						var resourceAmt = rfindings[i].get("quantity");
+						switch (resourceType) {
+							case "wood":
+								$(".resource_wood").empty().append(resourceAmt+"/"+village.req_wood);
+								break;
+							case "food":
+								$(".resource_food").empty().append(resourceAmt+"/"+village.req_food);
+								break;
+							case "stone":
+								$(".resource_stone").empty().append(resourceAmt+"/"+village.req_stone);
+								break;
+							default:
+								console.log("ERROR: resourceType or resourceAmt search failure");
+						}
+					}
 				},
 				error:function(rfindings){
 					console.log("No resource information found for "+username+". Seek help.");

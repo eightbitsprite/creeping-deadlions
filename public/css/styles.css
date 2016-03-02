@@ -740,8 +740,8 @@ input[type='checkbox']{
 	margin-top:10px;
 	margin-right: -10px;
 
-	background: linear-gradient(to right, rgba(156,209,122,0),rgba(156,209,122,.5)15%, 
-		#9CD17A 20%); 
+	background: linear-gradient(to right, rgba(156,209,122,0), rgba(156,209,122,0) 10%,
+		rgba(156,209,122,.5)15%, #9CD17A 20%); 
 }
 .pBar_r{
 	background-color: #9CD17A;
