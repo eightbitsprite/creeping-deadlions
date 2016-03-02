@@ -23,10 +23,14 @@ $(document).ready(function() {
 		$(".close_editmission").click(previousPage);
 		$(".btn-add-time").click(addTime);
 		$(".btn-fail-mission").click(failMission);
+		$(".close_modal").click(closeModal);
+		$(".cancelDelete").click(closeDelete);
+		$(".cancel_one").click(deleteOne);
+		$(".cancel_all").click(deleteAll);
+		$("#cancel_progress").css("display", "none");
 		renderMissions();
-		renderCompleted();
-		//renderFailed();
-		
+		renderCompleted();		
+		updateResourceCount();
 
 		/*setInterval(function() {
 		    calculateDistances();
@@ -180,6 +184,7 @@ function getVillageLevel(vInfo) {
 	args: 	*/
 function renderMissions(){
 	console.log("rendering missions");
+	$("#missions-list").html("");
 	var username = JSON.parse(window.localStorage.getItem("current_user")).username;
 	var MissionObject = Parse.Object.extend("Mission");
 	var ObjectiveObject = Parse.Object.extend("Objective");
@@ -195,7 +200,7 @@ function renderMissions(){
     	}
     	console.log(results);
     	results.sort(function(x, y){
-		    return x.deadline - y.deadline;
+		    return x.get("updatedAt") - y.get("updatedAt") ;
 		});
 		results.forEach(function(result){
 			var mission = result.toJSON();
@@ -314,13 +319,73 @@ function renderCompleted(){
 
 function cancelMission(event){
 	var to_delete = $("#" + event.target.id.split("_")[1]).data("parseObject");
-	if(confirm("Are you sure you want to cancel Mission: " + to_delete.get("title") + "?")){
-	    to_delete.destroy({
-	    	success: function(){
-	    		renderMissions();
-	    	}
-	    });	
-  	}
+	var mission = $("#" + to_delete.get("missionId")).data("mission");
+	var occurrences = mission.get("totalTasks") - (mission.get("completedTasks") + mission.get("failedTasks"));
+	$("#mission_occurrence").html(occurrences);
+	$(".cancel_mission_title").html(mission.get("title"));
+	$("#multiple_delete").css("display", (occurrences > 1)? "block" : "none");
+	$("#single_delete").css("display", (occurrences > 1)? "none" : "block");
+	$(".cancel_modal").modal("show");
+	window.localStorage.setItem("to_delete", to_delete.id);
+}
+
+function deleteOne(){
+	var to_delete = $("#" + window.localStorage.getItem("to_delete")).data("parseObject");
+	var mission = $("#" + to_delete.get("missionId")).data("mission");
+	to_delete.destroy({
+    	success: function(){
+    		if(mission.get("totalTasks") - 1 == 0){
+				mission.destroy({
+	    			success:function(){
+	    				renderMissions();
+	    				closeDelete();
+	    			}
+	    		});
+			}else{
+				mission.set({
+					totalTasks: mission.get("totalTasks") -1,
+					completed : mission.get("totalTasks") -1 == mission.get("completedTasks") + mission.get("failedTasks")
+				});
+
+				mission.save({
+					success:function(){
+						renderMissions();
+	    				closeDelete();
+					}
+				});
+		}
+    	}
+    });	
+}
+
+function deleteAll(){
+	var to_delete = $("#" + window.localStorage.getItem("to_delete")).data("parseObject");
+	var mission = $("#" + to_delete.get("missionId")).data("mission");
+	var ObjectiveObject = Parse.Object.extend("Objective");
+	var query = new Parse.Query(ObjectiveObject);
+	query.equalTo("missionId", mission.id);
+	query.find().then(function(results){
+		var promise = Parse.Promise.as();
+		var increment = 1/results.length * 100;
+		$("#cancel_progress").css("display", "block");
+ 		_.each(results, function(objective) {
+ 			promise = promise.then(function(){
+ 				$("#cancel_progress .progress-bar").width(increment + "%");
+	 			increment += 1/results.length * 100;
+	 			console.log(increment + "%");
+ 				return objective.destroy();
+ 			});
+ 		});
+ 		return promise;
+	}).then(function(){
+		mission.destroy({
+			success:function(){
+				renderMissions();
+				$("#cancel_progress").css("display", "none");
+				closeDelete();
+			}
+		});
+	});
 }
 
 function checkSubtask(event){
@@ -419,11 +484,12 @@ function previousPage(event) {
 function completeMission(event){
 	var to_complete = $("#" + event.target.id.split("_")[1]).data("parseObject");
 	var mission =$("#" + to_complete.get("missionId")).data("mission");
-	window.localStorage.setItem("runner", mission.get("runner"));
+	
 	console.log("task", to_complete);
 	var now = new Date();
+	var completedEntireMission = (mission.get("completedTasks") + 1 + mission.get("failedTasks")) == mission.get("totalTasks");
 	mission.set({
-		"completed" :  (mission.get("completedTasks") + 1 + mission.get("failedTasks")) == mission.get("totalTasks"),
+		"completed" :  completedEntireMission,
 		"completedTasks": mission.get("completedTasks") + 1
 	});
 	//if(mission.get("completedTasks") == mission.get("totalTasks"))
@@ -432,7 +498,28 @@ function completeMission(event){
 		success:function(){
 			to_complete.destroy({
 				success:function(){
-					window.location = "/mission_complete";
+					var userid = JSON.parse(window.localStorage.getItem("current_user")).objectId;
+					var ResourceObject = Parse.Object.extend("hasObtained");
+					var query = new Parse.Query(ResourceObject);
+					query.equalTo("user", userid);
+					query.equalTo("resourceType", mission.get("resource"));
+					query.first().then(function(result){
+				    	result.set({quantity: result.get("quantity") + 1});
+				    	result.save({
+				    		success:function(){
+				    			updateResourceCount();
+				    			if(completedEntireMission){
+									window.localStorage.setItem("runner", mission.get("runner"));
+									window.localStorage.setItem("resource", mission.get("resource"));
+									window.location = "/mission_complete";
+								}else{
+									$(".resource_earned_img").attr("src", "/images/resource_" + mission.get("resource") + ".png");
+									$(".resource_earned").html("+1 " + mission.get("resource"));
+									$(".resource_modal").modal("show");
+								}
+				    		}
+				    	});
+					});					
 				}
 			});
 		}
@@ -490,4 +577,25 @@ function editMission(event) {
 
 	/*display modal*/
 	editMission_modal.modal({"show":true});
+}
+
+function closeModal(){
+	$(".resource_modal").modal("hide");
+	renderMissions();
+}
+
+function closeDelete(){
+	$(".cancel_modal").modal("hide");
+}
+
+function updateResourceCount(){
+	var userid = JSON.parse(window.localStorage.getItem("current_user")).objectId;
+	var ResourceObject = Parse.Object.extend("hasObtained");
+	var query = new Parse.Query(ResourceObject);
+	query.equalTo("user", userid);
+	query.find().then(function(results){
+		results.forEach(function(entry){
+			$("#" + entry.get("resourceType") + "_count").html(entry.get("quantity"));
+		});
+	});
 }

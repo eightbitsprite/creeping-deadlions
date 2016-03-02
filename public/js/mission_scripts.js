@@ -446,7 +446,7 @@ function saveTask(){
 		}).then(function() {
 			var promise = Parse.Promise.as();
 			var increment = 1/ options.length;
-			$(".mission_title").text("Starting mission: " + title);
+			$(".mission_title").text(title);
 			 _.each(options, function(select) {
 			 	promise = promise.then(function(){
 			 		var missionInfo = new MissionInfoObject();	
