@@ -136,8 +136,8 @@ function renderVillage() {
 
 }
 function getVillageLevel(vInfo) {
-	console.log("getVillageLevel() ");
-	console.log(vInfo);
+	//console.log("getVillageLevel() ");
+	//console.log(vInfo);
 	var username = JSON.parse(window.localStorage.getItem("current_user")).username;
 	var userObject = Parse.Object.extend("User");
 	//var ObjectiveObject = Parse.Object.extend("Objective");
@@ -146,7 +146,7 @@ function getVillageLevel(vInfo) {
 	query.greaterThanOrEqualTo("villageLevel", 0);
 	query.find({
 		success:function(findings) {
-			console.log(findings);
+			//console.log(findings);
 			if (!findings.length) {
 				console.log("That's strange. Something should be happening.");
 				return;
@@ -158,13 +158,13 @@ function getVillageLevel(vInfo) {
 			oquery.equalTo("user", username);
 			oquery.find({
 				success:function(rfindings) {
-					console.log(rfindings);
+					//console.log(rfindings);
 					if(!rfindings.length) {
-						console.log("No resource information found for "+username+". Seek help.");
+						//console.log("No resource information found for "+username+". Seek help.");
 						return;
 					}
 					for (var i = 0; i<rfindings.length; i++) {
-						console.log("Village: " + village.req_wood);
+						//console.log("Village: " + village.req_wood);
 						var resourceType = rfindings[i].get("resourceType");
 						var resourceAmt = rfindings[i].get("quantity");
 						switch (resourceType) {
