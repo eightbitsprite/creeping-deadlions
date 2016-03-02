@@ -7,7 +7,7 @@ $(document).ready(function() {
 		console.log("not logged in");
 		window.location = "/login#sign-in";
 	}else{
-		
+		$("#new_mission_button").click(clickListener);
 		$("#menu_log").click(showLog);
 		$("#menu_history").click(showHistory);
 		$("#menu_help").click(showHelp);
@@ -20,13 +20,9 @@ $(document).ready(function() {
 		renderCompleted();
 		renderFailed();
 	}
-	initializePage();
 })
-function initializePage() {
-	$("#new_mission_button").click(clickListener);
-}
 function clickListener(){
-	ga("send", "event", "make", "click");
+	ga("send", "pageview", "/create_mission");
 }
 function logOut() {
 	window.localStorage.setItem("current_user", null);
