@@ -66,7 +66,27 @@ function initializePage() {
 	    }
 	});	    	
 	console.log(runners.result);
+
+	googleATimeCheck(0,Date.now());
 } 
+
+function googleATimeCheck(event, time) {
+	console.log("googleATimeCheck() running... TIME: " + time);
+	if (event) {
+		var endTime = time;
+		var startTime = $("body").data("startTime");
+		if (!startTime) {
+			console.log("startDate NULL. google Analytics event failed");
+		}
+		var elapsedTime = endTime - startTime;
+		elapsedTime = elapsedTime / (1000);
+		console.log(elapsedTime);
+		ga("send", "event", event.currentTarget.attributes.id.nodeValue, elapsedTime);
+		return;
+	} else {
+		$("body").data("startTime", time);
+	}
+}
 
 function openTaskFrequency(){
 	$("#new_frequency_input").css("display","block");
@@ -83,7 +103,8 @@ function toggleRecurring(){
 	$("#new_freq_timed_area").css("display","none");
 }
 */
-function freqDetails(){
+function freqDetails(event){
+	console.log(event);
 	if(!$("#new_freq_recurring").is(":checked") && !$("#new_freq_timed").is(":checked")){
 		$("#error_msg").empty();
 		$("#error_msg").append("<p>Please select a frequency type before proceeding.</p>");
@@ -106,6 +127,8 @@ function freqDetails(){
 		//$("#recurFreq .modal-title").empty().append(modalHead);
 		//$("#recurFreq .modal-body").empty().append(modalContent);
 		//$("#recurFreq").modal("toggle");
+		var eventObj = event.currentTarget.attributes.id.nodeValue;
+		ga("send", "event", "button#"+eventObj, "edit mission details");
 }
 function modalSave() {
 
@@ -204,7 +227,7 @@ function generateRunner(){
 	$("#new_runner_textbox").val(runners[(Math.floor(Math.random() * (runners.length-1)) + 1)]);
 }
 
-function saveTask(){
+function saveTask(event){
 	/*Validation*/
 	var title = $("#new_mission_name_textbox").val().trim();
 	var runner = null;
@@ -338,6 +361,8 @@ function saveTask(){
 			}
 		});
 	}
+
+	googleATimeCheck(event, Date.now());
 }
 function checkAll(){
 	$(".day_box").prop("checked", $("#select_all").is(":checked"));

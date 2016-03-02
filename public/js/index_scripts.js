@@ -7,7 +7,7 @@ $(document).ready(function() {
 		console.log("not logged in");
 		window.location = "/login#sign-in";
 	}else{
-		$("#new_mission_button").click(clickListener);
+		$("#new_mission_button").click(gAnalytic_newMission);
 		$("#menu_log").click(showLog);
 		$("#menu_history").click(showHistory);
 		$("#menu_help").click(showHelp);
@@ -21,8 +21,8 @@ $(document).ready(function() {
 		renderFailed();
 	}
 })
-function clickListener(){
-	ga("send", "event", "pageview", "/create_mission");
+function gAnalytic_newMission(){
+	ga("send", "event", "button: New Mission", "/create_mission");
 }
 function logOut() {
 	window.localStorage.setItem("current_user", null);
