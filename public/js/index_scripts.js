@@ -7,6 +7,7 @@ $(document).ready(function() {
 	if(!Parse.User.current()){
 		window.location = "/login#sign-in";
 	}else{
+		$("#new_mission_button").click(gAnalytic_newMission);
 		$("#menu_log").click(showLog);
 		$("#menu_history").click(showHistory);
 		$("#menu_help").click(showHelp);
@@ -36,7 +37,9 @@ $(document).ready(function() {
 		}, 30 * 1000); // 60 * 1000 milsec*/
 	}
 })
-
+function gAnalytic_newMission(){
+	ga("send", "event", "button: New Mission", "/create_mission");
+}
 function calculateDistances(){
  	console.log("calculating distances...");
 	var list = $(".current_mission");
