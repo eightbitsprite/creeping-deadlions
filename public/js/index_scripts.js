@@ -22,7 +22,7 @@ $(document).ready(function() {
 	}
 })
 function clickListener(){
-	ga("send", "pageview", "/create_mission");
+	ga("send", "event", "pageview", "/create_mission");
 }
 function logOut() {
 	window.localStorage.setItem("current_user", null);
