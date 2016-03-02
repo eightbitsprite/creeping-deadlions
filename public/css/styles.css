@@ -146,6 +146,20 @@ body{
 	cursor:pointer;
 }
 
+.resource_earned_img{
+	width:64px;
+	height:64px;
+}
+
+.resource_modal{
+	text-align:center;
+}
+
+.close_modal{
+	margin-top:10px;
+	width:80%;
+}
+
 /*flat out overrides previous work, because I can't
 be bothered to find the other tags*/
 .current_mission.mission_box{
@@ -440,6 +454,18 @@ be bothered to find the other tags*/
 	/*background-color: white;
 	border: 1px solid #361700;	
 	*/
+}
+.description{
+	font-size:12px;
+	margin-top:5px;
+}
+#cancel_progress{
+	width:100%;
+}
+#cancel_progress .progress{
+	height:20px;
+	2idth:80%;
+	margin-bottom: 10px;
 }
 .resource_meter {
 	margin-left: -1px;

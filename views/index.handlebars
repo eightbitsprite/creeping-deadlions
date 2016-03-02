@@ -15,9 +15,9 @@
 				<a href="#" id="menu_stats" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../images/nav_profile.png" class="nav_img"></a>
 				<ul class="dropdown-menu stat-dropdown">
 					<li>Village Level: 1</li>
-					<li>Food: 0</li>
-	   				<li>Wood: 0</li>
-	   				<li>Stone 0</li>
+					<li><img class="resource_icon" src="/images/resource_food.png"/> Food: <span id="food_count"></span></li>
+	   				<li><img class="resource_icon" src="/images/resource_wood.png"/> Wood: <span id="wood_count"></span></li>
+	   				<li><img class="resource_icon" src="/images/resource_stone.png"/> Stone <span id="stone_count"></span></li>
 	   				<li role="separator" class="divider"></li>
 	   				<li><a id="logoutbutton">Log Out</a></li>
 				</ul>
@@ -72,6 +72,8 @@
 
 	{{> index_popups}}
 	{{> fail_dialog}}
+	{{> resource}}
+	{{> cancel}}
 </div>
 {{> google_analytics}}
  </body>
