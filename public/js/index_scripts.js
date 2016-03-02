@@ -2,7 +2,6 @@
 
 var queue = [];
 
-
 $(document).ready(function() {
 	Parse.initialize("YXlPjDOZPGg2dnC4z2XBGHk5xg8jirJVclFEMTmo", "IWqi5XWUalPKb9uXMX8WCkFNaEuyrIxTzOeH9tPH");
 	if(!Parse.User.current()){
@@ -30,52 +29,61 @@ $(document).ready(function() {
 		renderMissions();
 		renderCompleted();		
 		updateResourceCount();
+		queue = [];
 
-		/*setInterval(function() {
+		setInterval(function() {
 		    calculateDistances();
 		}, 30 * 1000); // 60 * 1000 milsec*/
 	}
 })
 
 function calculateDistances(){
- 	/*console.log("calculating distances...");
+ 	console.log("calculating distances...");
 	var list = $(".current_mission");
-    $.each(list, function(){
-    	var mission = $(this).data("mission").toJSON();
-    	var objective = $(this).find(".tasklist").data("parseObject").toJSON();
-    	if(!mission.completed){
-    		var target = new Date(mission.deadline.iso);
-    		var created = new Date(objective.createdAt);
-    		if(new Date() <= target){
-    			$("#lion_" + mission.objectId).css("margin-left", ((1- ((target - new Date()) / (target - created))) * 80) + "%");	
-    			$("#distance_" + mission.objectId).css("width", Math.min(100, (1- ((target - new Date()) / (target - created))) * 100)  + "%");
-    		}else{
-    			var index = -1;
-    			for(var i = 0; i < queue.length; ++i){
-    				console.log(queue[i].objective);
-    				if(queue[i]["objective"] == objective.objectId){
-    					index = i;
-    				}
-    			}
-    			if(index < 0){
-    				$(".mission_title").text(mission.title);
-    				$(".failed_dialog").data("objective", objective.objectId);
-    				$(".failed_dialog").modal({"show":true});
-    			}else{
-    				var retrieved = queue[index];
-    				retrieved.pass ++;
-    				if(retrieved.pass >= 2){
-    					//queue.remove(index);
-    					$(".timeup_dialog").modal("show");
-    					//failMission();
-    				}else{
-    					queue[index] = retrieved;	
-    				}
-    				
-    			}
-    		}
-    	}
-    });*/
+	
+	if(!($(".failing").data('bs.modal') || {}).isShown){
+	    $.each(list, function(){
+	    	
+	    	var mission = $(this).data("mission").toJSON();
+	    	var objective = $(this).find(".tasklist").data("parseObject").toJSON();
+	    	console.log("going through list...", objective);
+	    	if(!mission.completed &&  $("#" + objective.objectId).find(":checked").length != objective.subtasks.length){
+	    		var target = new Date(mission.deadline.iso);
+	    		var created = new Date(objective.createdAt);
+	    		if(new Date() <= target){
+	    			$("#lion_" + mission.objectId).css("margin-left", ((1- ((target - new Date()) / (target - created))) * 80) + "%");	
+	    			$("#distance_" + mission.objectId).css("width", Math.min(100, (1- ((target - new Date()) / (target - created))) * 100)  + "%");
+	    		}else{
+	    			var index = -1;
+	    			for(var i = 0; i < queue.length; ++i){
+	    				console.log(queue[i].objective);
+	    				if(queue[i]["objective"] == objective.objectId){
+	    					index = i;
+	    				}
+	    			}
+	    			if(index < 0){
+	    				$(".mission_title").text(mission.title);
+	    				$(".failed_dialog").data("objective", objective.objectId);
+
+	    				$(".failed_dialog").modal({"show":true});
+	    			}else{
+	    				var retrieved = queue[index];
+	    				retrieved.pass ++;
+	    				if(retrieved.pass >= 2){
+	    					//queue.remove(index);
+	    					$(".failed_dialog").data("objective", objective.objectId);
+	    					$(".timeup_dialog").modal("show");
+	    					//failMission();
+	    				}else{
+	    					queue[index] = retrieved;	
+	    				}
+	    				
+	    			}
+	    		}
+	    	}
+	    });
+	}
+
 }
 function addTime(){
 	console.log("Adding time...");
@@ -390,7 +398,7 @@ function renderCompleted(){
 								+	  "<div class='progress-bar progress-bar-success' style='width: " 
 								+ 			(data.completedTasks/data.totalTasks * 100) + "%'>" 
 								+ 			(data.completedTasks/data.totalTasks * 100) + "%</div>"
-								+	  "<div class='progress-bar progress-bar-warning progress-bar-striped' style='width:" 
+								+	  "<div class='progress-bar progress-bar-danger' style='width:" 
 								+ 			(data.failedTasks/data.totalTasks * 100) + "%'>" 
 								+ 			(data.failedTasks/data.totalTasks * 100) + "%</div>"
 								+ 	"</div>"
@@ -619,24 +627,23 @@ function completeMission(event){
 }
 
 function failMission(){
-	console.log("failing mission");
-/*
-	var to_fail = $("#" + event.target.id.split("_")[1]).data("parseObject");
-	var mission =$("#" + to_complete.get("missionId")).data("mission");
+	console.log("failing mission", $(".failed_dialog").data("objective"));
+	var objective = $("#" + $(".failed_dialog").data("objective")).data("parseObject");
+	var mission = $("#" + objective.get("missionId")).data("mission");
+	console.log(objective);
 	window.localStorage.setItem("runner", mission.get("runner"));
-	console.log("task", to_complete);
 	var now = new Date();
 	mission.set({
 		"completed" :  (mission.get("completedTasks") + 1 + mission.get("failedTasks")) == mission.get("totalTasks"),
-		"completedTasks": mission.get("completedTasks") + 1
+		"failedTasks": mission.get("failedTasks") + 1
 	});
 	//if(mission.get("completedTasks") == mission.get("totalTasks"))
 	//true- set alert, not animation; false set animation then alert
 	mission.save({
 		success:function(){
-			to_complete.destroy({
+			objective.destroy({
 				success:function(){
-					window.location = "/mission_complete";
+					window.location = "/mission_fail";
 				}
 			});
 		}

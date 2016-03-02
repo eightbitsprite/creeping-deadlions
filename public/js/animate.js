@@ -44,17 +44,17 @@ function failedMission(){
 	$("#runner_fail").attr("src", "/images/" + window.localStorage.getItem("runner") + "_panic_static.png");
 	$('#deadlion_fail').animate({  borderSpacing: -60 }, {
 	    step: function(now,fx) {
-	      $(this).css('-webkit-transform','rotate('+ -now+'deg)'); 
-	      $(this).css('-moz-transform','rotate('+ -now+'deg)');
-	      $(this).css('transform','rotate('+ -now+'deg)');
+	     // $(this).css('-webkit-transform','rotate('+ -now+'deg)'); 
+	      //$(this).css('-moz-transform','rotate('+ -now+'deg)');
+	      //$(this).css('transform','rotate('+ -now+'deg)');
 	    }, 
 	    duration:3000,
 	    queue:false
 	},'linear');
 	$("#deadlion_fail").animate({
-		"margin-left" : $("#animation_screen").width() / 2,
+		//"margin-left" : $("#animation_screen").width() / 2,
 	}, {duration: 3000, queue:false}, function(){
-		//window.location = "/";
+		window.location = "/";
 	});
 	
 /*

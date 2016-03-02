@@ -32,7 +32,7 @@
 			"title": "Small Hamlet",
 			"image": "/images/vimg_hovelHamletTailor.gif",
 
-			:"req_wood": 5,
+			"req_wood": 5,
 			"req_food": 5,
 			"req_stone": 5
 		},
