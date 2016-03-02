@@ -30,37 +30,43 @@ function initializePage() {
 					var wood = new ObtainedObject();
 					var stone = new ObtainedObject();
 					var food = new ObtainedObject();
-					console.log("REACHED");
-					user.save({
-						username: username,
-						password: password,
-						villageLevel:0,
-						finishedTutorial:false
-					}, {
-						success:function(){
-							window.localStorage.setItem("current_user", JSON.stringify(user));
-							wood.save({
-								resourceType: "wood",
-								quantity:0,
-								user: user.id
-							}).then(function(){
-								stone.save({
+					Parse.User.signUp(username, password, { ACL: new Parse.ACL() }, {
+						success: function(user) {
+							user.save({villageLevel:0, finishedTutorial:false}).then(function(){
+								wood.set({
+									resourceType: "wood",
+									quantity:0,
+									user: user.id
+								});
+								stone.set({
 									resourceType: "stone",
 									quantity:0,
 									user: user.id
-								}).then(function(){
-									food.save({
-										resourceType: "food",
-										quantity:0,
-										user: user.id
-									}).then(function(){
-										window.location = "/";
-									});
+								});
+								food.set({
+									resourceType: "food",
+									quantity:0,
+									user: user.id
+								});
+								wood.save({
+									success:function(){
+										stone.save({
+											success:function(){
+												food.save({
+													success:function(){
+														window.location = "/";
+													}
+												});
+											}
+										});
+									}
 								});
 							});
+						},
+						error: function(user, error) {
+						  $("#error_msg").html("Invalid username or password.");
 						}
-					});
-					
+					});					
 			  	}else{
 			  		$("#error_msg").html("Username already taken.");
 
@@ -87,7 +93,6 @@ function initializePage() {
 	        // If the username and password matches
 	        success: function(user) {
 	            $("#error_msg").html("");
-				window.localStorage.setItem("current_user", JSON.stringify(user));
 				window.location = "/";
 	        },
 	        // If there is an error

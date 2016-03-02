@@ -126,7 +126,7 @@ function nextPage(){
 	var title = $("#new_mission_name_textbox").val().trim();
 	var runner = null;
 	var resource = null;
-	var user = JSON.parse(window.localStorage.getItem("current_user"));
+	var user = Parse.User.current().toJSON();
 	var deadline;
 	var isRecurring = $("#new_freq_recurring").is(":checked");
 	var isValid = true;
@@ -384,7 +384,7 @@ function saveTask(){
 	var title = $("#new_mission_name_textbox").val().trim();
 	var runner = null;
 	var resource = null;
-	var user = JSON.parse(window.localStorage.getItem("current_user"));
+	var user = Parse.User.current().toJSON();
 	var isRecurring = $("#new_freq_recurring").is(":checked");
 	var deadline = (isRecurring)? new Date($("#new_task_until_date").val()) : new Date($("#new_task_due_date").val());
 	var isValid = true;

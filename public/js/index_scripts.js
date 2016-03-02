@@ -5,8 +5,7 @@ var queue = [];
 
 $(document).ready(function() {
 	Parse.initialize("YXlPjDOZPGg2dnC4z2XBGHk5xg8jirJVclFEMTmo", "IWqi5XWUalPKb9uXMX8WCkFNaEuyrIxTzOeH9tPH");
-	console.log("user",JSON.parse(window.localStorage.getItem("current_user")));
-	if(JSON.parse(window.localStorage.getItem("current_user")) == null){
+	if(!Parse.User.current()){
 		window.location = "/login#sign-in";
 	}else{
 		$("#menu_log").click(showLog);
@@ -142,8 +141,10 @@ function renderVillage() {
 function getVillageLevel(vInfo) {
 	//console.log("getVillageLevel() ");
 	//console.log(vInfo);
-	var username = JSON.parse(window.localStorage.getItem("current_user")).username;
+	var username = 	Parse.User.current().get("username");
+	var userid = Parse.User.current().id;
 	var userObject = Parse.Object.extend("User");
+	$("#btn-upgrade").off( "click");
 	//var ObjectiveObject = Parse.Object.extend("Objective");
 	var query = new Parse.Query(userObject);
 	query.equalTo("username", username);
@@ -156,10 +157,11 @@ function getVillageLevel(vInfo) {
 				return;
 			}
 			var village = vInfo.villageReqs[findings[0].get("villageLevel")];
+			console.log("village",village);
 			$("#village_display").html("<div><img src='"+village.image+"'></div>");
 			var oquery = new Parse.Query(Parse.Object.extend("hasObtained"));
 			/*"user" should have search key for user ID */
-			oquery.equalTo("user", username);
+			oquery.equalTo("user", userid);
 			oquery.find({
 				success:function(rfindings) {
 					//console.log(rfindings);
@@ -167,23 +169,43 @@ function getVillageLevel(vInfo) {
 						//console.log("No resource information found for "+username+". Seek help.");
 						return;
 					}
+					var enoughWood = false;
+					var enoughStone = false;
+					var enoughFood = false;
 					for (var i = 0; i<rfindings.length; i++) {
 						//console.log("Village: " + village.req_wood);
 						var resourceType = rfindings[i].get("resourceType");
 						var resourceAmt = rfindings[i].get("quantity");
+						
 						switch (resourceType) {
 							case "wood":
 								$(".resource_wood").empty().append(resourceAmt+"/"+village.req_wood);
+								enoughWood = resourceAmt >= village.req_wood;
 								break;
 							case "food":
 								$(".resource_food").empty().append(resourceAmt+"/"+village.req_food);
+								enoughFood = resourceAmt >= village.req_food;
 								break;
 							case "stone":
 								$(".resource_stone").empty().append(resourceAmt+"/"+village.req_stone);
+								enoughStone = resourceAmt >= village.req_stone;
 								break;
 							default:
 								console.log("ERROR: resourceType or resourceAmt search failure");
 						}
+					}
+					console.log("enough resources?" + (enoughStone));
+					if(enoughStone && enoughFood && enoughWood){
+						$("#btn-upgrade").addClass("btn-upgrade-enable");
+						$("#btn-upgrade").removeClass("btn-upgrade-disable");
+						$("#btn-upgrade").prop("disabled", false);
+						$("#btn-upgrade").click(function(){
+							upgradeVillage(village, userid);
+						});
+					}else{
+						$("#btn-upgrade").addClass("btn-upgrade-disable");
+						$("#btn-upgrade").removeClass("btn-upgrade-enable");
+						$("#btn-upgrade").prop("disabled", true);
 					}
 				},
 				error:function(rfindings){
@@ -194,12 +216,54 @@ function getVillageLevel(vInfo) {
 	});
 }
 
+function upgradeVillage(village, userid){
+	console.log("called");
+	var user= Parse.User.current();
+	var oquery = new Parse.Query(Parse.Object.extend("hasObtained"));
+	var nextLevel = user.get("villageLevel") + 1;
+	console.log("next level is", nextLevel);
+	user.save({villageLevel : nextLevel}, {
+		success:function(){
+			oquery.equalTo("user", userid);
+			oquery.find().then(function(results){
+				console.log(results);
+				var wood = null;
+				var stone = null;
+				var food = null;
+				results.forEach(function(entry){
+					switch (entry.get("resourceType")){
+						case "wood":
+							wood = entry;
+							break;
+						case "food":
+							food = entry;
+							break;
+						case "stone":
+							stone=entry;
+							break;
+					}
+				});
+				wood.set({quantity:wood.get("quantity") - village.req_wood});
+				wood.save().then(function(){
+					stone.set({quantity:stone.get("quantity") - village.req_stone});
+					stone.save().then(function(){
+						food.set({quantity:food.get("quantity") - village.req_food});
+						food.save().then(function(){
+							renderVillage();
+						});
+					});
+				});
+			});
+		}		
+	});
+}
+
 /* Renders the mission log from Parse database
 	args: 	*/
 function renderMissions(){
 	console.log("rendering missions");
 	$("#missions-list").html("");
-	var username = JSON.parse(window.localStorage.getItem("current_user")).username;
+	var username = Parse.User.current().get("username");
 	var MissionObject = Parse.Object.extend("Mission");
 	var ObjectiveObject = Parse.Object.extend("Objective");
 	var query = new Parse.Query(MissionObject);
@@ -294,7 +358,7 @@ function renderMissions(){
 }
 
 function renderCompleted(){
-	var username = JSON.parse(window.localStorage.getItem("current_user")).username;
+	var username = Parse.User.current().get("username");
 	var MissionObject = Parse.Object.extend("Mission");
 	var query = new Parse.Query(MissionObject);
 	query.equalTo("user", username);
@@ -331,6 +395,7 @@ function renderCompleted(){
 								+ 			(data.failedTasks/data.totalTasks * 100) + "%</div>"
 								+ 	"</div>"
 								+	"<div class='history_dropdown tasklist'>"
+								+	"<p><img src='/images/"+ data.runner +"_happy_static.png' class='history_runner_img'/> Runner: "+ data.runnerName +"</p>" 
 	            				+	"<h5>Completed " + data.completedTasks + " out of "+ data.totalTasks + " subtasks</h5>"
 	            				+	"<h6><em>Started at: " + dateString(new Date(data.createdAt), true) + "</em></h6>"
 	            				+ 	"<p>Time Elapsed: " + getTimeDifference(new Date(data.createdAt), new Date(data.updatedAt)) + "</p>"
@@ -524,7 +589,7 @@ function completeMission(event){
 		success:function(){
 			to_complete.destroy({
 				success:function(){
-					var userid = JSON.parse(window.localStorage.getItem("current_user")).objectId;
+					var userid = Parse.User.current().id;
 					var ResourceObject = Parse.Object.extend("hasObtained");
 					var query = new Parse.Query(ResourceObject);
 					query.equalTo("user", userid);
@@ -615,13 +680,13 @@ function closeDelete(){
 }
 
 function updateResourceCount(){
-	var userid = JSON.parse(window.localStorage.getItem("current_user")).objectId;
+	var userid = Parse.User.current().id;
 	var ResourceObject = Parse.Object.extend("hasObtained");
 	var query = new Parse.Query(ResourceObject);
 	query.equalTo("user", userid);
 	query.find().then(function(results){
 		results.forEach(function(entry){
-			$("#" + entry.get("resourceType") + "_count").html(entry.get("quantity"));
+			$("." + entry.get("resourceType") + "_count").html(entry.get("quantity"));
 		});
 	});
 }

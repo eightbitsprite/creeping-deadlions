@@ -254,6 +254,11 @@ be bothered to find the other tags*/
 	font-weight:bold;
 	font-style:italic;
 }
+
+.history_runner_img{
+	width:32px;
+	height:32px;
+}
 /* ENDOF index.handlebars::#history */
 
 /* STARTOF index.handlebars::#help */
@@ -464,7 +469,7 @@ be bothered to find the other tags*/
 }
 #cancel_progress .progress{
 	height:20px;
-	2idth:80%;
+	width:80%;
 	margin-bottom: 10px;
 }
 .resource_meter {
@@ -473,8 +478,23 @@ be bothered to find the other tags*/
 #resource_bar {
 }
 
-#btn-upgrade {
-	font-size: 90%;
+.btn-upgrade-disable{
+	background-color: #BEB096;
+	color:black;
+	padding:3px;
+	font-size:90%;
+	border:2px solid #361700;
+	font-family: 'Anton', sans-serif;
+	cursor:not-allowed;
+}
+.btn-upgrade-enable{
+	background-color:#489F48;
+	color:black;
+	padding:3px;
+	font-size:90%;
+	border:2px solid #361700;
+	font-family: 'Anton', sans-serif;
+	cursor:pointer;
 }
 /* ENDOF index.handlebars::#village styling*/
 /* ENDOFFILE index.handlebars */
@@ -490,8 +510,6 @@ be bothered to find the other tags*/
 .login_img {
 	max-width: 50vw;
 	max-height: 50vh;
-	background-color: white;
-	border: 4px solid #361700;
 
 	padding-left: 1vw;
 	margin-bottom: 1vh;

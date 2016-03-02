@@ -15,7 +15,7 @@ function initializePage() {
 
 function renderVillage() { 
 	console.log("rendering village");
-	var username = JSON.parse(window.localStorage.getItem("current_user")).username;
+	var username = Parse.User.current().get("username");
 	var userObject = Parse.Object.extend("User");
 	//var ObjectiveObject = Parse.Object.extend("Objective");
 	var query = new Parse.Query(userObject);
