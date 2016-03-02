@@ -49,6 +49,7 @@ app.get('/create_mission', mission_form.view);
 app.get('/new_mission', cutscene.new);
 app.get('/village', village.view);
 app.get('/mission_complete', cutscene.complete);
+app.get('/mission_fail', cutscene.fail);
 //app.get('/project/:name', project.viewProject);
 
 // Example route
