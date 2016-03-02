@@ -140,8 +140,8 @@ function renderVillage() {
 
 }
 function getVillageLevel(vInfo) {
-	console.log("getVillageLevel() ");
-	console.log(vInfo);
+	//console.log("getVillageLevel() ");
+	//console.log(vInfo);
 	var username = JSON.parse(window.localStorage.getItem("current_user")).username;
 	var userObject = Parse.Object.extend("User");
 	//var ObjectiveObject = Parse.Object.extend("Objective");
@@ -150,7 +150,7 @@ function getVillageLevel(vInfo) {
 	query.greaterThanOrEqualTo("villageLevel", 0);
 	query.find({
 		success:function(findings) {
-			console.log(findings);
+			//console.log(findings);
 			if (!findings.length) {
 				console.log("That's strange. Something should be happening.");
 				return;
@@ -162,15 +162,29 @@ function getVillageLevel(vInfo) {
 			oquery.equalTo("user", username);
 			oquery.find({
 				success:function(rfindings) {
-					console.log(rfindings);
+					//console.log(rfindings);
 					if(!rfindings.length) {
-						console.log("No resource information found for "+username+". Seek help.");
+						//console.log("No resource information found for "+username+". Seek help.");
 						return;
 					}
-					console.log(village.req_wood);
-					$("resource_wood").empty().append("/"+village.req_wood);
-					$("resource_stone").empty().append("/"+village.req_stone);
-					$("resource_food").empty().append("/"+village.req_food);
+					for (var i = 0; i<rfindings.length; i++) {
+						//console.log("Village: " + village.req_wood);
+						var resourceType = rfindings[i].get("resourceType");
+						var resourceAmt = rfindings[i].get("quantity");
+						switch (resourceType) {
+							case "wood":
+								$(".resource_wood").empty().append(resourceAmt+"/"+village.req_wood);
+								break;
+							case "food":
+								$(".resource_food").empty().append(resourceAmt+"/"+village.req_food);
+								break;
+							case "stone":
+								$(".resource_stone").empty().append(resourceAmt+"/"+village.req_stone);
+								break;
+							default:
+								console.log("ERROR: resourceType or resourceAmt search failure");
+						}
+					}
 				},
 				error:function(rfindings){
 					console.log("No resource information found for "+username+". Seek help.");
@@ -295,24 +309,36 @@ function renderCompleted(){
     		console.log("results", results);
 	        for (var i = 0; i < results.length; i++) {
 	            var data = results[i].toJSON();
-	           	var date = dateString(new Date(data.updatedAt), true);
+	           	var updatedDate = new Date(data.updatedAt);
+	           	var endDate = updatedDate.toLocaleDateString();
+	           	var endTime = updatedDate.toLocaleTimeString();
+	           	endTime = endTime.split(":");
+	           	var am_pm = endTime[2].split(" ");
+	           	endTime = endTime[0] + ":" + endTime[1] + " " + am_pm[1];
 	            htmlBuilder += "<li class='mission_box container history_mission' id='" + data.objectId+"'>"
-	            				+	"<a class='btn pull-right'>Drop it like it's hot</a>"
-	            				+	"<h3>" + data.title + "</h3>"
-	            				+ "<br/><div class='stat-bar progress'>"
-								+	  "<div class='progress-bar progress-bar-success' style='width: " + (data.completedTasks/data.totalTasks * 100) + "%'>" + (data.completedTasks/data.totalTasks * 100) + "%</div>"
-								+	  "<div class='progress-bar progress-bar-warning progress-bar-striped' style='width:  " + (data.failedTasks/data.totalTasks * 100) + "%'>" + (data.failedTasks/data.totalTasks * 100) + "%</div>"
+            					+ "<ul class='list-inline subtaskToggle'>"
+	            				+	"<li><h3 class='subtaskToggle'>" + data.title + "</h3></li>"
+	            				+ 	"<li><span class='collapse_indicator collapsed glyphicon glyphicon-chevron-up'>"
+	            				+ 		"</span></li>"
+	            				+	"<li class=''><h5>Ended " + endTime + ", " +	endDate + "</h5></li>"
+	            				+ "</ul>"
+	            				+ "<div class='stat-bar progress' style='clear:both'>"
+								+	  "<div class='progress-bar progress-bar-success' style='width: " 
+								+ 			(data.completedTasks/data.totalTasks * 100) + "%'>" 
+								+ 			(data.completedTasks/data.totalTasks * 100) + "%</div>"
+								+	  "<div class='progress-bar progress-bar-warning progress-bar-striped' style='width:" 
+								+ 			(data.failedTasks/data.totalTasks * 100) + "%'>" 
+								+ 			(data.failedTasks/data.totalTasks * 100) + "%</div>"
 								+ 	"</div>"
-								+	"<div class='history_dropdown'>"
-	            				+	"<h5>Completed " + data.completedTasks + " out of " 
-	            				+ 		data.totalTasks + " subtasks</h5>"
-	            				+	"<h5>Completed at: " + dateString(new Date(data.updatedAt), true) + "</h5>"
+								+	"<div class='history_dropdown tasklist'>"
+	            				+	"<h5>Completed " + data.completedTasks + " out of "+ data.totalTasks + " subtasks</h5>"
 	            				+	"<h6><em>Started at: " + dateString(new Date(data.createdAt), true) + "</em></h6>"
 	            				+ 	"<p>Time Elapsed: " + getTimeDifference(new Date(data.createdAt), new Date(data.updatedAt)) + "</p>"
 	            				+	"</div>"
 	            				+ "</li>"
 	        }
 	        $("#completed-missions-list").html(htmlBuilder);
+      		$(".subtaskToggle").click(toggleSubtaskList);
     	}
 	});
 }
@@ -426,11 +452,11 @@ function checkForCompleted(data){
 
 /* Collapses/Expands the subtasklist for the current mission*/
 function toggleSubtaskList(event){
+	//debugger;
 	var currentBox = $(this).parent();
 	var currentList = currentBox.children(".tasklist");
 
-	//debugger;
-	var indicator = currentBox.find("#collapse_indicator");
+	var indicator = currentBox.find(".collapse_indicator");
 	//indicator = indicator.find("span");
 	//currentBox.children(".collapse_indicator").children("span");
 	//indicator = indicator.children(".glphyicon");
