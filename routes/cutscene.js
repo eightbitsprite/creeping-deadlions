@@ -7,3 +7,7 @@ exports.new = function(req, res){
 exports.complete = function(req, res){
 	res.render('mission_complete');
 };
+
+exports.fail = function(req, res){
+	res.render('mission_fail');
+};

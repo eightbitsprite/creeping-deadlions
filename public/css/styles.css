@@ -181,14 +181,36 @@ be bothered to find the other tags*/
 }
 
 #animation_screen{
-	background-color:white;
 	overflow:hidden;
-	position:absolute;
 	width:95vw;
+	background-color:white;
+	height:400px;
 }
 #deadlion_animate{
 	position:absolute;
 	z-index:1;
+}
+#runner_start{
+	position: relative;
+	height:150px;
+	width:150px;
+	margin-top:50px;
+}
+#runner_fail{
+	height:150px;
+	width:150px;
+	float:right;
+}
+
+#deadlion_fail{
+	position:absolute;
+}
+.cutscene_message{
+	font-family: 'Anton', sans-serif;
+	font-size:40pt;
+	color:black;
+	margin-top:50px;
+	text-align: center
 }
 
 .subtaskToggle{
@@ -284,6 +306,7 @@ be bothered to find the other tags*/
 	height:30px;
 }
 
+
 .failed_mission_img{
 	width:200px;
 	height:200px;
@@ -323,9 +346,6 @@ be bothered to find the other tags*/
 	height:70vh;
 	overflow:auto;
 	width:100%;
-}
-.complete_mission{
-	margin-right:15px;
 }
 
 .mission-dropdown {
@@ -714,6 +734,7 @@ input[type='checkbox']{
 	right:0em;
 }
 
+
 .lion_img{
 	width:55px;
 	height:55px;
@@ -740,8 +761,8 @@ input[type='checkbox']{
 	margin-top:10px;
 	margin-right: -10px;
 
-	background: linear-gradient(to right, rgba(156,209,122,0),rgba(156,209,122,.5)15%, 
-		#9CD17A 20%); 
+	background: linear-gradient(to right, rgba(156,209,122,0), rgba(156,209,122,0) 10%,
+		rgba(156,209,122,.5)15%, #9CD17A 20%); 
 }
 .pBar_r{
 	background-color: #9CD17A;
