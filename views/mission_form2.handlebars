@@ -1,0 +1,170 @@
+<!doctype html>
+
+<html>
+<head>
+	{{> head}}
+	<script src="js/mission_scripts_alt.js"></script>
+</head>
+<body class="all_design">
+<div id="main" class="main">
+    <div id="missions" class="row">
+    	<div id="new_mission" class="col-md-12 mission_box">
+    		<a id="new_cancel_button" href="/" class="pull-right btn btn-custom">X</a>
+    		<h1 class="text-center">Create a Mission</h1>
+    		<em><h5 id="error_msg"></h5></em>
+			<!--<form id="newMissionForm" role="form" method="get" action="/new_mission">-->
+			<label for="new_mission_name_textbox">Mission Name:</label>
+				<input id="new_mission_name_textbox" class="form-control" type="text" placeholder="Mission Name" name="mission_name" required/>
+			<hr/>
+			
+			<div class="new_input container" id="frequency">
+				<label>Runner and Resource:</label>
+				<div id="resource_selection_box">
+					<div class="row text-center center-block">
+						<div class ="col-xs-6 runner_resource">
+							<img alt="Click me!" class="select_item_img resource_chosen center-block" src="" id="selected_runner_img"/>
+						</div>
+						<div class ="col-xs-6 runner_resource">
+							<img alt="u kno u want 2 ;-)" class="select_item_img resource_chosen center-block" src="" id="selected_resource_img"/>
+						</div>		
+					</div>	
+					<div class="row text-center">
+						<p class="col-xs-6" id="selected_runner_name">-</p>
+						<p class="col-xs-6" id="selected_resource_name">-</p>
+					</div>
+				</div>
+				<label for="new_mission_name_textbox">Deadline:</label><br/>
+				<p> <label id="due_text">Due:</label> <input type="text" id="new_task_due_date"></p>
+				<p>Time: <input type="time" id="new_task_due_time" value="12:00"></p>
+
+				<input type="checkbox" id="new_freq_recurring"/>
+				<label class = "freq_select" for="new_freq_recurring">Repeat</label>
+
+				<div id="new_freq_recurring_area" class="freq_option">
+					<p>Every: <span class="pull-right"><input type="checkbox" id="select_all"/><label for="select_all">Select All</label></span></p> 
+					<div id="new_task_recurring_dates" class="row text-center">
+						<div class="col-xs-1"><input type="checkbox" name="sunday" id="sunday_box" class="day_box"/><label for="sunday_box">Su</label></div>
+						<div class="col-xs-1"><input type="checkbox" name="monday" id="monday_box" class="day_box"/><label for="monday_box">M</label></div>
+						<div class="col-xs-1"><input type="checkbox" name="tuesday" id="tuesday_box" class="day_box"/><label for="tuesday_box">T</label></div>
+						<div class="col-xs-1"><input type="checkbox" name="wednesday" id="wednesday_box" class="day_box"/><label for="wednesday_box">W</label></div>
+						<div class="col-xs-1"><input type="checkbox" name="thursday" id="thursday_box" class="day_box"/><label for="thursday_box">Th</label></div>
+						<div class="col-xs-1"><input type="checkbox" name="friday" id="friday_box" class="day_box"/><label for="friday_box">F</label></div>
+						<div class="col-xs-1"><input type="checkbox" name="saturday" id="saturday_box" class="day_box"/><label for="saturday_box">S</label></div>
+					</div>
+					<p>Until: <input type="text" id="new_task_until_date" name="duedate"/></p>
+				</div>
+				<br/>
+				<!--
+				<a class="btn btn-custom pull-right" id="next_button">Next</a>
+				-->
+			</div>
+			<br>
+
+			<div id="objectives">
+				<em><h5 id="objectives_error_msg" style="display: none"></h5></em>
+				<label for="new_subtasks">Objectives for:</label>
+				<div class="new_input" id="new_subtask_input">
+					
+					<span class="switch_deadline" id="left-switch">&lt;</span>
+					<select id="selected_mission_date">
+					</select>
+					<span class="switch_deadline" id="right-switch">&gt;</span>
+					
+					<div id="subtask_area">
+						<div class="apply_all_wrapper">
+							<input type='checkbox' id="apply_to_all_btn" checked/><label>Apply to all</label>
+						</div>
+						<ul id="new_subtasks">
+							
+						</ul>
+					</div>
+					
+					<em><h5 id="subtask_error_msg"></h5></em>
+					<input id="new_subtask_textbox" type="text" placeholder="Enter objective"/>
+					<a id="add_task_button" class="btn btn-subtask">+</a>
+				</div>
+				<em><h5 id="alldesign_error_msg"></h5></em>
+				<br/>
+				<div class="new_input container" id="new_input_submit">
+					<!--<a class="btn btn-custom pull-left" id="back_button">Back</a>-->
+					<a class="btn btn-custom pull-right" id="new_run_button">RUN!</a>
+				</div>
+				<br/>
+			</div>
+    	</div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="recurFreq" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+      	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Select Runner and Resource</h4>
+        	<em><h5 id="modal_error_msg"></h5></em>
+      		<label>Select a runner:</label>
+      			<br/>
+      			<label for="new_runner_textbox" id="label_runner_name">Name:</label>
+				<input type="text" id="new_runner_textbox" class="form_control" name="runner"/>
+				<label class="btn-custom" id="new_runner_randomize">?!</label>
+			<div class="row runner_box">
+				<div class="col-xs-4 text-center">
+					<input type="radio" name="runners" id="Maully" class="item_radio"/>
+					<label for="Maully"><img alt="Maully" class="select_item_img center-block" src="/images/maully_happy_static.png" id="maully"/></label>
+				</div>
+				<div class="col-xs-4 text-center">
+					<input type="radio" name="runners" id="Jawnny" class="item_radio"/>
+					<label for="Jawnny"><img alt="Jawnny" class="select_item_img center-block" src="/images/jawnny_happy_static.png" id="jawnny"/></label>
+				</div>
+				<div class="col-xs-4 text-center">
+					<input type="radio" name="runners" id="Charmane" class="item_radio"/>
+					<label for="Charmane"><img alt="Charmane" class="select_item_img center-block" src="/images/charmane_happy_static.png" id="charmane"/></label>
+				</div>
+				<div class="col-xs-4 text-center">
+					<input type="radio" name="runners" id="Clawdia" class="item_radio"/>
+					<label for="Clawdia"><img alt="Clawdia" class="select_item_img center-block" src="/images/clawdia_happy_static.png" id="clawdia"/></label>
+				</div>
+				<div class="col-xs-4 text-center">
+					<input type="radio" name="runners" id="Roarie" class="item_radio"/>
+					<label for="Roarie"><img alt="Roarie" class="select_item_img center-block" src="/images/roarie_happy_static.png" id="roarie"/></label>
+				</div>
+				<div class="col-xs-4 text-center">
+					<input type="radio" name="runners" id="Deniel" class="item_radio"/>
+					<label for="Deniel"><img alt="Deniel" class="select_item_img center-block" src="/images/deniel_happy_static.png" id="deniel"/></label>
+				</div>
+			</div>
+			<hr/>
+			<label>Select a resource:</label>
+			<div class="row resource_box">
+				<div class="col-xs-4 text-center">
+					<input type="radio" name="resources" id="Wood" class="item_radio"/>
+					<label for="Wood">
+						<img alt="wood" class="select_item_img center-block" src="/images/resource_wood.png" id="wood"/>
+						<p>Wood</p>
+					</label>
+				</div>
+				<div class="col-xs-4 text-center">
+					<input type="radio" name="resources" id="Food" class="item_radio"/>
+					<label for="Food">
+						<img alt="food" class="select_item_img center-block" src="/images/resource_food.png" id="food"/>
+						<p>Food</p>
+					</label>
+				</div>
+				<div class="col-xs-4 text-center">
+					<input type="radio" name="resources" id="Stone" class="item_radio"/>
+					<label for="Stone">
+						<img alt="stone" class="select_item_img center-block" src="/images/resource_stone.png" id="stone"/>
+						<p>Stone</p>
+					</label>
+				</div>
+			</div>
+			<br/>
+			<button type="button" class="btn btn-custom modalSaveBtn submit_runner_resource_button">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
