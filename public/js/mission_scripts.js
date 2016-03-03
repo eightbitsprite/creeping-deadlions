@@ -501,8 +501,9 @@ function saveTask(){
 								window.location = "/";
 						});
 				});
-			googleATimeCheck(1, Date.now());
+			//googleATimeCheck(1, Date.now());
 		});
+	googleATimeCheck(1, Date.now());
 	}
 }
 function checkAll(){

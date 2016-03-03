@@ -43,11 +43,17 @@ function initializePage() {
 	$("#new_freq_recurring").change(toggleRecurring);
 	//$( "#new_task_due_date" ).datepicker();
 	$( "#new_task_due_date" ).datepicker({
-		onSelect: function(date, inst) {freqUnset(); } 
+		onSelect: function(date, inst) {
+			allDesignLoadSelector();
+			freqUnset(); 
+		} 
 	});
 	//$("#new_task_until_date").datepicker();
 	$( "#new_task_until_date" ).datepicker({
-		onSelect: function(date, inst) {freqUnset(); } 
+		onSelect: function(date, inst) {
+			allDesignLoadSelector();
+			freqUnset(); 
+		} 
 	});
 	$("#next_button").click(nextPage);
 	$("#back_button").click(previousPage);
@@ -68,7 +74,7 @@ function initializePage() {
 
 	if(isAllDesign()) {
 		$("#objectives").click(allDesignNextPage);
-		$("#apply_to_all_btn").attr('checked', false);
+		//$("#apply_to_all_btn").attr('checked', false);
 		$(".apply_all_wrapper").css("display", "none");
 		//add events to check if ANY input value in
 		//frequency has changed
@@ -114,6 +120,8 @@ function isFreqSet() {
 }
 /*Check to make sure frequency is filled out alright*/
 function frequencyCheckerAllDesign() {
+	/*last min hotfix to make mission submissions work*/
+	return true;
 	//debugger;
 	if (!isAllDesign()) {
 		return true;
@@ -129,7 +137,7 @@ function frequencyCheckerAllDesign() {
 		$("#alldesign_error_msg").fadeIn(400);
 		$("#alldesign_error_msg").html("<p>Invalid settings. Check above for more details.</p>")
 		$("#alldesign_error_msg").delay(750).fadeOut(200);
-		$("#apply_to_all_btn").attr('checked', false);
+		$("#apply_to_all_btn").attr('checked', true);
 		$("#apply_to_all_btn").prop("disabled", true);
 
 		freqUnset();
@@ -332,7 +340,7 @@ function nextPage(){
 		});
 	
 	}
-	loadSelector(); 
+	loadSelector(repeat_dates); 
 	if(isValid){
 		if (!isAllDesign){
 		$("#frequency").css("display", "none");
@@ -342,7 +350,7 @@ function nextPage(){
 	ga("send", "event", "next_page", "page_change");	
 	return isValid;
 }
-function loadSelector(){
+function loadSelector(repeat_dates){
 	var dropdown = $("#selected_mission_date");
 	dropdown.html("");
 	if(repeat_dates.length ==1)
@@ -493,12 +501,128 @@ function allDesignNextPage () {
 		if (isFreqSet() === false) { 
 			nextPage();
 			$("body").addClass("freq_set");
+			$("#apply_to_all_btn").attr('checked', true);
 		}
 	} else {
 		$("body").removeClass("objectives_okay");
 		freqUnset();
 	}
 	frequencyCheckerAllDesign();
+}
+function allDesignLoadSelector() {
+	//debugger;
+	var isValid = true;
+	var deadline;
+	var repeat_dates = [];
+	var daysString = "";
+
+	if($("#new_task_due_date").val().trim() == ""){
+		$("#error_msg").append("<p>Please select a valid " + (($("#new_freq_recurring").is(":checked"))? "start" : "due") + " date.</p>");
+     	isValid = false;
+	}else{
+		deadline= new Date($("#new_task_due_date").val());
+		var dueTime = $("#new_task_due_time").val();
+      	if(!(/^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(dueTime.toString()))){
+      		$("#error_msg").append("<p>Please select a valid time.</p>");
+         	isValid = false;
+      	}else{
+	      	deadline.setHours(Number(dueTime.split(":")[0]));
+	      	deadline.setMinutes(Number(dueTime.split(":")[1]));
+	      	deadline.setSeconds(0);
+      	}
+      	var today=new Date();
+      	if(deadline < today && !$("#new_freq_recurring").is(":checked")){
+  			$("#error_msg").append("<p>Please select a future due date.</p>");
+     		isValid = false;
+  		}
+	}
+	if($("#new_freq_recurring").is(":checked")){	
+	var until_date;
+	if($("#new_task_until_date").val().trim() == ""){
+		$("#error_msg").append("<p>Please select a valid end date.</p>");
+		isValid = false;
+	}else{
+		var today = new Date();
+		until_date = new Date($("#new_task_until_date").val());
+		until_date.setHours(24);
+		if(until_date < today){
+			$("#error_msg").append("<p>Please select a future end date.</p>");
+			isValid = false;
+		}else if(until_date < deadline){
+			$("#error_msg").append("<p>End date must be after start date.</p>");
+			isValid = false;
+		}
+	}
+	if(isValid){
+		var days = [];
+		
+		if($("#sunday_box").is(":checked")){
+			days.push(0);
+			daysString += "Su,";
+		}
+		if($("#monday_box").is(":checked")){
+			daysString += "M,";
+			days.push(1);
+		}
+		if($("#tuesday_box").is(":checked")){
+			daysString+="T,";
+			days.push(2);
+		}
+		if($("#wednesday_box").is(":checked")){
+			days.push(3);
+			daysString+= "W,";
+		}
+		if($("#thursday_box").is(":checked")){
+			days.push(4);
+			daysString +="Th,"
+		}
+		if($("#friday_box").is(":checked")){
+			days.push(5);
+			daysString += "F,";
+		}
+		if($("#saturday_box").is(":checked")){
+			days.push(6);
+			daysString += "S,";
+		}
+
+		if(days.length ==0){
+			isValid = false;
+			$("#error_msg").append("<p>Please select at least one day to repeat mission.</p>");
+		}else { 
+			var index = 0;
+			var date= new Date($("#new_task_due_date").val());
+			date.setHours(Number(dueTime.split(":")[0]) + 24);
+      		date.setMinutes(Number(dueTime.split(":")[1]));
+      		date.setSeconds(0);
+			console.log(date);
+			while(date <= until_date){
+				if(days.indexOf(date.getDay()) >= 0){
+					console.log("adding date", date);
+					repeat_dates.push({
+						"id": index,
+						"date" : dateString(date),
+						"completed":false
+					});
+					index ++;
+				}
+				date.setDate(date.getDate() + 1);
+			}
+
+			if(repeat_dates.length ==0){
+				isValid = false;
+				$("#error_msg").append("<p>None of days selected occur between given start and end date.</p>");
+			}
+		}		
+	}
+	}else{
+		repeat_dates.push({
+			"id": 0,
+			"date" : dateString(deadline),
+			"completed":false
+		});
+	}
+	$("#selected_mission_date").empty();
+	if(isValid) { loadSelector(repeat_dates);}
 }
 
 function previousPage(){
@@ -609,6 +733,12 @@ function generateRunner(){
 }
 
 function saveTask(){
+	/*if frequencyCheckerAllDesign() returns true, then continue
+	execution*/
+	if (!frequencyCheckerAllDesign()) {
+		return;
+	}
+	
 	/*Validation*/
 	var title = $("#new_mission_name_textbox").val().trim();
 	var runner = null;
@@ -725,8 +855,9 @@ function saveTask(){
 								window.location = "/";
 						});
 				});
-			googleATimeCheck(1, Date.now());
+			//googleATimeCheck(1, Date.now());
 		});
+		googleATimeCheck(1, Date.now());
 	}
 }
 function checkAll(){
