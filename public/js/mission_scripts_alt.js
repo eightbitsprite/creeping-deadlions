@@ -125,6 +125,7 @@ function frequencyCheckerAllDesign() {
 		return true;
 	} else {
 		/*Reinforcement of #frequency correctness*/
+		/*
 		$("#alldesign_error_msg").fadeIn(400);
 		$("#alldesign_error_msg").html("<p>Invalid settings. Check above for more details.</p>")
 		$("#alldesign_error_msg").delay(750).fadeOut(200);
@@ -132,6 +133,7 @@ function frequencyCheckerAllDesign() {
 		$("#apply_to_all_btn").prop("disabled", true);
 
 		freqUnset();
+		*/
 		return false;
 	}	
 }
