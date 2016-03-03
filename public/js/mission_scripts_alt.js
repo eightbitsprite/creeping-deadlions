@@ -505,7 +505,7 @@ function allDesignNextPage () {
 	frequencyCheckerAllDesign();
 }
 function allDesignLoadSelector() {
-	debugger;
+	//debugger;
 	var isValid = true;
 	var deadline;
 
@@ -614,7 +614,7 @@ function allDesignLoadSelector() {
 			"completed":false
 		});
 	}
-	loadSelector();
+	if(isValid) { loadSelector();}
 }
 
 function previousPage(){
