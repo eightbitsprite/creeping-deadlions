@@ -1,6 +1,7 @@
 'use strict';
 
 var queue = [];
+var subtaskIndex = 0;
 
 $(document).ready(function() {
 	Parse.initialize("YXlPjDOZPGg2dnC4z2XBGHk5xg8jirJVclFEMTmo", "IWqi5XWUalPKb9uXMX8WCkFNaEuyrIxTzOeH9tPH");
@@ -17,9 +18,7 @@ $(document).ready(function() {
 		$("#failed-missions-list").css("display", "none");
 		$("#logoutbutton").click(logOut);
 
-		$("#next_button").click(nextPage);		
-		$("#back_button").click(previousPage);
-		$(".close_editmission").click(previousPage);
+		$( "#new_task_due_date" ).datepicker();
 		$(".btn-add-time").click(addTime);
 		$(".btn-fail-mission").click(failMission);
 		$(".close_modal").click(closeModal);
@@ -27,6 +26,13 @@ $(document).ready(function() {
 		$(".cancel_one").click(deleteOne);
 		$(".cancel_all").click(deleteAll);
 		$("#cancel_progress").css("display", "none");
+		$(".save_objective_changes").click(saveObjectiveChanges);
+		$("#new_subtask_textbox").keydown(function(event){
+			if(event.keyCode == 13){
+				addSubtask();
+			}
+		});
+		$("#add_task_button").click(addSubtask);
 		renderMissions();
 		renderCompleted();		
 		updateResourceCount();
@@ -37,6 +43,77 @@ $(document).ready(function() {
 		}, 30 * 1000); // 60 * 1000 milsec*/
 	}
 })
+
+function saveObjectiveChanges(){
+	var objective = $(".editmission_modal").data("objective");
+	var mission = $("#" + objective.get("missionId")).data("mission");
+	var deadline;
+
+	var title = $("#new_mission_name_textbox").val().trim();
+	
+	var isValid = true;
+	$("#error_msg").html("");
+
+	if(title.trim() == ""){
+		$("#error_msg").append("<p>Mission name is required.</p>");
+		isValid = false;
+	}
+	if($("#new_task_due_date").val().trim() == ""){
+		$("#error_msg").append("<p>Please select a valid due date.</p>");
+     	isValid = false;
+	}else{
+		deadline= new Date($("#new_task_due_date").val());
+		var dueTime = $("#new_task_due_time").val();
+      	if(!(/^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(dueTime.toString()))){
+      		$("#error_msg").append("<p>Please select a valid time.</p>");
+         	isValid = false;
+      	}else{
+	      	deadline.setHours(Number(dueTime.split(":")[0]));
+	      	deadline.setMinutes(Number(dueTime.split(":")[1]));
+	      	deadline.setSeconds(0);
+      	}
+      	var today=new Date();
+      	if(deadline < today && !$("#new_freq_recurring").is(":checked")){
+  			$("#error_msg").append("<p>Please select a future due date.</p>");
+     		isValid = false;
+  		}
+	}
+
+	if($("#new_subtasks_index").find(".subtask_edit").length == 0){
+		$("#error_msg").append("<p>Please enter at least one objective.</p>");
+     	isValid = false;
+	}
+
+
+	if(isValid){
+		var list = $("#new_subtasks_index").find(".subtask_name");
+		var subtaskList = [];
+		for(var i = 0; i < list.length; i++){
+			console.log("editing", list[i]);
+			subtaskList.push({
+				"title": $(list[i]).text().trim(),
+				"id" : i,
+				"completed" : false
+			});
+		}
+		console.log("editing", objective);
+		objective.save({
+			subtasks: subtaskList
+		},{
+			success:function(){
+				mission.save({
+					title: title,
+					deadline: (mission.get("totalTasks") == 1)?  deadline : mission.get("deadline")
+				}, {
+					success:function(){
+						$(".editmission_modal").modal("hide");
+						renderMissions();
+					}
+				})
+			}
+		})		
+	}
+}
 function gAnalytic_newMission(){
 	ga("send", "event", "button: New Mission", "/create_mission");
 }
@@ -49,7 +126,6 @@ function calculateDistances(){
 	    	
 	    	var mission = $(this).data("mission").toJSON();
 	    	var objective = $(this).find(".tasklist").data("parseObject").toJSON();
-	    	console.log("going through list...", objective);
 	    	if(!mission.completed &&  $("#" + objective.objectId).find(":checked").length != objective.subtasks.length){
 	    		var target = new Date(mission.deadline.iso);
 	    		var created = new Date(objective.createdAt);
@@ -96,7 +172,8 @@ function addTime(){
 }
 
 function logOut() {
-	window.localStorage.setItem("current_user", null);
+	//window.localStorage.setItem("current_user", null);
+	Parse.User.logOut();
 	window.location = "/login#sign-in";
 }
 function showCompleted() {
@@ -549,30 +626,6 @@ function toggleSubtaskList(event){
 	currentList.slideToggle(100);
 }
 
-function editMission(event) {
-	debugger;
-	var editMission_modal = $(".editmission_modal");
-	var dataId = event.target.id.split("_")[1];
-	var dataObject = $("#"+dataId).data("parseObject");
-	//console.log(dataObject);
-	var missionId = dataObject.get("missionId");
-
-	var missionObject = $("#"+missionId).data("mission");
-	var missionName = missionObject.get("title");
-	var missionDate = missionObject.get("deadline");
-	//console.log("Title: "+missionName);
-
-	editMission_modal.removeAttr("id");
-	editMission_modal.attr("id", missionId);
-	editMission_modal.find("#editmission_modaltitle").empty().append(missionName);
-
-	$("#new_mission_name_textbox").empty().val(missionName);
-	$("#new_task_due_date").empty().val(missionDate.toLocaleDateString());
-	$("#new_task_due_time").empty().val(missionDate.toLocaleTimeString());
-
-	/*display modal*/
-	editMission_modal.modal({"show":true});
-}
 /* Barebones implementation, just flashes to the next part of popup*/	
 function nextPage(event) {
 	$("#frequency").css("display", "none");
@@ -655,12 +708,12 @@ function failMission(){
 }
 
 function editMission(event) {
-	console.log("called");
+	console.log("called", event);
 	//debugger;
 	var editMission_modal = $(".editmission_modal");
 	var dataId = event.target.id.split("_")[1];
 	var dataObject = $("#"+dataId).data("parseObject");
-	//console.log(dataObject);
+	console.log("data is",dataObject);
 	var missionId = dataObject.get("missionId");
 
 	var missionObject = $("#"+missionId).data("mission");
@@ -671,14 +724,99 @@ function editMission(event) {
 	editMission_modal.removeAttr("id");
 	editMission_modal.attr("id", missionId);
 	editMission_modal.find("#editmission_modaltitle").empty().append(missionName);
+	editMission_modal.data("objective", dataObject);
+	var current_mission_objectives = dataObject.get("subtasks");
 
 	$("#new_mission_name_textbox").empty().val(missionName);
 	$("#new_task_due_date").empty().val(missionDate.toLocaleDateString());
-	$("#new_task_due_time").empty().val(missionDate.toLocaleTimeString());
+	//$("#new_task_due_date").css("display", (missionObject.get("totalTasks").length > 1)? "none" : "block");
+	console.log("time", missionDate.toLocaleTimeString());
+	$("#new_task_due_time").val(missionDate.toLocaleTimeString().replace(" PM", "").replace(" AM",""));
+	$("#new_subtasks_index").html("");
+	subtaskIndex = 0;
+	dataObject.get("subtasks").forEach(function(entry){
+		$("#new_subtasks_index").append("<li id='subtask_item_" + subtaskIndex + "'>"
+									+ "<h4 class='subtask subtask_edit' for='check_" + subtaskIndex + "' id='subtask_" + subtaskIndex + "'>"
+									+ 		"<span class='pull-right'>"
+									+			"<span id='edit_" + subtaskIndex + "' class='edit_subtask subtask_glyphicon glyphicon glyphicon-pencil' aria-hidden='true'></span>"
+									+			"<span id='delete_" + subtaskIndex + "' class='delete_subtask subtask_glyphicon glyphicon glyphicon-remove' aria-hidden='true'></span>"
+									+		"</span>"
+									+ 		"<span class='subtask_name' id='" + subtaskIndex + "'>" + entry.title + "</span>" 
+									+ "</h4></li>");
+		$("#new_subtask_textbox").val("");
+		$("#edit_" + subtaskIndex).click(editSubtask);
+		$("#delete_" + subtaskIndex).click(deleteSubtask);
+	});
 
 	/*display modal*/
 	editMission_modal.modal({"show":true});
 }
+
+function addSubtask(){
+	console.log("called");
+	var subtask = $("#new_subtask_textbox").val();
+	$("#subtask_error_msg").html("");
+	if(subtask.trim()== ""){
+		$("#subtask_error_msg").append("<p>Field cannot be blank</p>");
+	}else{
+		$("#subtask_prompt").css("display", "none");
+		console.log($("#new_subtasks_index"));
+		$("#new_subtasks_index").append("<li id='subtask_item_" + subtaskIndex + "'>"
+									+ "<h4 class='subtask' for='check_" + subtaskIndex + "' id='subtask_" + subtaskIndex + "'>"
+									+ 		"<span class='pull-right'>"
+									+			"<span id='edit_" + subtaskIndex + "' class='edit_subtask subtask_glyphicon glyphicon glyphicon-pencil' aria-hidden='true'></span>"
+									+			"<span id='delete_" + subtaskIndex + "' class='delete_subtask subtask_glyphicon glyphicon glyphicon-remove' aria-hidden='true'></span>"
+									+		"</span>"
+									+ 		"<span class='subtask_name'>" + subtask + "</span>" 
+									+ "</h4></li>");
+		$("#new_subtask_textbox").val("");
+		$("#edit_" + subtaskIndex).click(editSubtask);
+		$("#delete_" + subtaskIndex).click(deleteSubtask);
+		subtaskIndex++;
+	}
+}
+
+
+function editSubtask(event){
+	event.preventDefault();
+	event.stopPropagation();
+	var el = event.target.parentNode.parentNode;
+	var title = $("#" + el.id).find(".subtask_name").text().trim();
+	var index = el.id.split("_")[1];
+	$("#" + el.parentNode.id).html("<input type='text' value='" + title + "' class='subtask' id='editing_" + index + "'/>"
+						+	"<span id='submit_" + index + "' class='submit_subtask glyphicon glyphicon-ok' aria-hidden='true'></span>");
+	$("#submit_" + index).click(submitSubtask);
+	$("#editing_" + index).keydown(function(event){
+		if(event.keyCode == 13)
+			submitSubtask(event);
+	});
+}
+function deleteSubtask(event){
+	event.preventDefault();
+	event.stopPropagation();
+
+	var el = event.target.parentNode.parentNode.parentNode;
+	if(confirm("Are you sure you want to delete objective: " + $(el).find(".subtask_name").text())){
+		console.log(el);
+		el.remove();
+	}
+}
+function submitSubtask(event){
+	var el = event.target;
+	var index = el.id.split("_")[1];
+	var title = $("#editing_" + index).val().trim();
+	$("#" + el.parentNode.id).html("<h4 class='subtask' for='check_" + index + "' id='subtask_" + index + "'>"
+									+ 		"<span class='pull-right'>"
+									+			"<span id='edit_" + index + "' class='edit_subtask glyphicon glyphicon-pencil' aria-hidden='true'></span>"
+									+			"<span id='delete_" + index + "' class='delete_subtask glyphicon glyphicon-remove' aria-hidden='true'></span>"
+									+		"</span>"
+									+ 		title 
+									+ "</h4>");
+	$("#edit_" + index).click(editSubtask);
+	$("#delete_" + index).click(deleteSubtask);
+	$("#subtask_" + index).data("data", title);
+}
+
 
 function closeModal(){
 	$(".resource_modal").modal("hide");
