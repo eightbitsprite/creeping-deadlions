@@ -499,13 +499,10 @@ function saveTask(){
 							3000, function(){
 								window.location = "/";
 						});
-				}
-			);
+				});
+			googleATimeCheck(1, Date.now());
 		});
 	}
-	
-
-	googleATimeCheck(1, Date.now());
 }
 function checkAll(){
 	if($("#select_all").is(":checked"))

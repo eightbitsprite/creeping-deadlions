@@ -607,21 +607,15 @@ function generateRunner(){
 }
 
 function saveTask(){
-	if(!frequencyCheckerAllDesign()) {
-		return;
-	}
-
 	/*Validation*/
 	var title = $("#new_mission_name_textbox").val().trim();
 	var runner = null;
 	var resource = null;
 	var user = Parse.User.current().toJSON();
-	var deadline = new Date($("#new_task_due_date").val());
 	var isRecurring = $("#new_freq_recurring").is(":checked");
+	var deadline = (isRecurring)? new Date($("#new_task_until_date").val()) : new Date($("#new_task_due_date").val());
 	var isValid = true;
 	var daysString = "";
-
-console.log("saveTask: " + user);
 
 	$("#error_msg").html("");
 
@@ -659,6 +653,10 @@ console.log("saveTask: " + user);
 		var MissionObject = Parse.Object.extend("Mission");
 		var MissionInfoObject = Parse.Object.extend("Objective");
 		var mission = new MissionObject();
+		window.localStorage.setItem("runner",  $(".runner_box input[type='radio']:checked+label img").attr("id"));
+
+		$(".loading_modal").modal({"show":true});
+		$("body").prop("disabled",true);
 		mission.save({
 			title: title,
 			runner : $(".runner_box input[type='radio']:checked+label img").attr("id"),
@@ -672,15 +670,15 @@ console.log("saveTask: " + user);
 			completedTasks: 0,
 			failedTasks: 0,
 			dates : (daysString) ? daysString.substring(0, daysString.length-1) : null
-		}, {
-			success:function(){
-				var submissions = [];
-				var o = 0;
-				for(o; o < options.length; o++){
-					var missionInfo = new MissionInfoObject();
-					window.localStorage.setItem("runner",  $(".runner_box input[type='radio']:checked+label img").attr("id"));
-					console.log("runner", window.localStorage.getItem("runner"));
-					var current_list = $(options[o]).data("data");
+		}).then(function() {
+			var promise = Parse.Promise.as();
+			var increment = 1/ options.length;
+			$(".mission_title").text(title);
+			 _.each(options, function(select) {
+			 	promise = promise.then(function(){
+			 		var missionInfo = new MissionInfoObject();	
+					console.log($(select).text());
+					var current_list = $(select).data("data");
 					var subtasks_list = [];
 					for(var s = 0; s < current_list.length; s++){
 						subtasks_list.push({
@@ -689,33 +687,44 @@ console.log("saveTask: " + user);
 							"completed" : false
 						});
 					}
-					console.log("option",mission);
-					missionInfo.save({
+
+					if(options.length > 10){
+						increment += 1/options.length;
+						console.log((increment * 100));
+						$("#runner-load").css("margin-left", (increment * 100) + "%");
+					}	
+
+					return missionInfo.save({
 						missionId: mission.id,
 						subtasks: subtasks_list,
 						completed: false,
-						index: o,
-						title: $(options[o]).text(),
-						failed : false
-					},
-					{
+						index: Number($(select).attr("id").split("_")[1]),
+						title: $(select).text(),
+						failed : false,
+						deadline : $(select).data("date")
+					}, {
 						success:function(){
-							console.log(o);
-							if(o == options.length)
-								window.location = "/new_mission";
+							return Parse.Promise.as("success!");
 						}
 					});
-				}
-				
-
-				
-			}
+			 	});
+			});
+			return promise;
+		}).then(function(){
+			$("body").prop("disabled",false);
+			$("#lion-load").css("display", "block");
+			$("#runner-load").animate({
+				"margin-left" : (options.length > 10)? $("#runner-load").css("margin-left") + 10 : $(".loading_progress_background").offset().left + $(".loading_progress_background").width()}, 
+				(options.length > 10)? 100 : 4000, function(){
+					$("#lion-load").animate({
+						"margin-left" : $(".loading_progress_background").offset().left + $(".loading_progress_background").width()}, 
+							3000, function(){
+								window.location = "/";
+						});
+				});
+			googleATimeCheck(1, Date.now());
 		});
 	}
-
-
-//debugger;
-	googleATimeCheck(1, Date.now());	
 }
 function checkAll(){
 	if($("#select_all").is(":checked"))
