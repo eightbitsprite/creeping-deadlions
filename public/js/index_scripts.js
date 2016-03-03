@@ -115,7 +115,7 @@ function saveObjectiveChanges(){
 	}
 }
 function gAnalytic_newMission(){
-	//ga("send", "event", "button: New Mission", "/create_mission");
+	ga("send", "event", "button: New Mission", "/create_mission");
 }
 function calculateDistances(){
  	console.log("calculating distances...");

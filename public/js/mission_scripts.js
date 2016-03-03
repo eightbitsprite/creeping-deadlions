@@ -263,13 +263,14 @@ function nextPage(){
 	
 	}
 	loadSelector();
+	//ga("send", "event", "nextPage", "page_change");	
 	if(isValid){
-		
+
 		$("#frequency").css("display", "none");
 		$("#objectives").css("display", "block");		
 	}
 
-	ga("send", "event", "nextPage", "page_change");	
+	
 }
 
 function loadSelector(){
