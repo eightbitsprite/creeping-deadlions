@@ -44,15 +44,15 @@ function initializePage() {
 	//$( "#new_task_due_date" ).datepicker();
 	$( "#new_task_due_date" ).datepicker({
 		onSelect: function(date, inst) {
-			freqUnset(); 
 			allDesignLoadSelector();
+			freqUnset(); 
 		} 
 	});
 	//$("#new_task_until_date").datepicker();
 	$( "#new_task_until_date" ).datepicker({
 		onSelect: function(date, inst) {
-			freqUnset(); 
 			allDesignLoadSelector();
+			freqUnset(); 
 		} 
 	});
 	$("#next_button").click(nextPage);
@@ -505,6 +505,7 @@ function allDesignNextPage () {
 	frequencyCheckerAllDesign();
 }
 function allDesignLoadSelector() {
+	debugger;
 	var isValid = true;
 	if($("#new_freq_recurring").is(":checked")){	
 	var until_date;
