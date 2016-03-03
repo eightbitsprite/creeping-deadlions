@@ -109,7 +109,6 @@ function freqUnset() {
 		$("body").removeClass("freq_set");
 		console.log("freq_set: set to false");
 	}
-	$("#apply_to_all_btn").attr('checked', true);
 }
 /*Check to see if frequency is set (assuming validity)*/
 function isFreqSet() {
@@ -498,6 +497,7 @@ function allDesignNextPage () {
 		if (isFreqSet() === false) { 
 			nextPage();
 			$("body").addClass("freq_set");
+			$("#apply_to_all_btn").attr('checked', true);
 		}
 	} else {
 		$("body").removeClass("objectives_okay");
