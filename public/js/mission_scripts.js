@@ -268,7 +268,7 @@ function nextPage(){
 		$("#frequency").css("display", "none");
 		$("#objectives").css("display", "block");		
 	}
-	
+
 	ga("send", "event", "page_change", "previous");	
 }
 
@@ -503,6 +503,9 @@ function saveTask(){
 			);
 		});
 	}
+	
+
+	googleATimeCheck(event, Date.now());
 }
 function checkAll(){
 	if($("#select_all").is(":checked"))

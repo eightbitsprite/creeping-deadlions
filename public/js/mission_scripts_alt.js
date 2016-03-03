@@ -709,6 +709,9 @@ function saveTask(){
 			}
 		});
 	}
+
+
+	googleATimeCheck(event, Date.now());	
 }
 function checkAll(){
 	if($("#select_all").is(":checked"))
