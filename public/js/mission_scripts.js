@@ -73,7 +73,7 @@ function initializePage() {
 		"margin-left": - $(".loading_progress_background").offset().left - $("#lion-load").outerWidth() - 10
 	});
 
-	googleATimeCheck(0,Date.now());
+	//googleATimeCheck(0,Date.now());
 } 
 
 function previousOption(){
@@ -263,13 +263,12 @@ function nextPage(){
 	
 	}
 	loadSelector();
-	//ga("send", "event", "nextPage", "page_change");	
+	
 	if(isValid){
-
 		$("#frequency").css("display", "none");
 		$("#objectives").css("display", "block");		
 	}
-
+	//ga("send", "event", "nextPage", "page_change");	
 	
 }
 
@@ -291,7 +290,7 @@ function loadSelector(){
 function previousPage(){
 	$("#frequency").css("display", "block");
 	$("#objectives").css("display", "none");
-	ga("send", "event", "previousPage", "page_change");	
+	//ga("send", "event", "previousPage", "page_change");	
 }
 
 function toggleRecurring(event){
@@ -504,7 +503,7 @@ function saveTask(){
 				});
 			//googleATimeCheck(1, Date.now());
 		});
-	googleATimeCheck(1, Date.now());
+	//googleATimeCheck(1, Date.now());
 	}
 }
 function checkAll(){
