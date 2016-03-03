@@ -85,6 +85,7 @@ function initializePage() {
 	$(".date-select").val(new Date());
 	$("#apply_to_all_btn").prop("disabled", true);
 	$("#apply_to_all_btn+label").text("Create one default objective first.");
+	googleATimeCheck(0,Date.now());
 } 
 function onClosed() {
 	debugger;
@@ -335,6 +336,7 @@ function nextPage(){
 		$("#objectives").css("display", "block");		
 		}
 	}
+	ga("send", "event", "page_change", "previous");	
 	return isValid;
 }
 function loadSelector(){
@@ -503,6 +505,7 @@ function previousPage(){
 	}
 	$("#frequency").css("display", "block");
 	$("#objectives").css("display", "none");
+	ga("send", "event", "page_change", "next_page");	
 }
 
 function toggleRecurring(event){

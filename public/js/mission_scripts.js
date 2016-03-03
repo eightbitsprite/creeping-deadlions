@@ -72,6 +72,8 @@ function initializePage() {
 	$("#lion-load").css({
 		"margin-left": - $(".loading_progress_background").offset().left - $("#lion-load").outerWidth() - 10
 	});
+
+	googleATimeCheck(0,Date.now());
 } 
 
 function previousOption(){
@@ -266,6 +268,8 @@ function nextPage(){
 		$("#frequency").css("display", "none");
 		$("#objectives").css("display", "block");		
 	}
+	
+	ga("send", "event", "page_change", "previous");	
 }
 
 function loadSelector(){
@@ -286,6 +290,7 @@ function loadSelector(){
 function previousPage(){
 	$("#frequency").css("display", "block");
 	$("#objectives").css("display", "none");
+	ga("send", "event", "page_change", "previous");	
 }
 
 function toggleRecurring(event){
