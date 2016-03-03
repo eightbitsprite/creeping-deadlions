@@ -336,7 +336,7 @@ function nextPage(){
 		});
 	
 	}
-	loadSelector(); 
+	loadSelector(repeat_dates); 
 	if(isValid){
 		if (!isAllDesign){
 		$("#frequency").css("display", "none");
@@ -346,7 +346,7 @@ function nextPage(){
 	ga("send", "event", "next_page", "page_change");	
 	return isValid;
 }
-function loadSelector(){
+function loadSelector(repeat_dates){
 	var dropdown = $("#selected_mission_date");
 	dropdown.html("");
 	if(repeat_dates.length ==1)
@@ -616,7 +616,7 @@ function allDesignLoadSelector() {
 		});
 	}
 	$("#selected_mission_date").empty();
-	if(isValid) { loadSelector();}
+	if(isValid) { loadSelector(repeat_dates);}
 }
 
 function previousPage(){
