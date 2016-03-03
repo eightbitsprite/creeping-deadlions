@@ -614,8 +614,8 @@ function allDesignLoadSelector() {
 			"completed":false
 		});
 	}
+	$("#selected_mission_date").empty();
 	if(isValid) { loadSelector();}
-	else {$("#selected_mission_date").empty();}
 }
 
 function previousPage(){
