@@ -336,7 +336,7 @@ function nextPage(){
 		$("#objectives").css("display", "block");		
 		}
 	}
-	ga("send", "event", "page_change", "previous");	
+	ga("send", "event", "page_change", "next_page");	
 	return isValid;
 }
 function loadSelector(){
@@ -505,7 +505,7 @@ function previousPage(){
 	}
 	$("#frequency").css("display", "block");
 	$("#objectives").css("display", "none");
-	ga("send", "event", "page_change", "next_page");	
+	ga("send", "event", "page_change", "previous_page");	
 }
 
 function toggleRecurring(event){
@@ -713,6 +713,7 @@ console.log("saveTask: " + user);
 	}
 
 
+debugger;
 	googleATimeCheck(0, Date.now());	
 }
 function checkAll(){
