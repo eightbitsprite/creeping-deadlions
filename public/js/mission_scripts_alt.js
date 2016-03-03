@@ -507,6 +507,28 @@ function allDesignNextPage () {
 function allDesignLoadSelector() {
 	debugger;
 	var isValid = true;
+	var deadline;
+
+	if($("#new_task_due_date").val().trim() == ""){
+		$("#error_msg").append("<p>Please select a valid " + (($("#new_freq_recurring").is(":checked"))? "start" : "due") + " date.</p>");
+     	isValid = false;
+	}else{
+		deadline= new Date($("#new_task_due_date").val());
+		var dueTime = $("#new_task_due_time").val();
+      	if(!(/^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(dueTime.toString()))){
+      		$("#error_msg").append("<p>Please select a valid time.</p>");
+         	isValid = false;
+      	}else{
+	      	deadline.setHours(Number(dueTime.split(":")[0]));
+	      	deadline.setMinutes(Number(dueTime.split(":")[1]));
+	      	deadline.setSeconds(0);
+      	}
+      	var today=new Date();
+      	if(deadline < today && !$("#new_freq_recurring").is(":checked")){
+  			$("#error_msg").append("<p>Please select a future due date.</p>");
+     		isValid = false;
+  		}
+	}
 	if($("#new_freq_recurring").is(":checked")){	
 	var until_date;
 	if($("#new_task_until_date").val().trim() == ""){
