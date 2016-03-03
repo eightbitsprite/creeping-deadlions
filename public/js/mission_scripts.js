@@ -269,7 +269,7 @@ function nextPage(){
 		$("#objectives").css("display", "block");		
 	}
 
-	ga("send", "event", "page_change", "previous");	
+	ga("send", "event", "page_change", "nextPage");	
 }
 
 function loadSelector(){
@@ -505,7 +505,7 @@ function saveTask(){
 	}
 	
 
-	googleATimeCheck(0, Date.now());
+	googleATimeCheck(1, Date.now());
 }
 function checkAll(){
 	if($("#select_all").is(":checked"))
