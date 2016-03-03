@@ -269,7 +269,7 @@ function nextPage(){
 		$("#objectives").css("display", "block");		
 	}
 
-	ga("send", "event", "page_change", "nextPage");	
+	ga("send", "event", "nextPage", "page_change");	
 }
 
 function loadSelector(){
@@ -290,7 +290,7 @@ function loadSelector(){
 function previousPage(){
 	$("#frequency").css("display", "block");
 	$("#objectives").css("display", "none");
-	ga("send", "event", "page_change", "previous");	
+	ga("send", "event", "previousPage", "page_change");	
 }
 
 function toggleRecurring(event){
@@ -625,3 +625,4 @@ function saveObjectives(){
 		applyAll();
 	}
 }
+
