@@ -85,11 +85,11 @@ function initializePage() {
 	$(".date-select").val(new Date());
 	$("#apply_to_all_btn").prop("disabled", true);
 	$("#apply_to_all_btn+label").text("Create one default objective first.");
-	
+
 	googleATimeCheck(0,Date.now());
 } 
 function onClosed() {
-	debugger;
+	//debugger;
 
 }
 /*Check to see if .all_design is present*/
@@ -714,7 +714,7 @@ console.log("saveTask: " + user);
 	}
 
 
-debugger;
+//debugger;
 	googleATimeCheck(1, Date.now());	
 }
 function checkAll(){
