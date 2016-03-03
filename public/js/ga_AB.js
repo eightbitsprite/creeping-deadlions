@@ -9,7 +9,7 @@ function googleATimeCheck(event, time) {
 		var elapsedTime = endTime - startTime;
 		elapsedTime = elapsedTime / (1000);
 		console.log(elapsedTime);
-		ga("send", "event", event.currentTarget.attributes.id.nodeValue, "timeCheck", "", elapsedTime);
+		ga("send", "event", "saveTask()", "timeCheck", "", elapsedTime);
 		return;
 	} else {
 		$("body").data("startTime", time);
