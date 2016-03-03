@@ -508,6 +508,7 @@ function allDesignLoadSelector() {
 	//debugger;
 	var isValid = true;
 	var deadline;
+	var repeat_dates = [];
 
 	if($("#new_task_due_date").val().trim() == ""){
 		$("#error_msg").append("<p>Please select a valid " + (($("#new_freq_recurring").is(":checked"))? "start" : "due") + " date.</p>");
