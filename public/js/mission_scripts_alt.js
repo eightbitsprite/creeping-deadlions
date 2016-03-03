@@ -73,12 +73,6 @@ function initializePage() {
 		//add events to check if ANY input value in
 		//frequency has changed
 		$("#new_mission_name_textbox").on("input",freqUnset);
-		$( "#new_task_due_date" ).datepicker({
-			onSelect: function(date, inst) {freqUnset(); } 
-		});
-		$("#new_task_until_date").datepicker({
-			onSelect: function(date, inst) {freqUnset(); } 
-		});
 		$("#select_all").on("change",freqUnset);
 		$(".day_box").on("change",freqUnset);
 		//$("#new_task_until_date").on("input",freqUnset);
@@ -122,6 +116,7 @@ function frequencyCheckerAllDesign() {
 	if (!isAllDesign()) {
 		return true;
 	}
+	
 	var objectives_ok = $("body").hasClass("objectives_okay");
 	//$("#error_msg").empty();
 	if ( objectives_ok) {
@@ -261,7 +256,7 @@ function nextPage(){
 				isValid = false;
 			}
 		}
-		if(isValid && (!isFreqSet)){
+		if(isValid){
 			
 			var days = [];
 			
@@ -301,7 +296,7 @@ function nextPage(){
 				$("#error_msg").append("<p>Please select at least one day to repeat mission.</p>");
 			}else { 
 				var index = 0;
-				var date= new Date();
+				var date= new Date($("#new_task_due_date").val());
 				date.setHours(Number(dueTime.split(":")[0]) + 24);
 	      		date.setMinutes(Number(dueTime.split(":")[1]));
 	      		date.setSeconds(0);
@@ -333,7 +328,7 @@ function nextPage(){
 		});
 	
 	}
-	if (!isFreqSet) { loadSelector(); }
+	loadSelector(); 
 	if(isValid){
 		if (!isAllDesign){
 		$("#frequency").css("display", "none");
@@ -356,21 +351,149 @@ function loadSelector(){
 		$("#option_" + i).data("data", []);
 	}
 }
+function nextCheck() {
+	/*Validation*/
+	var title = $("#new_mission_name_textbox").val().trim();
+	var runner = null;
+	var resource = null;
+	var user = JSON.parse(window.localStorage.getItem("current_user"));
+	var deadline;
+	var isRecurring = $("#new_freq_recurring").is(":checked");
+	var isValid = true;
+	repeat_dates = [];
+	var daysString = "";
+	$("#error_msg").html("");
+
+	if(title.trim() == ""){
+		$("#error_msg").append("<p>Mission name is required.</p>");
+		isValid = false;
+	}
+
+	if($(".resource_box .item_radio:checked").length == 0 || $(".runner_box .item_radio:checked").length == 0){
+		$("#error_msg").append("<p>Please select a runner and resource.</p>");
+		isValid = false;
+	}
+
+	console.log($("#new_task_due_date").val());
+	if($("#new_task_due_date").val().trim() == ""){
+		$("#error_msg").append("<p>Please select a valid " + (($("#new_freq_recurring").is(":checked"))? "start" : "due") + " date.</p>");
+     	isValid = false;
+	}else{
+		deadline= new Date($("#new_task_due_date").val());
+		var dueTime = $("#new_task_due_time").val();
+      	if(!(/^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(dueTime.toString()))){
+      		$("#error_msg").append("<p>Please select a valid time.</p>");
+         	isValid = false;
+      	}
+        var today=new Date();
+      	if(deadline < today && !$("#new_freq_recurring").is(":checked")){
+  			$("#error_msg").append("<p>Please select a future due date.</p>");
+     		isValid = false;
+  		}
+	}
+
+	if($("#new_freq_recurring").is(":checked")){	
+		var until_date;
+		if($("#new_task_until_date").val().trim() == ""){
+			$("#error_msg").append("<p>Please select a valid end date.</p>");
+			isValid = false;
+		}else{
+			var today = new Date();
+			until_date = new Date($("#new_task_until_date").val());
+			until_date.setHours(24);
+			if(until_date < today){
+				$("#error_msg").append("<p>Please select a future end date.</p>");
+				isValid = false;
+			}else if(until_date < deadline){
+				$("#error_msg").append("<p>End date must be after start date.</p>");
+				isValid = false;
+			}
+		}
+		if(isValid){
+			var days = [];
+			if($("#sunday_box").is(":checked")){
+				days.push(0);
+				daysString += "Su,";
+			}
+			if($("#monday_box").is(":checked")){
+				daysString += "M,";
+				days.push(1);
+			}
+			if($("#tuesday_box").is(":checked")){
+				daysString+="T,";
+				days.push(2);
+			}
+			if($("#wednesday_box").is(":checked")){
+				days.push(3);
+				daysString+= "W,";
+			}
+			if($("#thursday_box").is(":checked")){
+				days.push(4);
+				daysString +="Th,"
+			}
+			if($("#friday_box").is(":checked")){
+				days.push(5);
+				daysString += "F,";
+			if($("#saturday_box").is(":checked")){
+				days.push(6);
+				daysString += "S,";
+			}
+			if(days.length ==0){
+				isValid = false;
+				$("#error_msg").append("<p>Please select at least one day to repeat mission.</p>");
+			}else { 
+				var index = 0;
+				var date= new Date($("#new_task_due_date").val());
+				date.setHours(Number(dueTime.split(":")[0]) + 24);
+	      		date.setMinutes(Number(dueTime.split(":")[1]));
+	      		date.setSeconds(0);
+				console.log(date);
+				while(date <= until_date){
+					if(days.indexOf(date.getDay()) >= 0){
+						console.log("nextCheck() call: adding date", date);
+						repeat_dates.push({
+							"id": index,
+							"date" : dateString(date),
+							"completed":false
+						});
+						index ++;
+					}
+					date.setDate(date.getDate() + 1);
+				}
+				if(repeat_dates.length ==0){
+					isValid = false;
+					$("#error_msg").append("<p>None of days selected occur between given start and end date.</p>");
+				}
+			}		
+		}
+	}else{
+		repeat_dates.push({
+			"id": 0,
+			"date" : dateString(deadline),
+			"completed":false
+		});
+	
+		}
+	}
+	return isValid;	
+}
 function allDesignNextPage () {
-	var isValid = nextPage();
+	var isValid = nextCheck();
 	var objectives_ok = $("body").hasClass("objectives_okay");
-	if (isValid && objectives_ok) {
+	//debugger;
+	if (isValid && objectives_ok && isFreqSet()) {
 		return;
 	} else if (isValid) {
 		$("body").addClass("objectives_okay");
-		$("body").addClass("freq_set");
+		if (isFreqSet() === false) { 
+			nextPage();
+			$("body").addClass("freq_set");
+		}
 	} else {
 		$("body").removeClass("objectives_okay");
+		freqUnset();
 	}
 	frequencyCheckerAllDesign();
-}
-function trueNextPage () {
-
 }
 
 function previousPage(){
