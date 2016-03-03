@@ -68,7 +68,7 @@ function initializePage() {
 
 	if(isAllDesign()) {
 		$("#objectives").click(allDesignNextPage);
-		$("#apply_to_all_btn").attr('checked', false);
+		//$("#apply_to_all_btn").attr('checked', false);
 		$(".apply_all_wrapper").css("display", "none");
 		//add events to check if ANY input value in
 		//frequency has changed
