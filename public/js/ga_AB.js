@@ -6,7 +6,7 @@ function googleATimeCheck(event, time) {
 		if (!startTime) {
 			console.log("startDate NULL. google Analytics event failed");
 		}
-		debugger;
+		//debugger;
 		var elapsedTime = endTime - startTime;
 		elapsedTime = elapsedTime / (1000);
 		console.log(elapsedTime);
