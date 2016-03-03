@@ -19,6 +19,7 @@ function initializePage() {
 			$("#error_msg").html("Passwords do not match.");
 		} else{
 			var UserObject = Parse.Object.extend("User");
+			var ObtainedObject = Parse.Object.extend("hasObtained");
 			var query = new Parse.Query(UserObject);
 			query.equalTo("username", username);
 			query.find({
@@ -26,15 +27,46 @@ function initializePage() {
 			  	if(results.length == 0){
 			  		$("#error_msg").html("");
 					var user = new UserObject();
-					console.log("REACHED");
-					user.save({
-						username: username,
-						password: password,
-						villageLevel:1,
-						finishedTutorial:false
-					});
-					window.localStorage.setItem("current_user", JSON.stringify(user));
-					window.location = "/";
+					var wood = new ObtainedObject();
+					var stone = new ObtainedObject();
+					var food = new ObtainedObject();
+					Parse.User.signUp(username, password, { ACL: new Parse.ACL() }, {
+						success: function(user) {
+							user.save({villageLevel:0, finishedTutorial:false}).then(function(){
+								wood.set({
+									resourceType: "wood",
+									quantity:0,
+									user: user.id
+								});
+								stone.set({
+									resourceType: "stone",
+									quantity:0,
+									user: user.id
+								});
+								food.set({
+									resourceType: "food",
+									quantity:0,
+									user: user.id
+								});
+								wood.save({
+									success:function(){
+										stone.save({
+											success:function(){
+												food.save({
+													success:function(){
+														window.location = "/";
+													}
+												});
+											}
+										});
+									}
+								});
+							});
+						},
+						error: function(user, error) {
+						  $("#error_msg").html("Invalid username or password.");
+						}
+					});					
 			  	}else{
 			  		$("#error_msg").html("Username already taken.");
 
@@ -61,7 +93,6 @@ function initializePage() {
 	        // If the username and password matches
 	        success: function(user) {
 	            $("#error_msg").html("");
-				window.localStorage.setItem("current_user", JSON.stringify(user));
 				window.location = "/";
 	        },
 	        // If there is an error

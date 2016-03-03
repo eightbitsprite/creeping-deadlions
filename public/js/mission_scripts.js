@@ -64,6 +64,14 @@ function initializePage() {
 	$(".date-select").val(new Date());
 	$("#apply_to_all_btn").prop("disabled", true);
 	$("#apply_to_all_btn+label").text("Create one default objective first.");
+
+	$("#runner-load").css({
+		"margin-left": - $(".loading_progress_background").offset().left - $("#runner-load").outerWidth() - 10
+	});
+	$("#lion-load").css("display", "none");
+	$("#lion-load").css({
+		"margin-left": - $(".loading_progress_background").offset().left - $("#lion-load").outerWidth() - 10
+	});
 } 
 
 function previousOption(){
@@ -118,7 +126,7 @@ function nextPage(){
 	var title = $("#new_mission_name_textbox").val().trim();
 	var runner = null;
 	var resource = null;
-	var user = JSON.parse(window.localStorage.getItem("current_user"));
+	var user = Parse.User.current().toJSON();
 	var deadline;
 	var isRecurring = $("#new_freq_recurring").is(":checked");
 	var isValid = true;
@@ -168,7 +176,9 @@ function nextPage(){
 		}else{
 			var today = new Date();
 			until_date = new Date($("#new_task_until_date").val());
-			until_date.setHours(24);
+			until_date.setHours(Number(dueTime.split(":")[0]) + 24);
+	      	until_date.setMinutes(Number(dueTime.split(":")[1]));
+	      	until_date.setSeconds(0);
 			if(until_date < today){
 				$("#error_msg").append("<p>Please select a future end date.</p>");
 				isValid = false;
@@ -218,16 +228,17 @@ function nextPage(){
 			}else{
 				var index = 0;
 				var date= new Date();
-				date.setHours(Number(dueTime.split(":")[0]) + 24);
+				date.setHours(Number(dueTime.split(":")[0]));
 	      		date.setMinutes(Number(dueTime.split(":")[1]));
 	      		date.setSeconds(0);
-				console.log(date);
+	      		date =  new Date(Math.max(date.getTime(), deadline.getTime()));
+	      		console.log(date);
 				while(date <= until_date){
 					if(days.indexOf(date.getDay()) >= 0){
 						console.log("adding date", date);
 						repeat_dates.push({
 							"id": index,
-							"date" : dateString(date),
+							"date" : new Date(date),
 							"completed":false
 						});
 						index ++;
@@ -244,7 +255,7 @@ function nextPage(){
 	}else{
 		repeat_dates.push({
 			"id": 0,
-			"date" : dateString(deadline),
+			"date" : deadline,
 			"completed":false
 		});
 	
@@ -265,10 +276,10 @@ function loadSelector(){
 	else
 		$(".apply_all_wrapper").css("display", "block");
 	for(var i = 0; i < repeat_dates.length; i++){
-		console.log(repeat_dates[i]);
 		$("#selected_mission_date").append("<option id='option_" + i + "' " + ((i==0)? "selected" : "") + ">" 
-											+ repeat_dates[i].date + "</option>");
+											+ dateString(new Date(repeat_dates[i].date)) + "</option>");
 		$("#option_" + i).data("data", []);
+		$("#option_" + i).data("date", new Date(repeat_dates[i].date));
 	}
 }
 
@@ -327,6 +338,7 @@ function modalSave() {
 		$("#selected_resource_img").attr("src", resource_img);
 		$("#selected_runner_name").html( runner);
 		$("#selected_resource_name").html(resource);
+		$("#runner-load").attr("src", "/images/" + $(".runner_box input[type='radio']:checked+label img").attr("id")+ "_panic_run.gif");
 		//$("#freqDetailsBtn").text(((freqType === "new_freq_timed")? "Due at: " : "End on: ") + dateString(deadline, freqType === "new_freq_timed"));
   	}
 }
@@ -372,9 +384,9 @@ function saveTask(){
 	var title = $("#new_mission_name_textbox").val().trim();
 	var runner = null;
 	var resource = null;
-	var user = JSON.parse(window.localStorage.getItem("current_user"));
-	var deadline = new Date($("#new_task_due_date").val());
+	var user = Parse.User.current().toJSON();
 	var isRecurring = $("#new_freq_recurring").is(":checked");
+	var deadline = (isRecurring)? new Date($("#new_task_until_date").val()) : new Date($("#new_task_due_date").val());
 	var isValid = true;
 	var daysString = "";
 
@@ -414,6 +426,10 @@ function saveTask(){
 		var MissionObject = Parse.Object.extend("Mission");
 		var MissionInfoObject = Parse.Object.extend("Objective");
 		var mission = new MissionObject();
+		window.localStorage.setItem("runner",  $(".runner_box input[type='radio']:checked+label img").attr("id"));
+
+		$(".loading_modal").modal({"show":true});
+		$("body").prop("disabled",true);
 		mission.save({
 			title: title,
 			runner : $(".runner_box input[type='radio']:checked+label img").attr("id"),
@@ -427,15 +443,15 @@ function saveTask(){
 			completedTasks: 0,
 			failedTasks: 0,
 			dates : (daysString) ? daysString.substring(0, daysString.length-1) : null
-		}, {
-			success:function(){
-				var submissions = [];
-				var o = 0;
-				for(o; o < options.length; o++){
-					var missionInfo = new MissionInfoObject();
-					window.localStorage.setItem("runner",  $(".runner_box input[type='radio']:checked+label img").attr("id"));
-					console.log("runner", window.localStorage.getItem("runner"));
-					var current_list = $(options[o]).data("data");
+		}).then(function() {
+			var promise = Parse.Promise.as();
+			var increment = 1/ options.length;
+			$(".mission_title").text(title);
+			 _.each(options, function(select) {
+			 	promise = promise.then(function(){
+			 		var missionInfo = new MissionInfoObject();	
+					console.log($(select).text());
+					var current_list = $(select).data("data");
 					var subtasks_list = [];
 					for(var s = 0; s < current_list.length; s++){
 						subtasks_list.push({
@@ -444,27 +460,42 @@ function saveTask(){
 							"completed" : false
 						});
 					}
-					console.log("option",mission);
-					missionInfo.save({
+
+					if(options.length > 10){
+						increment += 1/options.length;
+						console.log((increment * 100));
+						$("#runner-load").css("margin-left", (increment * 100) + "%");
+					}	
+
+					return missionInfo.save({
 						missionId: mission.id,
 						subtasks: subtasks_list,
 						completed: false,
-						index: o,
-						title: $(options[o]).text(),
-						failed : false
-					},
-					{
+						index: Number($(select).attr("id").split("_")[1]),
+						title: $(select).text(),
+						failed : false,
+						deadline : $(select).data("date")
+					}, {
 						success:function(){
-							console.log(o);
-							if(o == options.length)
-								window.location = "/new_mission";
+							return Parse.Promise.as("success!");
 						}
 					});
+			 	});
+			});
+			return promise;
+		}).then(function(){
+			$("body").prop("disabled",false);
+			$("#lion-load").css("display", "block");
+			$("#runner-load").animate({
+				"margin-left" : (options.length > 10)? $("#runner-load").css("margin-left") + 10 : $(".loading_progress_background").offset().left + $(".loading_progress_background").width()}, 
+				(options.length > 10)? 100 : 4000, function(){
+					$("#lion-load").animate({
+						"margin-left" : $(".loading_progress_background").offset().left + $(".loading_progress_background").width()}, 
+							3000, function(){
+								window.location = "/";
+						});
 				}
-				
-
-				
-			}
+			);
 		});
 	}
 }
@@ -565,6 +596,9 @@ function applyAll(){
 		var options = $("#selected_mission_date option");
 		for(var i = 0; i < options.length; i++){
 			var newArray = current_mission_objectives.slice();
+			/* TODO: figure out how to preserve subtasks assigned to specific dates when applying to all
+			var oldArray = $(options[i]).data("data");
+			*/
 			$(options[i]).data("data", newArray);
 		}
 	}

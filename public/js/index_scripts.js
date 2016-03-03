@@ -1,13 +1,13 @@
 'use strict';
 
+var queue = [];
+
 $(document).ready(function() {
 	Parse.initialize("YXlPjDOZPGg2dnC4z2XBGHk5xg8jirJVclFEMTmo", "IWqi5XWUalPKb9uXMX8WCkFNaEuyrIxTzOeH9tPH");
-	console.log("user",JSON.parse(window.localStorage.getItem("current_user")));
-	if(JSON.parse(window.localStorage.getItem("current_user")) == null){
-		console.log("not logged in");
+	if(!Parse.User.current()){
 		window.location = "/login#sign-in";
 	}else{
-		
+		$("#new_mission_button").click(gAnalytic_newMission);
 		$("#menu_log").click(showLog);
 		$("#menu_history").click(showHistory);
 		$("#menu_help").click(showHelp);
@@ -20,31 +20,81 @@ $(document).ready(function() {
 		$("#next_button").click(nextPage);		
 		$("#back_button").click(previousPage);
 		$(".close_editmission").click(previousPage);
+		$(".btn-add-time").click(addTime);
+		$(".btn-fail-mission").click(failMission);
+		$(".close_modal").click(closeModal);
+		$(".cancelDelete").click(closeDelete);
+		$(".cancel_one").click(deleteOne);
+		$(".cancel_all").click(deleteAll);
+		$("#cancel_progress").css("display", "none");
 		renderMissions();
-		//renderCompleted();
-		//renderFailed();
+		renderCompleted();		
+		updateResourceCount();
+		queue = [];
 
 		setInterval(function() {
-		    // your code goes here...
-		    var list = $(".current_mission");
-		    $.each(list, function(){
-		    	var mission = $(this).data("mission").toJSON();
-		    	var objective = $(this).find(".tasklist").data("parseObject").toJSON();
-		    	if(!mission.completed){
-		    		var target = new Date(mission.deadline.iso);
-		    		var created = new Date(objective.createdAt);
-		    		if(new Date() <= target){
-		    			console.log((1- ((target - new Date()) / (target - created))) + "%");
-		    			$("#lion_" + mission.objectId).css("margin-left", ((1- ((target - new Date()) / (target - created))) * 80) + "%");	
-		    			$("#distance_" + mission.objectId).css("width", Math.min(100, (1- ((target - new Date()) / (target - created))) * 100)  + "%");
-		    		}
-		    		
-		    	}
-
-		    });
-		}, 60 * 1000); // 60 * 1000 milsec
+		    calculateDistances();
+		}, 30 * 1000); // 60 * 1000 milsec*/
 	}
 })
+function gAnalytic_newMission(){
+	ga("send", "event", "button: New Mission", "/create_mission");
+}
+function calculateDistances(){
+ 	console.log("calculating distances...");
+	var list = $(".current_mission");
+	
+	if(!($(".failing").data('bs.modal') || {}).isShown){
+	    $.each(list, function(){
+	    	
+	    	var mission = $(this).data("mission").toJSON();
+	    	var objective = $(this).find(".tasklist").data("parseObject").toJSON();
+	    	console.log("going through list...", objective);
+	    	if(!mission.completed &&  $("#" + objective.objectId).find(":checked").length != objective.subtasks.length){
+	    		var target = new Date(mission.deadline.iso);
+	    		var created = new Date(objective.createdAt);
+	    		if(new Date() <= target){
+	    			$("#lion_" + mission.objectId).css("margin-left", ((1- ((target - new Date()) / (target - created))) * 80) + "%");	
+	    			$("#distance_" + mission.objectId).css("width", Math.min(100, (1- ((target - new Date()) / (target - created))) * 100)  + "%");
+	    		}else{
+	    			var index = -1;
+	    			for(var i = 0; i < queue.length; ++i){
+	    				console.log(queue[i].objective);
+	    				if(queue[i]["objective"] == objective.objectId){
+	    					index = i;
+	    				}
+	    			}
+	    			if(index < 0){
+	    				$(".mission_title").text(mission.title);
+	    				$(".failed_dialog").data("objective", objective.objectId);
+
+	    				$(".failed_dialog").modal({"show":true});
+	    			}else{
+	    				var retrieved = queue[index];
+	    				retrieved.pass ++;
+	    				if(retrieved.pass >= 2){
+	    					//queue.remove(index);
+	    					$(".failed_dialog").data("objective", objective.objectId);
+	    					$(".timeup_dialog").modal("show");
+	    					//failMission();
+	    				}else{
+	    					queue[index] = retrieved;	
+	    				}
+	    				
+	    			}
+	    		}
+	    	}
+	    });
+	}
+
+}
+function addTime(){
+	console.log("Adding time...");
+	console.log($(".failed_dialog").data("objective"));
+	queue.push({"pass" : 0 , "objective" : $(".failed_dialog").data("objective")});
+	$(".failed_dialog").modal("hide");
+}
+
 function logOut() {
 	window.localStorage.setItem("current_user", null);
 	window.location = "/login#sign-in";
@@ -83,6 +133,8 @@ function showVillage() {
 	$("#village").css("display","block");
 	$("#help").css("display","none");
 	$("#current_page_id").empty().append("My Village");
+
+	renderVillage();
 }
 function showHelp() {
 	$("#missions").css("display","none");
@@ -92,12 +144,137 @@ function showHelp() {
 	$("#current_page_id").empty().append("Help");
 }
 
+function renderVillage() { 
+	console.log("rendering village");
+	$.get("/vInfo",getVillageLevel);
+
+}
+function getVillageLevel(vInfo) {
+	//console.log("getVillageLevel() ");
+	//console.log(vInfo);
+	var username = 	Parse.User.current().get("username");
+	var userid = Parse.User.current().id;
+	var userObject = Parse.Object.extend("User");
+	$("#btn-upgrade").off( "click");
+	//var ObjectiveObject = Parse.Object.extend("Objective");
+	var query = new Parse.Query(userObject);
+	query.equalTo("username", username);
+	query.greaterThanOrEqualTo("villageLevel", 0);
+	query.find({
+		success:function(findings) {
+			//console.log(findings);
+			if (!findings.length) {
+				console.log("That's strange. Something should be happening.");
+				return;
+			}
+			var village = vInfo.villageReqs[findings[0].get("villageLevel")];
+			console.log("village",village);
+			$("#village_display").html("<div><img src='"+village.image+"'></div>");
+			var oquery = new Parse.Query(Parse.Object.extend("hasObtained"));
+			/*"user" should have search key for user ID */
+			oquery.equalTo("user", userid);
+			oquery.find({
+				success:function(rfindings) {
+					//console.log(rfindings);
+					if(!rfindings.length) {
+						//console.log("No resource information found for "+username+". Seek help.");
+						return;
+					}
+					var enoughWood = false;
+					var enoughStone = false;
+					var enoughFood = false;
+					for (var i = 0; i<rfindings.length; i++) {
+						//console.log("Village: " + village.req_wood);
+						var resourceType = rfindings[i].get("resourceType");
+						var resourceAmt = rfindings[i].get("quantity");
+						
+						switch (resourceType) {
+							case "wood":
+								$(".resource_wood").empty().append(resourceAmt+"/"+village.req_wood);
+								enoughWood = resourceAmt >= village.req_wood;
+								break;
+							case "food":
+								$(".resource_food").empty().append(resourceAmt+"/"+village.req_food);
+								enoughFood = resourceAmt >= village.req_food;
+								break;
+							case "stone":
+								$(".resource_stone").empty().append(resourceAmt+"/"+village.req_stone);
+								enoughStone = resourceAmt >= village.req_stone;
+								break;
+							default:
+								console.log("ERROR: resourceType or resourceAmt search failure");
+						}
+					}
+					console.log("enough resources?" + (enoughStone));
+					if(enoughStone && enoughFood && enoughWood){
+						$("#btn-upgrade").addClass("btn-upgrade-enable");
+						$("#btn-upgrade").removeClass("btn-upgrade-disable");
+						$("#btn-upgrade").prop("disabled", false);
+						$("#btn-upgrade").click(function(){
+							upgradeVillage(village, userid);
+						});
+					}else{
+						$("#btn-upgrade").addClass("btn-upgrade-disable");
+						$("#btn-upgrade").removeClass("btn-upgrade-enable");
+						$("#btn-upgrade").prop("disabled", true);
+					}
+				},
+				error:function(rfindings){
+					console.log("No resource information found for "+username+". Seek help.");
+				}
+			});
+		}
+	});
+}
+
+function upgradeVillage(village, userid){
+	console.log("called");
+	var user= Parse.User.current();
+	var oquery = new Parse.Query(Parse.Object.extend("hasObtained"));
+	var nextLevel = user.get("villageLevel") + 1;
+	console.log("next level is", nextLevel);
+	user.save({villageLevel : nextLevel}, {
+		success:function(){
+			oquery.equalTo("user", userid);
+			oquery.find().then(function(results){
+				console.log(results);
+				var wood = null;
+				var stone = null;
+				var food = null;
+				results.forEach(function(entry){
+					switch (entry.get("resourceType")){
+						case "wood":
+							wood = entry;
+							break;
+						case "food":
+							food = entry;
+							break;
+						case "stone":
+							stone=entry;
+							break;
+					}
+				});
+				wood.set({quantity:wood.get("quantity") - village.req_wood});
+				wood.save().then(function(){
+					stone.set({quantity:stone.get("quantity") - village.req_stone});
+					stone.save().then(function(){
+						food.set({quantity:food.get("quantity") - village.req_food});
+						food.save().then(function(){
+							renderVillage();
+						});
+					});
+				});
+			});
+		}		
+	});
+}
 
 /* Renders the mission log from Parse database
 	args: 	*/
 function renderMissions(){
 	console.log("rendering missions");
-	var username = JSON.parse(window.localStorage.getItem("current_user")).username;
+	$("#missions-list").html("");
+	var username = Parse.User.current().get("username");
 	var MissionObject = Parse.Object.extend("Mission");
 	var ObjectiveObject = Parse.Object.extend("Objective");
 	var query = new Parse.Query(MissionObject);
@@ -112,7 +289,7 @@ function renderMissions(){
     	}
     	console.log(results);
     	results.sort(function(x, y){
-		    return x.updatedAt - y.updatedAt;
+		    return x.get("updatedAt") - y.get("updatedAt") ;
 		});
 		results.forEach(function(result){
 			var mission = result.toJSON();
@@ -125,142 +302,192 @@ function renderMissions(){
 					findings.sort(function(x, y){
 					    return x.index - y.index;
 					});
-					if(!findings[0]) {
-						alert("Error: Empty mission found! \n You may need to create a new account.");
+					if(!findings[0]) { //Means have finished all objectives associated with mission
+						//alert("Error: Empty mission found! \n You may need to create a new account.");
 						return;
 					}
-					var data = findings[0].toJSON();
+					console.log(findings[0]);
+					var data = findings[0];
 					var subtaskHtml = "";
-		            for(var s = 0; s < data.subtasks.length; s++){
-		           		subtaskHtml += "<li><input id='" + data.objectId + "_" + data.subtasks[s].id + "'  type='checkbox' class='subtask_check'" + ((data.subtasks[s].completed)? "checked" : "") + "/>"
-		           					+ "<label for='"+ data.objectId + "_" + data.subtasks[s].id + "'>" + data.subtasks[s].title + "</label></li>";
+		            for(var s = 0; s < data.get("subtasks").length; s++){
+		           		subtaskHtml += "<li><input id='" + data.id + "_" + data.get("subtasks")[s].id + "'  type='checkbox' class='subtask_check'" + ((data.get("subtasks")[s].completed)? "checked" : "") + "/>"
+		           					+ "<label for='"+ data.id + "_" + data.get("subtasks")[s].id + "'>" + data.get("subtasks")[s].title + "</label></li>";
 		           	}
 		           	var date = dateString(new Date(mission.deadline.iso), true);
+		           console.log("#edit_"+ data.id);
 					var htmlBuilder =  "<div class='mission_background'>"
 							+ "<li class='mission_box container current_mission' id='" + mission.objectId +"'>"
 							+ 	"<div class='pull-right btn-group mdropdown'>"
-							+	 	"<a class='mdropdown-toggle' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>"
-	            			+ 		"<span class='glyphicon glyphicon-chevron-down'></span>"
-	            			+ 		"<span class='sr-only'>Menu</span>	</a>"
-            				+ 		"<ul class='dropdown-menu mission-dropdown' aria-labelledby='dropdownMenu4'>"
-							+ 				"<li><a class='editl_mission' id='edit_" + data.objectId + "'>Edit</a></li>"
-							+ 				"<li><a class='cancel_mission' id='cancel_" + data.objectId + "'>Delete</a></li>"
-							+			"</ul></div>"
-							+		 "<div class='runner-progress'>"
-							+			"<br/><div class='progress_background'><div class='pBar_r'>&nbsp;</div>"
-							+				"<div id='distance_" + mission.objectId + "' class='distance'></div>"
-	            			+  			"<img src='" + "/images/deadlion_leap.png" +"' class='progress_img lion_img' id='lion_" + mission.objectId + "'/>"	
-	            			+			"<img src='/images/" + mission.runner + "_panic_static.png' class='progress_img runner_img pull-right' id='runner_" + mission.objectId + "'/>"
-            				+		"</div>"
+   							+	"<a class='btn dropdown-toggle mission_dropdown' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>"
+     						+ 		"<span class='glyphicon glyphicon-chevron-down'></span></a>"
+     						+ 		"<ul class='dropdown-menu mission_options'>"
+   							+ 			"<li><a class='edit_mission' id='edit_" + data.id + "'>Edit</a></li>"
+							+ 			"<li><a class='cancel_mission' id='cancel_" + data.id + "'>Delete</a></li>"
+    						+		"</ul>"
+							+	"</div>"
+							+	"<div class='runner-progress'>"
+							+		"<br/><div class='progress_background'><div class='pBar_r'>&nbsp;</div>"
+							+			"<div id='distance_" + mission.objectId + "' class='distance'></div>"
+	            			+  		"<img src='" + "/images/deadlion_leap.png" +"' class='progress_img lion_img' id='lion_" + mission.objectId + "'/>"	
+	            			+		"<img src='/images/" + mission.runner + "_panic_static.png' class='progress_img runner_img pull-right' id='runner_" + mission.objectId + "'/>"
             				+	"</div>"
-            				+	"<h4 class='pull-right mission_dates'>" + ((mission.dates)? "Every " + mission.dates  + "<br/>Until: " + data.title + " at " + date.split(" ")[date.split(" ").length -1]: "Due: " + date) + "</h4>"
+            				+	"<h4 class='mission_dates'><img src='/images/icon_timed.png' class='time_img'/>&nbsp;Due: " + dateString(data.get("deadline"), true) + "</h4>"
 							+ 	"<h3 class='subtaskToggle' id='mission_" + mission.objectId + "'>" + mission.title + "&nbsp;"
-	            			+		"<span id='collapse_indicator' class='collapsed glyphicon glyphicon-chevron-up'></span>"
+	            			+		"<span class='collapse_indicator collapsed glyphicon glyphicon-chevron-up'></span>"
 	            			+	"</h3>"
-	            			+	"<div class='tasklist' id='" + data.objectId + "'>"
+	            			+	"<div class='tasklist' id='" + data.id + "'>"
+	            			+		((mission.dates) ? "<h4 class='mission_dates'>Every " + mission.dates  + "<br/>Until: " + dateString(new Date(mission.deadline.iso), false) + "</h4>" : "")
 	            			+		"<ul class='list-unstyled subtasks-list'>" + subtaskHtml + "</ul>"
 	            			+	"</div>"
-	            			+	"<a class='btn pull-right complete_mission btn-custom' id='complete_" + data.objectId + "'>Incomplete</a>"
-	            			+ "</li></div>";
+	            			+	"<a class='btn pull-right complete_mission btn-custom' id='complete_" + data.id + "'>Incomplete</a>"
+	            			+ "</li>"
+	            			+ "</div>";
             		$("#missions-list").append(htmlBuilder);
 
             		$("#mission_"+ mission.objectId).click(toggleSubtaskList);
-            		$("#edit_"+ data.objectId).click(editMission);
+            		console.log($("#edit_"+ data.id));
+            		$("#edit_"+ data.id).click(editMission);
 
-            		$("#" + data.objectId).data("parseObject", findings[0]);
+            		$("#" + data.id).data("parseObject", findings[0]);
             		$("#" + mission.objectId).data("mission", result);
             		var target = new Date(mission.deadline.iso);
-		    		$("#lion_" + mission.objectId).css("margin-left", Math.min(80, (1- ((target - new Date()) / (target - new Date(data.createdAt)))) * 80)  + "%");
-		    		$("#distance_" + mission.objectId).css("width", Math.min(100, (1- ((target - new Date()) / (target - new Date(data.createdAt)))) * 100)  + "%");
+		    		$("#lion_" + mission.objectId).css("margin-left", Math.min(80, (1- ((target - new Date()) / (target - new Date(data.get("createdAt"))))) * 80)  + "%");
+		    		$("#distance_" + mission.objectId).css("width", Math.min(100, (1- ((target - new Date()) / (target - new Date(data.get("createdAt"))))) * 100)  + "%");
 
             		checkForCompleted(data);
             	
-            		$("#cancel_" + data.objectId).click(cancelMission);
-					$("#" + data.objectId + " .subtask_check").change(checkSubtask);
-					$("#complete_" + data.objectId).click(completeMission);
+            		$("#cancel_" + data.id).click(cancelMission);
+					$("#" + data.id + " .subtask_check").change(checkSubtask);
 
             		return promise;
 		        }
-		    });
+		    }).then(function(){
+			calculateDistances();
 		});
-		console.log("finished");
+		});
 	});
 }
 
 function renderCompleted(){
-	var username = JSON.parse(window.localStorage.getItem("current_user")).username;
-	var Task = Parse.Object.extend("Task");
-	var query = new Parse.Query(Task);
+	var username = Parse.User.current().get("username");
+	var MissionObject = Parse.Object.extend("Mission");
+	var query = new Parse.Query(MissionObject);
 	query.equalTo("user", username);
 	query.equalTo("completed", true);
-	query.find({
-	    success: function (results) {
-	    	if(results.length == 0){
-	    		 $("#completed-missions-list").html("<li class='default-list'><em>No missions to display. <br/>"
-	    		 	+ "Click <strong>'New Mission'</strong> to create a new mission.</em></li>");
-	    	}else{
-	    		var htmlBuilder = "";
-		        for (var i = 0; i < results.length; i++) {
-		            var data = results[i].toJSON();
-		           	var date = dateString(new Date(data.updatedAt), true);
-		            htmlBuilder += "<li class='mission_box container history_mission' id='" + data.objectId+"''>"
-		            				+	"<h3>Mission: " + data.title + "</h3>"
-		            				+	"<h5>Completed at: " + dateString(new Date(data.updatedAt), true) + "</h5>"
-		            				+	"<h6><em>Started at: " + dateString(new Date(data.createdAt), true) + "</em></h6>"
-		            				+ 	"<p>Time Elapsed: " + getTimeDifference(new Date(data.createdAt), new Date(data.updatedAt)) + "</p>"
-		            				+ "</li>"
-		        }
-		        $("#completed-missions-list").html(htmlBuilder);
-	    	}
-	    },
-	    error: function (error) {
-	        alert("Error: " + error.code + " " + error.message);
-	    }
-	});
-}
-
-
-function renderFailed(){
-	var username = JSON.parse(window.localStorage.getItem("current_user")).username;
-	var Task = Parse.Object.extend("Task");
-	var query = new Parse.Query(Task);
-	query.equalTo("user", username);
-	query.equalTo("failed", true);
-	query.find({
-	    success: function (results) {
-	    	if(results.length == 0){
-	    		 $("#failed-missions-list").html("<li class='default-list'><em>No failed missions.</em></li>");
-	    	}else{
-	    		console.log(results);
-	    		var htmlBuilder = "";
-		        for (var i = 0; i < results.length; i++) {
-		            var data = results[i].toJSON();
-		           	var date = dateString(new Date(data.deadline.iso), !data.isRecurring);
-		            htmlBuilder += "<li class='mission_box container history_mission'>"
-		            				+	"<h3>Mission: " + data.title + "</h3>"
-		            				+	"<h5>Completed " + data.completedTasks + " out of " 
-		            				+ 		data.totalTasks + " subtasks</h5>"
-		            				+	"<h6><em>RIP: [runner name]</em></h6>"
-		            				+ "</li>"
-		        }
-		        $("#failed-missions-list").html(htmlBuilder);
-	    	}
-	    },
-	    error: function (error) {
-	        alert("Error: " + error.code + " " + error.message);
-	    }
+	console.log("rendering completed");
+	query.find().then(function(results){
+    	if(results.length == 0){
+    		 $("#completed-missions-list").html("<li class='default-list'><em>No missions to display. <br/>"
+    		 	+ "Click <strong>'New Mission'</strong> to create a new mission.</em></li>");
+    	}else{
+    		var htmlBuilder = "";
+    		console.log("results", results);
+	        for (var i = 0; i < results.length; i++) {
+	            var data = results[i].toJSON();
+	           	var updatedDate = new Date(data.updatedAt);
+	           	var endDate = updatedDate.toLocaleDateString();
+	           	var endTime = updatedDate.toLocaleTimeString();
+	           	endTime = endTime.split(":");
+	           	var am_pm = endTime[2].split(" ");
+	           	endTime = endTime[0] + ":" + endTime[1] + " " + am_pm[1];
+	            htmlBuilder += "<li class='mission_box container history_mission' id='" + data.objectId+"'>"
+            					+ "<ul class='list-inline subtaskToggle'>"
+	            				+	"<li><h3 class='subtaskToggle'>" + data.title + "</h3></li>"
+	            				+ 	"<li><span class='collapse_indicator collapsed glyphicon glyphicon-chevron-up'>"
+	            				+ 		"</span></li>"
+	            				+	"<li class=''><h5>Ended " + endTime + ", " +	endDate + "</h5></li>"
+	            				+ "</ul>"
+	            				+ "<div class='stat-bar progress' style='clear:both'>"
+								+	  "<div class='progress-bar progress-bar-success' style='width: " 
+								+ 			(data.completedTasks/data.totalTasks * 100) + "%'>" 
+								+ 			(data.completedTasks/data.totalTasks * 100) + "%</div>"
+								+	  "<div class='progress-bar progress-bar-danger' style='width:" 
+								+ 			(data.failedTasks/data.totalTasks * 100) + "%'>" 
+								+ 			(data.failedTasks/data.totalTasks * 100) + "%</div>"
+								+ 	"</div>"
+								+	"<div class='history_dropdown tasklist'>"
+								+	"<p><img src='/images/"+ data.runner +"_happy_static.png' class='history_runner_img'/> Runner: "+ data.runnerName +"</p>" 
+	            				+	"<h5>Completed " + data.completedTasks + " out of "+ data.totalTasks + " subtasks</h5>"
+	            				+	"<h6><em>Started at: " + dateString(new Date(data.createdAt), true) + "</em></h6>"
+	            				+ 	"<p>Time Elapsed: " + getTimeDifference(new Date(data.createdAt), new Date(data.updatedAt)) + "</p>"
+	            				+	"</div>"
+	            				+ "</li>"
+	        }
+	        $("#completed-missions-list").html(htmlBuilder);
+      		$(".subtaskToggle").click(toggleSubtaskList);
+    	}
 	});
 }
 
 function cancelMission(event){
 	var to_delete = $("#" + event.target.id.split("_")[1]).data("parseObject");
-	if(confirm("Are you sure you want to cancel Mission: " + to_delete.get("title") + "?")){
-	    to_delete.destroy({
-	    	success: function(){
-	    		renderMissions();
-	    	}
-	    });	
-  	}
+	var mission = $("#" + to_delete.get("missionId")).data("mission");
+	var occurrences = mission.get("totalTasks") - (mission.get("completedTasks") + mission.get("failedTasks"));
+	$("#mission_occurrence").html(occurrences);
+	$(".cancel_mission_title").html(mission.get("title"));
+	$("#multiple_delete").css("display", (occurrences > 1)? "block" : "none");
+	$("#single_delete").css("display", (occurrences > 1)? "none" : "block");
+	$(".cancel_modal").modal("show");
+	window.localStorage.setItem("to_delete", to_delete.id);
+}
+
+function deleteOne(){
+	var to_delete = $("#" + window.localStorage.getItem("to_delete")).data("parseObject");
+	var mission = $("#" + to_delete.get("missionId")).data("mission");
+	to_delete.destroy({
+    	success: function(){
+    		if(mission.get("totalTasks") - 1 == 0){
+				mission.destroy({
+	    			success:function(){
+	    				renderMissions();
+	    				closeDelete();
+	    			}
+	    		});
+			}else{
+				mission.set({
+					totalTasks: mission.get("totalTasks") -1,
+					completed : mission.get("totalTasks") -1 == mission.get("completedTasks") + mission.get("failedTasks")
+				});
+
+				mission.save({
+					success:function(){
+						renderMissions();
+	    				closeDelete();
+					}
+				});
+		}
+    	}
+    });	
+}
+
+function deleteAll(){
+	var to_delete = $("#" + window.localStorage.getItem("to_delete")).data("parseObject");
+	var mission = $("#" + to_delete.get("missionId")).data("mission");
+	var ObjectiveObject = Parse.Object.extend("Objective");
+	var query = new Parse.Query(ObjectiveObject);
+	query.equalTo("missionId", mission.id);
+	query.find().then(function(results){
+		var promise = Parse.Promise.as();
+		var increment = 1/results.length * 100;
+		$("#cancel_progress").css("display", "block");
+ 		_.each(results, function(objective) {
+ 			promise = promise.then(function(){
+ 				$("#cancel_progress .progress-bar").width(increment + "%");
+	 			increment += 1/results.length * 100;
+	 			console.log(increment + "%");
+ 				return objective.destroy();
+ 			});
+ 		});
+ 		return promise;
+	}).then(function(){
+		mission.destroy({
+			success:function(){
+				renderMissions();
+				$("#cancel_progress").css("display", "none");
+				closeDelete();
+			}
+		});
+	});
 }
 
 function checkSubtask(event){
@@ -272,36 +499,39 @@ function checkSubtask(event){
 	list[index].completed = $("#" + event.target.id).is(":checked");
 
 	to_update.set({
-		"subtasks": list
+		"subtasks": list,
 	});
 	to_update.save({
 		success:function(){
-			checkForCompleted(to_update.toJSON());
+			checkForCompleted(to_update);
 		}
 	});
 }
 
 function checkForCompleted(data){
-	var readyToComplete = $("#" + data.objectId).find(":checked").length == data.subtasks.length;
+	var readyToComplete = $("#" + data.id).find(":checked").length == data.get("subtasks").length;
      if(readyToComplete){
-     	$("#complete_" + data.objectId).addClass("btn-success");
-     	$("#complete_" + data.objectId).removeClass("btn-secondary-outline");
+     	$("#complete_" + data.id).addClass("btn-success");
+     	$("#complete_" + data.id).removeClass("btn-secondary-outline");
+     	$("#complete_" + data.id).click(completeMission);
      }else{
-     	$("#complete_" + data.objectId).removeClass("btn-success");
-     	$("#complete_" + data.objectId).addClass("btn-secondary-outline");
+     	$("#complete_" + data.id).removeClass("btn-success");
+     	$("#complete_" + data.id).addClass("btn-secondary-outline");
+     	$("#complete_" + data.id).off("click");
      }
 
-    $("#complete_" + data.objectId).prop("disable", !readyToComplete);
-   	$("#complete_" + data.objectId).css("cursor", (readyToComplete)? "pointer" : "not-allowed");
-   	$("#complete_" + data.objectId).text((readyToComplete)? "Click to Complete!" : "Incomplete");
+    $("#complete_" + data.id).prop("disable", !readyToComplete);
+   	$("#complete_" + data.id).css("cursor", (readyToComplete)? "pointer" : "not-allowed");
+   	$("#complete_" + data.id).text((readyToComplete)? "Click to Complete!" : "Incomplete");
+   	return readyToComplete;
 }
 
 /* Collapses/Expands the subtasklist for the current mission*/
 function toggleSubtaskList(event){
+	//debugger;
 	var currentBox = $(this).parent();
 	var currentList = currentBox.children(".tasklist");
 
-	//debugger;
 	var indicator = currentBox.find(".collapse_indicator");
 	//indicator = indicator.find("span");
 	//currentBox.children(".collapse_indicator").children("span");
@@ -320,7 +550,7 @@ function toggleSubtaskList(event){
 }
 
 function editMission(event) {
-	//debugger;
+	debugger;
 	var editMission_modal = $(".editmission_modal");
 	var dataId = event.target.id.split("_")[1];
 	var dataObject = $("#"+dataId).data("parseObject");
@@ -355,15 +585,118 @@ function previousPage(event) {
 
 function completeMission(event){
 	var to_complete = $("#" + event.target.id.split("_")[1]).data("parseObject");
-	var runner =$("#" + to_complete.get("missionId")).data("mission").get("runner");
-	console.log(runner);
-	window.localStorage.setItem("runner", runner);
+	var mission =$("#" + to_complete.get("missionId")).data("mission");
+	
 	console.log("task", to_complete);
 	var now = new Date();
-	//to_complete.set("completed", true);
-	to_complete.save({
+	var completedEntireMission = (mission.get("completedTasks") + 1 + mission.get("failedTasks")) == mission.get("totalTasks");
+	mission.set({
+		"completed" :  completedEntireMission,
+		"completedTasks": mission.get("completedTasks") + 1
+	});
+	//if(mission.get("completedTasks") == mission.get("totalTasks"))
+	//true- set alert, not animation; false set animation then alert
+	mission.save({
 		success:function(){
-			window.location = "/mission_complete";
+			to_complete.destroy({
+				success:function(){
+					var userid = Parse.User.current().id;
+					var ResourceObject = Parse.Object.extend("hasObtained");
+					var query = new Parse.Query(ResourceObject);
+					query.equalTo("user", userid);
+					query.equalTo("resourceType", mission.get("resource"));
+					query.first().then(function(result){
+				    	result.set({quantity: result.get("quantity") + 1});
+				    	result.save({
+				    		success:function(){
+				    			updateResourceCount();
+				    			if(completedEntireMission){
+									window.localStorage.setItem("runner", mission.get("runner"));
+									window.localStorage.setItem("resource", mission.get("resource"));
+									window.location = "/mission_complete";
+								}else{
+									$(".resource_earned_img").attr("src", "/images/resource_" + mission.get("resource") + ".png");
+									$(".resource_earned").html("+1 " + mission.get("resource"));
+									$(".resource_modal").modal("show");
+								}
+				    		}
+				    	});
+					});					
+				}
+			});
 		}
-	})
+	});
+	/**/
+}
+
+function failMission(){
+	console.log("failing mission", $(".failed_dialog").data("objective"));
+	var objective = $("#" + $(".failed_dialog").data("objective")).data("parseObject");
+	var mission = $("#" + objective.get("missionId")).data("mission");
+	console.log(objective);
+	window.localStorage.setItem("runner", mission.get("runner"));
+	var now = new Date();
+	mission.set({
+		"completed" :  (mission.get("completedTasks") + 1 + mission.get("failedTasks")) == mission.get("totalTasks"),
+		"failedTasks": mission.get("failedTasks") + 1
+	});
+	//if(mission.get("completedTasks") == mission.get("totalTasks"))
+	//true- set alert, not animation; false set animation then alert
+	mission.save({
+		success:function(){
+			objective.destroy({
+				success:function(){
+					window.location = "/mission_fail";
+				}
+			});
+		}
+	});
+	/**/
+}
+
+function editMission(event) {
+	console.log("called");
+	//debugger;
+	var editMission_modal = $(".editmission_modal");
+	var dataId = event.target.id.split("_")[1];
+	var dataObject = $("#"+dataId).data("parseObject");
+	//console.log(dataObject);
+	var missionId = dataObject.get("missionId");
+
+	var missionObject = $("#"+missionId).data("mission");
+	var missionName = missionObject.get("title");
+	var missionDate = missionObject.get("deadline");
+	//console.log("Title: "+missionName);
+
+	editMission_modal.removeAttr("id");
+	editMission_modal.attr("id", missionId);
+	editMission_modal.find("#editmission_modaltitle").empty().append(missionName);
+
+	$("#new_mission_name_textbox").empty().val(missionName);
+	$("#new_task_due_date").empty().val(missionDate.toLocaleDateString());
+	$("#new_task_due_time").empty().val(missionDate.toLocaleTimeString());
+
+	/*display modal*/
+	editMission_modal.modal({"show":true});
+}
+
+function closeModal(){
+	$(".resource_modal").modal("hide");
+	renderMissions();
+}
+
+function closeDelete(){
+	$(".cancel_modal").modal("hide");
+}
+
+function updateResourceCount(){
+	var userid = Parse.User.current().id;
+	var ResourceObject = Parse.Object.extend("hasObtained");
+	var query = new Parse.Query(ResourceObject);
+	query.equalTo("user", userid);
+	query.find().then(function(results){
+		results.forEach(function(entry){
+			$("." + entry.get("resourceType") + "_count").html(entry.get("quantity"));
+		});
+	});
 }

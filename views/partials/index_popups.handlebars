@@ -4,67 +4,29 @@
     <div class="modal-dialog">
         <div class="modal-content">
 
-            <div class="modal-header">
-            <button type="button" class="close close_editmission" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <div class="modal-header">
+            <button type="button" class="close close_editmission" data-dismiss="modal" aria-hidden="true">&times;
+            </button>
             <h4 class="modal-title" id="editmission_modaltitle"></h4>
-            </div>
+        </div>
 
         <div class="modal-body">
-          <div class="new_input container" id="frequency"> 
-            <label for="new_mission_name_textbox">Mission Name:</label>
-			<input id="new_mission_name_textbox" class="form-control" type="text" placeholder="Mission Name" name="mission_name" required/>
-			<hr/>
-				<label for="new_mission_name_textbox">Deadline:</label><br/>
-				<p> <label id="due_text">Due:</label> <input type="text" id="new_task_due_date"></p>
-				<p>Time: <input type="time" id="new_task_due_time" value="12:00"></p>
-
-				<input type="checkbox" id="new_freq_recurring"/>
-				<label class = "freq_select" for="new_freq_recurring">Repeat</label>
-
-            <div id="new_freq_recurring_area" class="freq_option">
-				<p>Every: <span class="pull-right"><input type="checkbox" id="select_all"/><label for="select_all">Select All</label></span></p> 
-				<div id="new_task_recurring_dates" class="row text-center">
-					<div class="col-xs-1"><input type="checkbox" name="sunday" id="sunday_box" class="day_box"/><label for="sunday_box">Su</label></div>
-					<div class="col-xs-1"><input type="checkbox" name="monday" id="monday_box" class="day_box"/><label for="monday_box">M</label></div>
-					<div class="col-xs-1"><input type="checkbox" name="tuesday" id="tuesday_box" class="day_box"/><label for="tuesday_box">T</label></div>
-					<div class="col-xs-1"><input type="checkbox" name="wednesday" id="wednesday_box" class="day_box"/><label for="wednesday_box">W</label></div>
-					<div class="col-xs-1"><input type="checkbox" name="thursday" id="thursday_box" class="day_box"/><label for="thursday_box">Th</label></div>
-					<div class="col-xs-1"><input type="checkbox" name="friday" id="friday_box" class="day_box"/><label for="friday_box">F</label></div>
-					<div class="col-xs-1"><input type="checkbox" name="saturday" id="saturday_box" class="day_box"/><label for="saturday_box">S</label></div>
+	        <label for="new_mission_name_textbox">Mission Name:</label>
+				<input id="new_mission_name_textbox" class="form-control" type="text" placeholder="Mission Name" name="mission_name" required/>
+			<label for="new_mission_name_textbox">Deadline:</label><br/>
+			<p> <label id="due_text">Due:</label> <input type="text" id="new_task_due_date"></p>
+			<p>Time: <input type="time" id="new_task_due_time" value="12:00"></p>
+			<br/>
+			<em><h5 id="objectives_error_msg"></h5></em>
+			<label for="new_subtasks">Objectives for:</label>
+			<div class="new_input" id="new_subtask_input">				
+				<div id="subtask_area">
+					<ul id="new_subtasks">	
+					</ul>
 				</div>
-				<p>Until: <input type="text" id="new_task_until_date" name="duedate"/></p>
-			</div>
-			<br/> <a class="btn btn-custom pull-right" id="next_button">Next</a>
-		  </div>
-
-			<div id="objectives" style="display:none">
-				<em><h5 id="objectives_error_msg"></h5></em>
-				<label for="new_subtasks">Objectives for:</label>
-				<div class="new_input" id="new_subtask_input">
-					
-					<span class="switch_deadline" id="left-switch">&lt;</span>
-					<select id="selected_mission_date">
-					</select>
-					<span class="switch_deadline" id="right-switch">&gt;</span>
-					
-					<div id="subtask_area">
-						<div class="apply_all_wrapper">
-							<input type='checkbox' id="apply_to_all_btn" checked/><label>Apply to all</label>
-						</div>
-						<ul id="new_subtasks">
-							
-						</ul>
-					</div>
-					
-					<em><h5 id="subtask_error_msg"></h5></em>
-					<input id="new_subtask_textbox" type="text" placeholder="Enter objective"/>
-					<a id="add_task_button" class="btn btn-subtask">+</a>
-				</div>
-				<br/>
-				<div class="new_input container" id="new_input_submit">
-					<a class="btn btn-custom pull-left" id="back_button">Back</a>
-				</div>
-				<br/>
+				<em><h5 id="subtask_error_msg"></h5></em>
+				<input id="new_subtask_textbox" type="text" placeholder="Enter objective"/>
+				<a id="add_task_button" class="btn btn-subtask">+</a>
 			</div>
         </div>
         <div class="modal-footer">

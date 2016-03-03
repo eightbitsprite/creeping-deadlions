@@ -5,5 +5,4 @@ var data = require('../data.json');
 
 exports.view = function(req, res){
   	res.render('mission_form', {"id" : data["task"].length});
-  	//res.redirect("/create_missiion");
 };
