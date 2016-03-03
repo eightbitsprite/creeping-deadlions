@@ -646,6 +646,7 @@ function saveTask(){
 			switchSubtask();
 			$("#objectives_error_msg").append("<p>Empty mission detected.</p>");
 			var isValid = false;
+			break;
 		}
 	}
 

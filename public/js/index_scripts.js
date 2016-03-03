@@ -708,12 +708,12 @@ function failMission(){
 }
 
 function editMission(event) {
-	console.log("called");
+	console.log("called", event);
 	//debugger;
 	var editMission_modal = $(".editmission_modal");
 	var dataId = event.target.id.split("_")[1];
 	var dataObject = $("#"+dataId).data("parseObject");
-	//console.log(dataObject);
+	console.log("data is",dataObject);
 	var missionId = dataObject.get("missionId");
 
 	var missionObject = $("#"+missionId).data("mission");
