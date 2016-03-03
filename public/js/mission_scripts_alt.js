@@ -120,6 +120,8 @@ function isFreqSet() {
 }
 /*Check to make sure frequency is filled out alright*/
 function frequencyCheckerAllDesign() {
+	/*last min hotfix to make mission submissions work*/
+	return true;
 	//debugger;
 	if (!isAllDesign()) {
 		return true;
