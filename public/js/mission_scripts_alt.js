@@ -85,6 +85,7 @@ function initializePage() {
 	$(".date-select").val(new Date());
 	$("#apply_to_all_btn").prop("disabled", true);
 	$("#apply_to_all_btn+label").text("Create one default objective first.");
+	
 	googleATimeCheck(0,Date.now());
 } 
 function onClosed() {
@@ -714,7 +715,7 @@ console.log("saveTask: " + user);
 
 
 debugger;
-	googleATimeCheck(0, Date.now());	
+	googleATimeCheck(1, Date.now());	
 }
 function checkAll(){
 	if($("#select_all").is(":checked"))
