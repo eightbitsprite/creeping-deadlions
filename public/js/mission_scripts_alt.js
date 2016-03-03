@@ -615,6 +615,7 @@ function allDesignLoadSelector() {
 		});
 	}
 	if(isValid) { loadSelector();}
+	else {$("#selected_mission_date").empty();}
 }
 
 function previousPage(){
