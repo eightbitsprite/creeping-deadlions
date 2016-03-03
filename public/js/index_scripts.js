@@ -8,7 +8,7 @@ $(document).ready(function() {
 	if(!Parse.User.current()){
 		window.location = "/login#sign-in";
 	}else{
-		window.localStorage.setItem("user", Parse.User.current());
+		window.localStorage.setItem("user", Parse.User.current().toJSON());
 		$("#new_mission_button").click(gAnalytic_newMission);
 		$("#menu_log").click(showLog);
 		$("#menu_history").click(showHistory);

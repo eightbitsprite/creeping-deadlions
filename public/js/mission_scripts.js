@@ -440,7 +440,7 @@ function saveTask(){
 			runner : $(".runner_box input[type='radio']:checked+label img").attr("id"),
 			runnerName: $("#new_runner_textbox").val().trim(),
 			resource : $(".resource_box input[type='radio']:checked+label img").attr("id"),
-			user : Parse.User.current().get("username"),
+			user : window.localStorage.setItem("user").username,
 			completed : false,
 			deadline : deadline,
 			failed:false,
