@@ -607,6 +607,12 @@ function generateRunner(){
 }
 
 function saveTask(){
+	/*if frequencyCheckerAllDesign() returns true, then continue
+	execution*/
+	if (!frequencyCheckerAllDesign()) {
+		return;
+	}
+	
 	/*Validation*/
 	var title = $("#new_mission_name_textbox").val().trim();
 	var runner = null;
