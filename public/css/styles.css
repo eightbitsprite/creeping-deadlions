@@ -753,8 +753,15 @@ input[type='checkbox']{
 	margin-top:10px;
 
 }
+#new_subtasks_index{
+	width:100%;
+	margin:0px;
+	height:95%;
+	overflow-y:auto;
+	margin-top:15px;
+}
 #subtask_area{
-	height:45vh;
+	height:150px;
 	background-color:#ebda8b;
 }
 
