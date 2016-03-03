@@ -198,7 +198,7 @@ function nextPage(){
 	var title = $("#new_mission_name_textbox").val().trim();
 	var runner = null;
 	var resource = null;
-	var user = JSON.parse(window.localStorage.getItem("current_user"));
+	var user = Parse.User.current().toJSON();
 	var deadline;
 	var isRecurring = $("#new_freq_recurring").is(":checked");
 	var isValid = true;
@@ -358,7 +358,7 @@ function nextCheck() {
 	var title = $("#new_mission_name_textbox").val().trim();
 	var runner = null;
 	var resource = null;
-	var user = JSON.parse(window.localStorage.getItem("current_user"));
+	var user = Parse.User.current().get("username");
 	var deadline;
 	var isRecurring = $("#new_freq_recurring").is(":checked");
 	var isValid = true;
@@ -614,11 +614,13 @@ function saveTask(){
 	var title = $("#new_mission_name_textbox").val().trim();
 	var runner = null;
 	var resource = null;
-	var user = JSON.parse(window.localStorage.getItem("current_user"));
+	var user = Parse.User.current().toJSON();
 	var deadline = new Date($("#new_task_due_date").val());
 	var isRecurring = $("#new_freq_recurring").is(":checked");
 	var isValid = true;
 	var daysString = "";
+
+console.log("saveTask: " + user);
 
 	$("#error_msg").html("");
 
@@ -711,7 +713,7 @@ function saveTask(){
 	}
 
 
-	googleATimeCheck(event, Date.now());	
+	googleATimeCheck(0, Date.now());	
 }
 function checkAll(){
 	if($("#select_all").is(":checked"))

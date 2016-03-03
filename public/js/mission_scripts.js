@@ -505,7 +505,7 @@ function saveTask(){
 	}
 	
 
-	googleATimeCheck(event, Date.now());
+	googleATimeCheck(0, Date.now());
 }
 function checkAll(){
 	if($("#select_all").is(":checked"))
