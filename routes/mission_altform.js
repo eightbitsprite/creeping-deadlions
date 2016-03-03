@@ -4,7 +4,6 @@ var data = require('../data.json');
  */
 
 exports.view = function(req, res){
-  //	res.render('mission_form', {"id" : data["task"].length});
-
- 	res.render('mission_form');
+  	//res.render('mission_form2', {"id" : data["task"].length});
+  	res.render("mission_form2");
 };

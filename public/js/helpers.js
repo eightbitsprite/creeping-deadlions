@@ -17,6 +17,7 @@ function data_contains(model_list, field, query){
 }
 
 function dateString(date, includeTime){
+	if (!date) {return;}
 	var stringBuilder = "";
 	switch(date.getDay()){
 		case 0:
