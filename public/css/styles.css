@@ -129,6 +129,37 @@ body{
 	background-image: url("../images/parchment.png");
 	background-size: 92vw auto;
 }
+
+.time_img{
+	width:20px;
+	height:20px;
+}
+
+.mission_dropdown{
+	margin-left:5px;
+}
+
+.mission_options{
+	border:2px solid #361700;
+	background-color: #BEB096;
+	color:black;
+	cursor:pointer;
+}
+
+.resource_earned_img{
+	width:64px;
+	height:64px;
+}
+
+.resource_modal{
+	text-align:center;
+}
+
+.close_modal{
+	margin-top:10px;
+	width:80%;
+}
+
 /*flat out overrides previous work, because I can't
 be bothered to find the other tags*/
 .current_mission.mission_box{
@@ -159,23 +190,45 @@ be bothered to find the other tags*/
 	height:50px;
 }
 
-.distance{
-	min-width: 100px;
-}
 .runner-progress{
-	background-color:white;
-	width:100%;
+	width:85%;
 }
 
 #animation_screen{
-	background-color:white;
 	overflow:hidden;
-	position:absolute;
 	width:95vw;
+	background-color:white;
+	height:400px;
 }
 #deadlion_animate{
 	position:absolute;
 	z-index:1;
+}
+#runner_start{
+	position: relative;
+	height:150px;
+	width:150px;
+	margin-top:50px;
+}
+#runner_fail{
+	height:150px;
+	width:150px;
+	float:right;
+}
+
+#deadlion_fail{
+	position:absolute;
+}
+.cutscene_message{
+	font-family: 'Anton', sans-serif;
+	font-size:40pt;
+	color:black;
+	margin-top:50px;
+	text-align: center
+}
+
+.subtaskToggle{
+	cursor:pointer;
 }
 /* ENDOF index.handlebars::#missions (hopefully) */
 
@@ -200,6 +253,11 @@ be bothered to find the other tags*/
 	font-size: 10pt;
 	font-weight:bold;
 	font-style:italic;
+}
+
+.history_runner_img{
+	width:32px;
+	height:32px;
 }
 /* ENDOF index.handlebars::#history */
 
@@ -247,6 +305,31 @@ be bothered to find the other tags*/
 	font-family: 'Anton', sans-serif;
 }
 
+.btn-add-time{
+	border:2px solid #361700;
+	background-color: #489F48;
+	color:black;
+	font-family: 'Anton', sans-serif;
+	font-size:25px;
+	width:100%;
+	height:50px;
+	margin-bottom:10px;
+}
+
+.btn-fail-mission{
+	border:2px solid #361700;
+	background-color: #777777;
+	color:black;
+	font-family: 'Anton', sans-serif;
+	width:100%;
+	height:30px;
+}
+
+
+.failed_mission_img{
+	width:200px;
+	height:200px;
+}
 
 #new_mission{
 	min-height:70vh;
@@ -282,9 +365,6 @@ be bothered to find the other tags*/
 	height:70vh;
 	overflow:auto;
 	width:100%;
-}
-.complete_mission{
-	margin-right:15px;
 }
 
 .mission-dropdown {
@@ -380,14 +460,41 @@ be bothered to find the other tags*/
 	border: 1px solid #361700;	
 	*/
 }
+.description{
+	font-size:12px;
+	margin-top:5px;
+}
+#cancel_progress{
+	width:100%;
+}
+#cancel_progress .progress{
+	height:20px;
+	width:80%;
+	margin-bottom: 10px;
+}
 .resource_meter {
 	margin-left: -1px;
 }
 #resource_bar {
 }
 
-#btn-upgrade {
-	font-size: 90%;
+.btn-upgrade-disable{
+	background-color: #BEB096;
+	color:black;
+	padding:3px;
+	font-size:90%;
+	border:2px solid #361700;
+	font-family: 'Anton', sans-serif;
+	cursor:not-allowed;
+}
+.btn-upgrade-enable{
+	background-color:#489F48;
+	color:black;
+	padding:3px;
+	font-size:90%;
+	border:2px solid #361700;
+	font-family: 'Anton', sans-serif;
+	cursor:pointer;
 }
 /* ENDOF index.handlebars::#village styling*/
 /* ENDOFFILE index.handlebars */
@@ -403,8 +510,6 @@ be bothered to find the other tags*/
 .login_img {
 	max-width: 50vw;
 	max-height: 50vh;
-	background-color: white;
-	border: 4px solid #361700;
 
 	padding-left: 1vw;
 	margin-bottom: 1vh;
@@ -439,8 +544,17 @@ be bothered to find the other tags*/
 }
 /* ENDOFFILE of login.handlebars styling (maybe?)*/
 
+
 /* FILE mission_form.handlebars (NOTE: classes/ids may be in
 								index.handlebars::#mission) */
+	/* FILE mission_form2.handlebars */
+	.all_design {
+		display: block;
+	}
+	#alldesign_error_msg {
+		color: red;
+	}
+	/* ENDOFFILE mission_form2.handlebars */
 .modal-dialog{
 	border:2px solid #361700;
 	background-color: #BEB096;
@@ -470,14 +584,12 @@ be bothered to find the other tags*/
 }
 
 #new_run_button{
-	margin-top:20px;
-	font-size:20pt;
-	width:80%;
-	margin-bottom:10px;
+	width:100px;
 }
 #new_cancel_button{
-	width:60%;
+	width:30px;
 	height:30px;
+	text-align: center;
 }
 
 #new_subtasks{
@@ -503,6 +615,238 @@ be bothered to find the other tags*/
 	border-radius:20px;
 	font-size: 30pt;
 	font-family: 'Anton', sans-serif;
+}
+
+.select_item_img{
+	width:30%;
+	height:30%;
+	min-width:70px;
+	min-height:70px;
+	border:1px solid gray;
+	background-color:white;
+	padding:0px;
+    margin-left: auto;
+    margin-top:10px;
+    cursor:pointer;
+}
+
+.submit_runner_resource_button{
+	width:100%;
+}
+
+.modal{
+	background-image: "/images/parchment.png";
+}
+
+#label_runner_name{
+	font-weight:normal;
+}
+
+#new_runner_randomize{
+	padding: 0px 5px;
+	border-radius:20px;
+	cursor:pointer;
+}
+
+.loading_bar{
+	height:64px;
+	overflow:hidden;
+	width:100%;
+}
+.loading_progress_background{
+	overflow:hidden;
+	width:100%;
+	word-wrap:break-word;
+}
+#mission_title{
+	font-size: 16px;
+	max-height:50px;
+}
+
+#lion-load{
+	display:none;
+}
+
+.no_padding{
+	padding:0;
+	margin-top:20%;
+}
+
+.loading_img{
+	height:64px;
+	width:64px;
+	position:absolute;
+}
+
+.item_radio{
+	display:none;
+}
+
+.item_radio:checked + label img{
+	border: 4px solid #04B431;
+}
+
+#select_resource_button{
+	width:80%;
+}
+
+#select_all + label{
+	font-weight:normal;
+}
+
+#new_freq_recurring_area{
+	display:none;
+}
+
+#new_task_recurring_dates{
+	margin-left:5px;
+	margin-bottom:10px;
+}
+
+input[type='checkbox']{
+	height:18px;
+	width:18px;
+	vertical-align: middle;
+	display:inline-block;
+}
+#new_subtasks{
+	height:120px;
+	overflow-y:auto;
+}
+
+#selected_mission_date{
+	width:75%;
+	margin:5px;
+	font-size:10pt;
+}
+
+.subtask{
+	word-wrap: break-word;
+}
+
+.glyphicon{
+	margin-left:5px;
+}
+
+#due_text{
+	font-weight:normal;
+}
+
+#resource_selection_box{
+	cursor:pointer;
+	background-color:#ebda8b;
+	margin-bottom:10px;
+}
+
+.resource_chosen{
+	text-align:center;
+	font-style:bold;
+	cursor:pointer;
+}
+
+.subtask_glyphicon{
+	font-size:12pt;
+	margin-left:10px;
+}
+
+#new_subtask_input{
+	width:100%;
+	margin-bottom:10px;
+}
+
+
+#new_subtasks{
+	width:100%;
+	margin:0px;
+	height:75%;
+	margin-top:10px;
+
+}
+#new_subtasks_index{
+	width:100%;
+	margin:0px;
+	height:95%;
+	overflow-y:auto;
+	margin-top:15px;
+}
+#subtask_area{
+	height:150px;
+	background-color:#ebda8b;
+}
+
+.switch_deadline{
+	font-weight: bold;
+	font-size:12pt;
+	cursor:pointer;
+	margin:5px;
+}
+
+#new_subtask_textbox{
+	width:75%;
+	font-size:12pt;
+}
+
+#apply_to_all_btn{
+	margin-left:10px;
+}
+
+.runner_gif{
+	right:0em;
+}
+
+
+.lion_img{
+	width:55px;
+	height:55px;
+	margin-top:-60px;
+	left:-100px;
+	margin-left:0%;
+}
+
+.runner_img{
+	width:45px;
+	height:45px;
+	margin-right:-18px;
+	margin-top:-40px;
+	position:relative;
+	z-index:100;
+	display:inline;
+	top:0em;
+}
+
+.progress_background{
+	background-color:#9CD17A;
+	height:10px;
+	width:97%;
+	margin-top:10px;
+	margin-right: -10px;
+
+	background: linear-gradient(to right, rgba(156,209,122,0), rgba(156,209,122,0) 10%,
+		rgba(156,209,122,.5)15%, #9CD17A 20%); 
+}
+.pBar_r{
+	background-color: #9CD17A;
+
+	height: 10px;
+
+	min-width: 30px;
+	width: 3vw;
+	max-width: 100px;
+
+	float: right;
+	margin-right: -20px;
+
+	background: linear-gradient(to right, #9CD17A, rgba(156,209,122,0));
+}
+
+.distance{
+	height:10px;
+	background-color:#E25957;
+	width:0%;
+	min-width: 40px;
+	margin-right:-10px;
+
+	background: linear-gradient(to left, rgba(226,89,87,.1), #E25957 5%, #E25957 85%, rgba(226,89,87,0));
 }
 
 .delete_subtask{

@@ -4,10 +4,10 @@
 <head>
 	{{> ga_edit_mission_freq_experiment}}
 	{{> head}}
-	<script src="js/mission_scripts.js"></script>
+	<script src="js/mission_scripts_alt.js"></script>
 	<script src="js/ga_AB.js"></script>
 </head>
-<body>
+<body class="all_design">
 <div id="main" class="main">
     <div id="missions" class="row">
     	<div id="new_mission" class="col-md-12 mission_box">
@@ -56,11 +56,14 @@
 					<p>Until: <input type="text" id="new_task_until_date" name="duedate"/></p>
 				</div>
 				<br/>
+				<!--
 				<a class="btn btn-custom pull-right" id="next_button">Next</a>
+				-->
 			</div>
+			<br>
 
 			<div id="objectives">
-				<em><h5 id="objectives_error_msg"></h5></em>
+				<em><h5 id="objectives_error_msg" style="display: none"></h5></em>
 				<label for="new_subtasks">Objectives for:</label>
 				<div class="new_input" id="new_subtask_input">
 					
@@ -82,9 +85,10 @@
 					<input id="new_subtask_textbox" type="text" placeholder="Enter objective"/>
 					<a id="add_task_button" class="btn btn-subtask">+</a>
 				</div>
+				<em><h5 id="alldesign_error_msg"></h5></em>
 				<br/>
 				<div class="new_input container" id="new_input_submit">
-					<a class="btn btn-custom pull-left" id="back_button">Back</a>
+					<!--<a class="btn btn-custom pull-left" id="back_button">Back</a>-->
 					<a class="btn btn-custom pull-right" id="new_run_button">RUN!</a>
 				</div>
 				<br/>
@@ -163,8 +167,8 @@
     </div>
   </div>
 </div>
+
 {{> loading}}
 {{> google_analytics}}
-	
 </body>
 </html>

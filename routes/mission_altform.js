@@ -4,9 +4,6 @@ var data = require('../data.json');
  */
 
 exports.view = function(req, res){
-  	res.render('index');
-};
-
-exports.data = function(req, res){
-	res.json(data);
+  	//res.render('mission_form2', {"id" : data["task"].length});
+  	res.render("mission_form2");
 };

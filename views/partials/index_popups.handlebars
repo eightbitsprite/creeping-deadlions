@@ -1,0 +1,40 @@
+				
+<!-- Modal popup for edit button; id will be added in javascript -->
+<div class="modal fade editmission_modal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close close_editmission" data-dismiss="modal" aria-hidden="true">&times;
+            </button>
+            <h4 class="modal-title" id="editmission_modaltitle"></h4>
+        </div>
+
+        <div class="modal-body">
+        	<p id="error_msg"></p>
+	        <label for="new_mission_name_textbox">Mission Name:</label>
+				<input id="new_mission_name_textbox" class="form-control" type="text" placeholder="Mission Name" name="mission_name" required/>
+			<label for="new_mission_name_textbox">Deadline:</label><br/>
+			<p> <label id="due_text">Due:</label> <input type="text" id="new_task_due_date"></p>
+			<p>Time: <input type="time" id="new_task_due_time" value="12:00"></p>
+			<h6>Note: editing this time will change the times for all recurring objectives</h6>
+			<br/>
+			<em><h5 id="objectives_error_msg"></h5></em>
+			<label for="new_subtasks_index">Objectives for:</label>
+			<div class="new_input" id="new_subtask_input">				
+				<div id="subtask_area">
+					<ul id="new_subtasks_index">
+					</ul>
+				</div>
+				<em><h5 id="subtask_error_msg"></h5></em>
+				<input id="new_subtask_textbox" type="text" placeholder="Enter objective"/>
+				<a id="add_task_button" class="btn btn-subtask">+</a>
+			</div>
+        </div>
+        <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-custom close_editmission" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-custom save_objective_changes">Save changes</button>
+        </div>
+    </div>
+  </div>
+</div>				
