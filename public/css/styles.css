@@ -415,6 +415,10 @@ be bothered to find the other tags*/
 	overflow-y: hidden;
 	margin: 0px auto;
 }
+.vimg {
+	max-height: 100%;
+}
+
 #gradient0{
 	padding: 5vh 0px;
 	background-color: #070504;
