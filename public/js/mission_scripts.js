@@ -72,43 +72,6 @@ function initializePage() {
 	$("#lion-load").css({
 		"margin-left": - $(".loading_progress_background").offset().left - $("#lion-load").outerWidth() - 10
 	});
-
-<<<<<<< HEAD
-	var Runner = Parse.Object.extend("Runner");
-	var query = new Parse.Query(Runner);
-	var runners = query.find({
-		async:false,
-	    success: function (results) {
-	    	console.log("results", results);
-	    	return results;
-	    }
-	});	    	
-	console.log(runners.result);
-
-	googleATimeCheck(0,Date.now());
-} 
-
-function googleATimeCheck(event, time) {
-	console.log("googleATimeCheck() running... TIME: " + time);
-	if (event) {
-		var endTime = time;
-		var startTime = $("body").data("startTime");
-		if (!startTime) {
-			console.log("startDate NULL. google Analytics event failed");
-		}
-		var elapsedTime = endTime - startTime;
-		elapsedTime = elapsedTime / (1000);
-		console.log(elapsedTime);
-		ga("send", "event", event.currentTarget.attributes.id.nodeValue, elapsedTime);
-		return;
-	} else {
-		$("body").data("startTime", time);
-	}
-}
-
-function openTaskFrequency(){
-	$("#new_frequency_input").css("display","block");
-=======
 	googleATimeCheck(0,Date.now());
 } 
 
@@ -121,7 +84,6 @@ function previousOption(){
 		index = repeat_dates.length-1;
 	$("#option_"+index).prop("selected", true);
 	switchSubtask();
->>>>>>> seconddesign
 }
 function nextOption(){
 	var el = $("#selected_mission_date");
@@ -134,103 +96,9 @@ function nextOption(){
 	switchSubtask();
 }
 
-<<<<<<< HEAD
-function toggleRecurring(){
-	$("#new_freq_recurring_area").css("display","block");
-	$("#new_freq_timed_area").css("display","none");
-}
-*/
-function freqDetails(event){
-	console.log(event);
-	if(!$("#new_freq_recurring").is(":checked") && !$("#new_freq_timed").is(":checked")){
-		$("#error_msg").empty();
-		$("#error_msg").append("<p>Please select a frequency type before proceeding.</p>");
-		return;
-	}
-	var freqType = $("input[name=frequency]:checked").attr("id");
-	var modalContent, modalHead;
-	console.log(freqType);
-	if (freqType === "new_freq_recurring") {
-		//modalContent = $("#new_freq_recurring_area").html();
-		modalHead = "Recurring Event Details";
-		$("#recurFreq .modal-title").empty().append(modalHead);
-		$("#recurFreq").modal("toggle");
-	} else {
-		//modalContent = $("#new_freq_timed_area").html();
-		modalHead = "Timed Event Details";
-		$("#timedFreq .modal-title").empty().append(modalHead);
-		$("#timedFreq").modal("toggle");
-	}
-		//$("#recurFreq .modal-title").empty().append(modalHead);
-		//$("#recurFreq .modal-body").empty().append(modalContent);
-		//$("#recurFreq").modal("toggle");
-		var eventObj = event.currentTarget.attributes.id.nodeValue;
-		ga("send", "event", "button#"+eventObj, "edit mission details");
-}
-function modalSave() {
-
-	var freqType = $("input[name=frequency]:checked").attr("id");
-	var error_msg = (freqType === "new_freq_recurring")? "#recur_error_msg" : "#timed_error_msg";
-	var modalContent = $("#recurFreq .modal-body").html();
-	var deadline;
-	var isValid = true;
-	$(error_msg).html("");
-	$("#error_msg").html("");
-
-	if(freqType === "new_freq_recurring" && $("#new_task_recurring_dates").find(":checked").length == 0){
-		$(error_msg).append("<p>Please select at least one day for recurring task.</p>");
-		isValid = false;
-	}
-	if(freqType === "new_freq_timed" && $("#new_subtasks").find(".subtask").length < 1){
-		$(error_msg).append("<p>Please add at least one subtask.</p>");
-		isValid = false;
-	}
-	var today =new Date();
-	if(freqType === "new_freq_recurring"){
-		if($("#new_task_until_date").val().toString().trim() == ""){
-			$(error_msg).append("<p>Please select a valid date.</p>");
-     		isValid = false;
-		}
-	  	if(isValid){
-			deadline= new Date($("#new_task_until_date").val());
-			deadline.setHours(23 + 24);
-	      	deadline.setMinutes(59);
-	      	deadline.setSeconds(59);
-			if(deadline < today){
-		  		$(error_msg).append("<p>Please select a future date.</p>");
-		     	isValid = false;
-		  	}else if(!checkDateExists(deadline)){
-		  		$(error_msg).append("<p>Please select a day that occurs before given until date.</p>");
-		  		isValid = false;
-		  	}
-		  	
-		}
-	}else if(freqType === "new_freq_timed"){
-		if($("#new_task_due_date").val().toString().trim() == ""){
-			$(error_msg).append("<p>Please select a valid date.</p>");
-     		isValid = false;
-		}else{
-			deadline= new Date($("#new_task_due_date").val());
-			var dueTime = $("#new_task_due_time").val();
-	      	if(!(/^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(dueTime.toString()))){
-	      		$(error_msg).append("<p>Please select a valid time.</p>");
-	         	isValid = false;
-	      	}
-			deadline.setHours(24 + Number(dueTime.split(":")[0]));
-	      	deadline.setMinutes(Number(dueTime.split(":")[1]));
-	      	deadline.setSeconds(0);
-	      	
-			if(deadline < today){
-		  		$(error_msg).append("<p>Please select a future date.</p>");
-		     	isValid = false;
-		  	}
-		}      	
-	}
-=======
 function switchSubtask(){
 	console.log("changed");
 	console.log($("#selected_mission_date").find(":selected"));
->>>>>>> seconddesign
 	
 	current_mission_objectives = $("#selected_mission_date").find(":selected").data("data");
 	$("#new_subtasks").html("");
@@ -254,11 +122,7 @@ function switchSubtask(){
 	}
 }
 
-<<<<<<< HEAD
-function saveTask(event){
-=======
 function nextPage(){
->>>>>>> seconddesign
 	/*Validation*/
 	var title = $("#new_mission_name_textbox").val().trim();
 	var runner = null;
