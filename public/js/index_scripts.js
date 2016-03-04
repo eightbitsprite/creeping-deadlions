@@ -245,7 +245,7 @@ function getVillageLevel(vInfo) {
 			}
 			var village = vInfo.villageReqs[findings[0].get("villageLevel")];
 			console.log("village",village);
-			$("#village_display").html("<div><img class="vimg" src='"+village.image+"'></div>");
+			$("#village_display").html("<div><img class='vimg' src='"+village.image+"'></div>");
 			var oquery = new Parse.Query(Parse.Object.extend("hasObtained"));
 			/*"user" should have search key for user ID */
 			oquery.equalTo("user", userid);
