@@ -412,11 +412,11 @@ be bothered to find the other tags*/
 	width:85vw;
 	height: 65vh;
 	overflow-x: scroll;
-	overflow-y: hidden;
 	margin: 0px auto;
 }
 .vimg {
 	max-height: 100%;
+	max-width: auto;
 }
 
 #gradient0{
