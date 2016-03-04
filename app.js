@@ -15,6 +15,7 @@ var login = require('./routes/login');
 var cutscene = require('./routes/cutscene');
 var village = require('./routes/village');
 var mission_form = require('./routes/mission_form');
+var mission_altform = require('./routes/mission_altform');
 var _ = require('underscore');
 // Example route
 // var user = require('./routes/user');
@@ -46,6 +47,7 @@ app.get('/', index.view);
 app.get('/vInfo', index.data);
 app.get('/login', login.view);
 app.get('/create_mission', mission_form.view);
+app.get('/create_missiion', mission_altform.view);
 app.get('/new_mission', cutscene.new);
 app.get('/village', village.view);
 app.get('/mission_complete', cutscene.complete);

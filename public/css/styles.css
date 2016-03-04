@@ -544,8 +544,17 @@ be bothered to find the other tags*/
 }
 /* ENDOFFILE of login.handlebars styling (maybe?)*/
 
+
 /* FILE mission_form.handlebars (NOTE: classes/ids may be in
 								index.handlebars::#mission) */
+	/* FILE mission_form2.handlebars */
+	.all_design {
+		display: block;
+	}
+	#alldesign_error_msg {
+		color: red;
+	}
+	/* ENDOFFILE mission_form2.handlebars */
 .modal-dialog{
 	border:2px solid #361700;
 	background-color: #BEB096;
@@ -753,8 +762,15 @@ input[type='checkbox']{
 	margin-top:10px;
 
 }
+#new_subtasks_index{
+	width:100%;
+	margin:0px;
+	height:95%;
+	overflow-y:auto;
+	margin-top:15px;
+}
 #subtask_area{
-	height:45vh;
+	height:150px;
 	background-color:#ebda8b;
 }
 
