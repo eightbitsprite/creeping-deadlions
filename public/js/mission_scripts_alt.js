@@ -369,7 +369,6 @@ function nextCheck() {
 	var title = $("#new_mission_name_textbox").val().trim();
 	var runner = null;
 	var resource = null;
-	var user = Parse.User.current().get("username");
 	var deadline;
 	var isRecurring = $("#new_freq_recurring").is(":checked");
 	var isValid = true;
@@ -743,10 +742,10 @@ function saveTask(){
 	var title = $("#new_mission_name_textbox").val().trim();
 	var runner = null;
 	var resource = null;
-	var user = Parse.User.current().toJSON();
 	var isRecurring = $("#new_freq_recurring").is(":checked");
 	var deadline = (isRecurring)? new Date($("#new_task_until_date").val()) : new Date($("#new_task_due_date").val());
 	var isValid = true;
+	var user = Parse.User.current();
 	var daysString = "";
 
 	$("#error_msg").html("");
@@ -795,7 +794,7 @@ function saveTask(){
 			runner : $(".runner_box input[type='radio']:checked+label img").attr("id"),
 			runnerName: $("#new_runner_textbox").val().trim(),
 			resource : $(".resource_box input[type='radio']:checked+label img").attr("id"),
-			user : Parse.User.current().get("username"),
+			user : user.get("username"),
 			completed : false,
 			deadline : deadline,
 			failed:false,
