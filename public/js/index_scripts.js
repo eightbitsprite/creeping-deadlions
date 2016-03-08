@@ -42,6 +42,7 @@ $(document).ready(function() {
 		    calculateDistances();
 		}, 30 * 1000); // 60 * 1000 milsec*/
 	}
+	$.get("/vInfo",getVillageLevel);
 })
 function saveObjectiveChanges(){
 	var objective = $(".editmission_modal").data("objective");
@@ -245,7 +246,11 @@ function getVillageLevel(vInfo) {
 			}
 			var village = vInfo.villageReqs[findings[0].get("villageLevel")];
 			console.log("village",village);
+
 			$("#village_display").html("<img class='vimg' src='"+village.image+"'>");
+			$("#village_namelvl").html("<strong>Lvl. "+findings[0].get("villageLevel")+"</strong>");
+			$(".village_dropdown").html("Village Level: "+findings[0].get("villageLevel"));
+
 			var oquery = new Parse.Query(Parse.Object.extend("hasObtained"));
 			/*"user" should have search key for user ID */
 			oquery.equalTo("user", userid);
@@ -267,21 +272,21 @@ function getVillageLevel(vInfo) {
 						switch (resourceType) {
 							case "wood":
 								$(".resource_wood").empty().append(resourceAmt+"/"+village.req_wood);
-								enoughWood = resourceAmt >= village.req_wood;
+								enoughWood = (resourceAmt >= village.req_wood);
 								break;
 							case "food":
 								$(".resource_food").empty().append(resourceAmt+"/"+village.req_food);
-								enoughFood = resourceAmt >= village.req_food;
+								enoughFood = (resourceAmt >= village.req_food);
 								break;
 							case "stone":
 								$(".resource_stone").empty().append(resourceAmt+"/"+village.req_stone);
-								enoughStone = resourceAmt >= village.req_stone;
+								enoughStone = (resourceAmt >= village.req_stone);
 								break;
 							default:
 								console.log("ERROR: resourceType or resourceAmt search failure");
 						}
 					}
-					console.log("enough resources?" + (enoughStone));
+					console.log("Upgrade possible: " + (enoughStone && enoughFood && enoughWood));
 					if(enoughStone && enoughFood && enoughWood){
 						$("#btn-upgrade").addClass("btn-upgrade-enable");
 						$("#btn-upgrade").removeClass("btn-upgrade-disable");
