@@ -8,7 +8,6 @@ $(document).ready(function() {
 	if(!Parse.User.current()){
 		window.location = "/login#sign-in";
 	}else{
-		$("#new_mission_button").click(gAnalytic_newMission);
 		$("#menu_log").click(showLog);
 		$("#menu_history").click(showHistory);
 		$("#menu_help").click(showHelp);
@@ -17,6 +16,7 @@ $(document).ready(function() {
 		$("#history-failed-button").click(showFailed);
 		$("#failed-missions-list").css("display", "none");
 		$("#logoutbutton").click(logOut);
+		$("#username_input").val(Parse.User.current().getUsername());
 
 		$( "#new_task_due_date" ).datepicker();
 		$(".btn-add-time").click(addTime);
