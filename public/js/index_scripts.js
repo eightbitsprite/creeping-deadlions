@@ -370,7 +370,7 @@ function renderMissions(){
     	}
     	console.log(results);
     	results.sort(function(x, y){
-		    return x.get("updatedAt") - y.get("updatedAt") ;
+		    return x.get("deadline") - y.get("deadline") ;
 		});
 		results.forEach(function(result){
 			var mission = result.toJSON();
