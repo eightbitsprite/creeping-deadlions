@@ -9,8 +9,13 @@
 <div id="main" class="main">
 	<div class="navbar_cust" id="navbar_top"> 
 		<div class="row">
-			<div class="pull-left" id="new_mission_button"><a href="create_mission">
-				<img src="../images/nav_newmission.png" class="nav_img"></a></div>
+			<form id="username_form" method="get" action="/create_mission"/>
+				<input type="hidden" name="username_new_mission" id="username_input"/>
+				<button class="pull-left" id="new_mission_button" type="submit">
+					<img src="../images/nav_newmission.png" class="nav_img">
+				</button>
+			</form>
+
 			<div class="pull-right btn-group" id="prof_dropdown">
 				<a href="#" id="menu_stats" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../images/nav_profile.png" class="nav_img"></a>
 				<ul class="dropdown-menu stat-dropdown">
@@ -76,6 +81,5 @@
 	{{> cancel}}
 
 </div>
-{{> google_analytics}}
  </body>
 </html>

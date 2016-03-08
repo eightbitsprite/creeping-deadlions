@@ -64,6 +64,8 @@ body{
 	max-height:50px;
 }
 #new_mission_button{
+	background-color: transparent;
+	border:none;
 	/*
 	background-color:#990000;
 	color:white;
@@ -504,6 +506,11 @@ be bothered to find the other tags*/
 /* ENDOFFILE index.handlebars */
 
 /* FILE login.handlebars styling*/
+#login{
+	padding:0;
+	margin:0;
+	background-color: black;
+}
 #login h1{
 	font-family: 'Anton', sans-serif;
 	font-size: 32pt;
@@ -512,11 +519,14 @@ be bothered to find the other tags*/
 	color:white;
 }
 .login_img {
-	max-width: 50vw;
-	max-height: 50vh;
+	width:90vw;
+	height:60vw;
+	max-width:800px;
+	max-height:500px;
 
 	padding-left: 1vw;
 	margin-bottom: 1vh;
+	margin-top:30px;
 }
 #login label{
 	margin: 2vh 0vw;
@@ -545,6 +555,7 @@ be bothered to find the other tags*/
 }
 .btn-login{
 	width:70vw;
+	max-width:500px;
 }
 /* ENDOFFILE of login.handlebars styling (maybe?)*/
 

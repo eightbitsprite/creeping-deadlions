@@ -72,7 +72,7 @@ function initializePage() {
 	$("#lion-load").css({
 		"margin-left": - $(".loading_progress_background").offset().left - $("#lion-load").outerWidth() - 10
 	});
-	googleATimeCheck(0,Date.now());
+	//googleATimeCheck(0,Date.now());
 } 
 
 function previousOption(){
@@ -266,7 +266,7 @@ function nextPage(){
 		$("#frequency").css("display", "none");
 		$("#objectives").css("display", "block");		
 	}
-	ga("send", "event", "nextPage", "page_change");	
+	//ga("send", "event", "nextPage", "page_change");	
 	
 }
 
@@ -288,7 +288,7 @@ function loadSelector(){
 function previousPage(){
 	$("#frequency").css("display", "block");
 	$("#objectives").css("display", "none");
-	ga("send", "event", "previousPage", "page_change");	
+	//ga("send", "event", "previousPage", "page_change");	
 }
 
 function toggleRecurring(event){
@@ -387,7 +387,6 @@ function saveTask(){
 	var title = $("#new_mission_name_textbox").val().trim();
 	var runner = null;
 	var resource = null;
-	var user = Parse.User.current();
 	var isRecurring = $("#new_freq_recurring").is(":checked");
 	var deadline = (isRecurring)? new Date($("#new_task_until_date").val()) : new Date($("#new_task_due_date").val());
 	var isValid = true;
@@ -439,7 +438,7 @@ function saveTask(){
 			runner : $(".runner_box input[type='radio']:checked+label img").attr("id"),
 			runnerName: $("#new_runner_textbox").val().trim(),
 			resource : $(".resource_box input[type='radio']:checked+label img").attr("id"),
-			user : user.get("username"),
+			user : $("#mission_username").val().trim(),
 			completed : false,
 			deadline : deadline,
 			failed:false,
@@ -501,7 +500,7 @@ function saveTask(){
 				});
 			//googleATimeCheck(1, Date.now());
 		});
-	googleATimeCheck(1, Date.now());
+	//googleATimeCheck(1, Date.now());
 	}
 
 	//googleATimeCheck(event, Date.now());
@@ -624,4 +623,3 @@ function saveObjectives(){
 		applyAll();
 	}
 }
-
