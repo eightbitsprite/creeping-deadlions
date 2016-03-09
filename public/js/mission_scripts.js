@@ -431,7 +431,7 @@ function saveTask(){
 		var mission = new MissionObject();
 		window.localStorage.setItem("runner",  $(".runner_box input[type='radio']:checked+label img").attr("id"));
 
-		$(".loading_modal").modal({"show":true});
+		$(".loading_modal").modal({"show":true, backdrop: 'static', keyboard: false});
 		$("body").prop("disabled",true);
 		mission.save({
 			title: title,
