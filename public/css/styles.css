@@ -24,10 +24,11 @@ body{
  .main-content{
  	margin: auto;
  	margin-top:8vh;
- 	width:600px;
+ 	width:50vh;
 	height: 70vh;
 	padding: 5px;
  }
+
 #title{
 	font-family: 'Anton', sans-serif;
 	font-size: 18pt;
