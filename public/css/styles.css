@@ -271,7 +271,7 @@ be bothered to find the other tags*/
 #help {
 	display: none;
 	height:70vh;
-	width: 85vw;
+	width: 50vh;
 	overflow:auto;
 	color:black;
 	background-color: #FFF9D9;
@@ -453,7 +453,7 @@ be bothered to find the other tags*/
 #village_bar {
 	background-color: #BEB096;
 	border: 1px solid white;	
-	width: 85vw;
+	width: 70vh;
 	padding: 2px 4px;
 	margin-bottom: 5px;
 }
